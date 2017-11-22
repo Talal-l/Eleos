@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.c50x.eleos.LoginActivity">
+    tools:context="com.c50x.eleos.LoginActivity"
+    android:background="#e3e3e3">
 
     <!-- Login progress -->
     <ProgressBar
@@ -71,7 +72,16 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_register"
+                 />
+
 
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>
