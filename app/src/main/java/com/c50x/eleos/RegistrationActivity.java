@@ -39,7 +39,8 @@ import android.os.Bundle;
  * Created by eris on 11/19/17.
  */
 
-public class RegistrationActivity extends AppCompatActivity  {
+public class RegistrationActivity extends AppCompatActivity
+{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
