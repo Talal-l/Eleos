@@ -1,4 +1,4 @@
-package com.c50x.eleos;
+package com.c50x.eleos.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,6 +29,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.c50x.eleos.R;
 
 import java.util.ArrayList;
 import java.util.List;

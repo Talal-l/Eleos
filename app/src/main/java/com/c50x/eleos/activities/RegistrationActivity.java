@@ -1,4 +1,4 @@
-package com.c50x.eleos;
+package com.c50x.eleos.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -35,6 +35,8 @@ import android.*;
 
 import android.os.Bundle;
 
+import com.c50x.eleos.*;
+
 /**
  * Created by eris on 11/19/17.
  */
@@ -44,7 +46,7 @@ public class RegistrationActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(com.c50x.eleos.R.layout.activity_registration);
 
 
 

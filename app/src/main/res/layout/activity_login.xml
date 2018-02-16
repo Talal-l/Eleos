@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.c50x.eleos.LoginActivity"
+    tools:context="com.c50x.eleos.activities.LoginActivity"
     android:background="#e3e3e3">
 
     <!-- Login progress -->
