@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/prompt_name"
+                    android:hint="Name"
                     android:inputType="textPersonName"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/prompt_handle"
+                    android:hint="User Handle"
                     android:inputType="textPersonName" />
             </android.support.design.widget.TextInputLayout>
 
@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/prompt_email"
+                    android:hint="Email"
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
 
@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/prompt_password"
+                    android:hint="Password"
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/prompt_confirm_password"
+                    android:hint="Confirm Password"
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
