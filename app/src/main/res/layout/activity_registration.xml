@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.c50x.eleos.LoginActivity"
+    tools:context="com.c50x.eleos.activities.LoginActivity"
     android:background="#e3e3e3">
 
 
@@ -104,6 +104,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:entries="@array/languages_list" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom">
+
+                <Button
+                    android:id="@+id/button_confirm"
+                    android:text="Confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/button_cancel"
+                    android:text="Cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
