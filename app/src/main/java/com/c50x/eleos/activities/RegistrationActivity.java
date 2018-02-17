@@ -30,6 +30,8 @@ public class RegistrationActivity extends AppCompatActivity  {
         password = (EditText) findViewById(R.id.password);
         password = (EditText) findViewById(R.id.confirm_password);
 
+
+        
     }
 
 
