@@ -1,41 +1,10 @@
 package com.c50x.eleos.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-import android.*;
-
-
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.EditText;
 
-import com.c50x.eleos.*;
+import com.c50x.eleos.R;
 
 /**
  * Created by eris on 11/19/17.
@@ -43,12 +12,23 @@ import com.c50x.eleos.*;
 
 public class RegistrationActivity extends AppCompatActivity  {
 
+    private EditText name;
+    private EditText handle;
+    private EditText email;
+    private EditText password;
+    private EditText confirm_password;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.c50x.eleos.R.layout.activity_registration);
 
-
+        name = (EditText) findViewById(R.id.name);
+        handle = (EditText) findViewById(R.id.handle);
+        email = (EditText) findViewById(R.id.email);
+        password = (EditText) findViewById(R.id.password);
+        password = (EditText) findViewById(R.id.confirm_password);
 
     }
 
