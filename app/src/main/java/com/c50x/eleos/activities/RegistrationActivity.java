@@ -10,13 +10,15 @@ import android.widget.EditText;
 
 import com.c50x.eleos.R;
 
+import java.util.Objects;
+
 /**
  * Created by eris on 11/19/17.
  */
 
 public class RegistrationActivity extends AppCompatActivity  {
 
-    protected static EditText name;
+    protected EditText name;
     private EditText handle;
     private EditText email;
     private EditText password;
@@ -27,9 +29,15 @@ public class RegistrationActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
+
         setContentView(com.c50x.eleos.R.layout.activity_registration);
+
+
+        //Assignment statements for fields and buttons
 
         name = (EditText) findViewById(R.id.name);
         handle = (EditText) findViewById(R.id.handle);
@@ -41,6 +49,8 @@ public class RegistrationActivity extends AppCompatActivity  {
         cancelButton = (Button) findViewById(R.id.button_cancel);
 
 
+        //Confirm button takes you to Main page if inputs are valid
+
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,20 +58,24 @@ public class RegistrationActivity extends AppCompatActivity  {
                     name.setError("Empty or Incorrect Length");
                 }
 
-                else if (handleIsValid(handle.getText().toString())) {
-                    handle.setError("Should be less than 10 characters");
+                else if (!handleIsValid(handle.getText().toString())) {
+                    handle.setError("Needs to be between 4 and 10 characters");
                 }
 
-                else if (emailIsValid(email.getText().toString())) {
+                else if (!emailIsValid(email.getText().toString())) {
                     email.setError("Empty?");
                 }
 
-                else if (passwordIsValid(password.getText().toString())) {
+                else if (!passwordIsValid(password.getText().toString())) {
                     password.setError("Empty or Less than 6 characters");
                 }
 
-                else if (passwordIsValid(password.getText().toString())) {
+                else if (!passwordIsValid(confirm_password.getText().toString())) {
                     confirm_password.setError("Empty or Less than 6 characters");
+                }
+
+                else if (!Objects.equals(password.getText().toString(), confirm_password.getText().toString())) {
+                    confirm_password.setError("Does not match");
                 }
 
                 else {
@@ -72,7 +86,7 @@ public class RegistrationActivity extends AppCompatActivity  {
         });
 
 
-
+        //Cancel button takes you back to Login Page
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
 
@@ -84,44 +98,40 @@ public class RegistrationActivity extends AppCompatActivity  {
 
     }
 
+
+    //Methods for checking whether the format for the inputs are valid
+
     public boolean nameIsValid(String name) {
 
-        if(name.isEmpty() || name.length() > 10) {
+        if(name.isEmpty() || !(name.length() >= 2 && name.length() <= 10)) {
             return false;
-        }
-        else
+        } else
             return true;
-        }
+    }
 
     public boolean handleIsValid(String handle) {
 
-        if(handle.isEmpty()) {
-            return true;
-        } else if (handle.length() > 4 && handle.length() < 10) {
+        if(handle.isEmpty() || !(handle.length() >= 4 && handle.length() <= 10)) {
             return false;
-        }
-
-        return true;
+        } else
+            return true;
     }
 
     public boolean emailIsValid(String email) {
 
         if(email.isEmpty()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean passwordIsValid(String password) {
-
-        if(password.isEmpty()) {
-            return true;
-        } else if (password.length() < 6) {
             return false;
         }
 
         return true;
+    }
+
+    public boolean passwordIsValid(String password) {
+
+        if(password.isEmpty() || !(password.length() >= 6 && password.length() <= 16)) {
+            return false;
+        } else
+            return true;
     }
 
 }
