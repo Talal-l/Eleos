@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity  {
 
-    protected EditText name;
+    private EditText name;
     private EditText handle;
     private EditText email;
     private EditText password;
@@ -55,27 +55,27 @@ public class RegistrationActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 if(!nameIsValid(name.getText().toString())) {
-                    name.setError("Empty or Incorrect Length");
+                    name.setError("Empty or Incorrect Length (Between 2 and 10 characters)");
                 }
 
                 else if (!handleIsValid(handle.getText().toString())) {
-                    handle.setError("Needs to be between 4 and 10 characters");
+                    handle.setError("Empty or Incorrect Length (Between 4 and 10 characters)");
                 }
 
                 else if (!emailIsValid(email.getText().toString())) {
-                    email.setError("Empty?");
+                    email.setError("Empty");
                 }
 
                 else if (!passwordIsValid(password.getText().toString())) {
-                    password.setError("Empty or Less than 6 characters");
+                    password.setError("Empty or Incorrect Length (Between 6 and 16 characters)");
                 }
 
                 else if (!passwordIsValid(confirm_password.getText().toString())) {
-                    confirm_password.setError("Empty or Less than 6 characters");
+                    confirm_password.setError("Empty or Incorrect Length (Between 6 and 16 characters)");
                 }
 
                 else if (!Objects.equals(password.getText().toString(), confirm_password.getText().toString())) {
-                    confirm_password.setError("Does not match");
+                    confirm_password.setError("Passwords do not match");
                 }
 
                 else {
