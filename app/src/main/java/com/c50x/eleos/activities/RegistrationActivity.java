@@ -44,24 +44,23 @@ public class RegistrationActivity extends AppCompatActivity  {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (name.getText().toString().contains("[0-9]+") == true || name.getText().toString().isEmpty() && name.getText().toString().length() > 10) {
-                if(nameCheck(name.getText().toString())) {
+                if(!nameIsValid(name.getText().toString())) {
                     name.setError("Empty or Incorrect Length");
                 }
 
-                else if (handleCheck(handle.getText().toString())) {
+                else if (handleIsValid(handle.getText().toString())) {
                     handle.setError("Should be less than 10 characters");
                 }
 
-                else if (emailCheck(email.getText().toString())) {
+                else if (emailIsValid(email.getText().toString())) {
                     email.setError("Empty?");
                 }
 
-                else if (passwordCheck(password.getText().toString())) {
+                else if (passwordIsValid(password.getText().toString())) {
                     password.setError("Empty or Less than 6 characters");
                 }
 
-                else if (passwordCheck(password.getText().toString())) {
+                else if (passwordIsValid(password.getText().toString())) {
                     confirm_password.setError("Empty or Less than 6 characters");
                 }
 
@@ -85,18 +84,16 @@ public class RegistrationActivity extends AppCompatActivity  {
 
     }
 
-    public boolean nameCheck (String name) {
+    public boolean nameIsValid(String name) {
 
-        if(name.isEmpty()) {
-            return true;
-        } else if (name.length() < 10) {
+        if(name.isEmpty() || name.length() > 10) {
             return false;
         }
+        else
+            return true;
+        }
 
-        return true;
-    }
-
-    public boolean handleCheck (String handle) {
+    public boolean handleIsValid(String handle) {
 
         if(handle.isEmpty()) {
             return true;
@@ -107,7 +104,7 @@ public class RegistrationActivity extends AppCompatActivity  {
         return true;
     }
 
-    public boolean emailCheck (String email) {
+    public boolean emailIsValid(String email) {
 
         if(email.isEmpty()) {
             return true;
@@ -116,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity  {
         return false;
     }
 
-    public boolean passwordCheck (String password) {
+    public boolean passwordIsValid(String password) {
 
         if(password.isEmpty()) {
             return true;
