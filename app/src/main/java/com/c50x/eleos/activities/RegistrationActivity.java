@@ -66,7 +66,7 @@ public class RegistrationActivity extends AppCompatActivity  {
                 }
 
                 else {
-                    Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                    Intent intent = new Intent(view.getContext(), MainActivity.class);
                     startActivity(intent);
                 }
             }
