@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.c50x.eleos.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -39,9 +42,11 @@ public class LoginActivity extends AppCompatActivity
         LoginFormView = (ScrollView) findViewById(R.id.login_form);
 
 
-        register_button.setOnClickListener(new View.OnClickListener() {
+        register_button.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(view.getContext(), RegistrationActivity.class);
                 startActivity(intent);
             }
@@ -67,15 +72,15 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
-    protected boolean validateEmail(String strEmail) // checks if user entered email into the email textfield
+    protected boolean validateEmail(String strEmail) // grants the user access if the email is matched from the database
     {
-        if (strEmail != null) // if user entered email
-            return true;
-        else // if did not enter email
-            return false;
+        String emailPattern = "yosefhusain@ymail.com"; //sample for now
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(strEmail);
+        return matcher.matches();
     }
 
-    protected boolean validatePassword(String strpass) //
+    protected boolean validatePassword(String strpass) // return true if password is valid and false is invalid
     {
         if (strpass != null && strpass.length() > 6) // if user entered password that is 6 bytes long
             return true;
