@@ -36,7 +36,6 @@ public class RegistrationActivity extends AppCompatActivity  {
 
         setContentView(com.c50x.eleos.R.layout.activity_registration);
 
-
         //Assignment statements for fields and buttons
 
         name = (EditText) findViewById(R.id.name);

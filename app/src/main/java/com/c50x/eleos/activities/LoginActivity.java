@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
@@ -41,7 +43,7 @@ public class LoginActivity extends AppCompatActivity
         LoginFormView = (ScrollView) findViewById(R.id.login_form);
 
 
-        register_button.setOnClickListener(new View.OnClickListener()
+        register_button.setOnClickListener(new View.OnClickListener() // handles register button click
         {
             @Override
             public void onClick(View view)
@@ -50,7 +52,7 @@ public class LoginActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        sign_in_button.setOnClickListener(new View.OnClickListener() // handles button click
+        sign_in_button.setOnClickListener(new View.OnClickListener() // handles sign in button click
         {
             @Override
             public void onClick(View v) // checks if user input was correct by verifying email and password
@@ -60,20 +62,36 @@ public class LoginActivity extends AppCompatActivity
                     EmailView.setError("Invalid Email");
                     EmailView.requestFocus();
                 }
-                else if (!validatePassword(PasswordView.getText().toString()))// if not a valid email address)
+                else if (!validatePassword(PasswordView.getText().toString()))// if not a valid password
                 {
                     PasswordView.setError("Invalid Password");
                     PasswordView.requestFocus();
                 }
-                else
-                    Toast.makeText(LoginActivity.this, "LogIn successful !", Toast.LENGTH_LONG).show();
+                else // valid email and password
+                {
+                    Toast.makeText(LoginActivity.this, "LogIn successful !", Toast.LENGTH_LONG).show(); // prints on the screen that log in was successful
+                    Intent intent2 = new Intent(v.getContext(), MainActivity.class); // chooses the main activity to switch to
+                    startActivity(intent2); // switch to main activity
+                }
             }
         });
     }
 
     protected boolean validateEmail(String strEmail) // grants the user access if the email is matched from the database
     {
-        String emailPattern = "yosefhusain@ymail.com"; //sample for now
+        String emailPattern = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + // android default pattern
+
+                "\\@" +
+
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+
+                "(" +
+
+                "\\." +
+
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+
+                ")+";
         Pattern pattern = Pattern.compile(emailPattern);
         Matcher matcher = pattern.matcher(strEmail);
         return matcher.matches();
