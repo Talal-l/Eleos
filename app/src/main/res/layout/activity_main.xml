@@ -2,29 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="3dp">
+    >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="User handle:"
         android:textSize="24sp"
-        android:id="@+id/user_handle_textView"/>
+        android:id="@+id/activity_main_user_handle_textView"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/user_handle_textView"
+        android:layout_below="@id/activity_main_user_handle_textView"
         android:text="User Name:"
         android:textSize="24sp"
-        android:id="@+id/user_name_textView"/>
+        android:id="@+id/activity_main_user_name_textView"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/user_name_textView"
+        android:layout_below="@id/activity_main_user_name_textView"
         android:text="User Email"
         android:textSize="24sp"
         android:id="@+id/user_email_textView"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_email_textView"
+        android:text="log out"
+        android:id="@+id/activity_main_logout_button"/>
 
 </RelativeLayout>
