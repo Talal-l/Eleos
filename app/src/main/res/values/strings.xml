@@ -12,6 +12,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
 
     <string-array name="sex_list">
         <item>Male</item>
