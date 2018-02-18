@@ -11,7 +11,7 @@ public interface UserDao {
 
     @Insert
     Long addUser(User user);
-    @Query("SELECT * FROM user")
+    @Query("SELECT * FROM User")
     List<User> loadAllUsers();
 }
 
