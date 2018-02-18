@@ -1,8 +1,17 @@
 package com.c50x.eleos.data;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+@Entity
 public class User {
 
+
+    @PrimaryKey
+    @NonNull
     private String handle;
+
     private String name;
     private int dateOfBirth;
     private String gender;
