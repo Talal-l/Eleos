@@ -16,7 +16,7 @@ public abstract class AppDatabase extends RoomDatabase{
         if (INSTANCE == null) {
             // Create the database and call it eleos.db
             INSTANCE =
-                    Room.databaseBuilder(context,AppDatabase.class,"eleos.db").build();
+                    Room.databaseBuilder(context,AppDatabase.class,"ele.db").build();
         }
         return INSTANCE;
     }}

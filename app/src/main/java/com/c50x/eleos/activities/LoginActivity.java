@@ -22,9 +22,9 @@ import java.util.regex.Pattern;
 public class LoginActivity extends AppCompatActivity
 {
     // UI references.
-    private AutoCompleteTextView EmailView;
-    private EditText PasswordView;
-    private View LoginFormView;
+    private AutoCompleteTextView emailView;
+    private EditText passwordView;
+    private View loginFormView;
     private Button sign_in_button;
     private Button register_button;
 
@@ -36,11 +36,11 @@ public class LoginActivity extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
-        EmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        PasswordView = (EditText) findViewById(R.id.password);
+        emailView = (AutoCompleteTextView) findViewById(R.id.email);
+        passwordView = (EditText) findViewById(R.id.password);
         sign_in_button = (Button) findViewById(R.id.signIn_button);
         register_button = (Button) findViewById(R.id.Register_button);
-        LoginFormView = (ScrollView) findViewById(R.id.login_form);
+        loginFormView = (ScrollView) findViewById(R.id.login_form);
 
 
         register_button.setOnClickListener(new View.OnClickListener() // handles register button click
@@ -57,20 +57,23 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v) // checks if user input was correct by verifying email and password
             {
-                if (!validateEmail(EmailView.getText().toString())) // if not a valid email address
+                if (!validateEmail(emailView.getText().toString())) // if not a valid email address
                 {
-                    EmailView.setError("Invalid Email");
-                    EmailView.requestFocus();
+                    emailView.setError("Invalid Email");
+                    emailView.requestFocus();
                 }
-                else if (!validatePassword(PasswordView.getText().toString()))// if not a valid password
+                else if (!validatePassword(passwordView.getText().toString()))// if not a valid password
                 {
-                    PasswordView.setError("Invalid Password");
-                    PasswordView.requestFocus();
+                    passwordView.setError("Invalid Password");
+                    passwordView.requestFocus();
                 }
                 else // valid email and password
                 {
                     Toast.makeText(LoginActivity.this, "LogIn successful !", Toast.LENGTH_LONG).show(); // prints on the screen that log in was successful
-                    Intent intent2 = new Intent(v.getContext(), MainActivity.class); // chooses the main activity to switch to
+                    Intent intent2 = new Intent(v.getContext(), MainActivity.class);
+                    intent2.putExtra("from","login"); // To tell what screen we came from
+                    // To load the logged in player when they move to the main screen
+                    intent2.putExtra("email",emailView.getText().toString());
                     startActivity(intent2); // switch to main activity
                 }
             }

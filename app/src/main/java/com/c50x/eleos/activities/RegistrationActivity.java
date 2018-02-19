@@ -120,6 +120,8 @@ public class RegistrationActivity extends AppCompatActivity  {
 
                     // Go to main screen
                     Intent intent = new Intent(view.getContext(), MainActivity.class);
+                    intent.putExtra("from","registration");
+                    intent.putExtra("handle",newUser.getHandle());
                     startActivity(intent);
                 }
             }
