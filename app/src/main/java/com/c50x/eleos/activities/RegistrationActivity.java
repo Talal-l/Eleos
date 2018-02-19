@@ -1,14 +1,18 @@
 package com.c50x.eleos.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.data.AppDatabase;
+import com.c50x.eleos.data.User;
 
 import java.util.Objects;
 
@@ -25,6 +29,21 @@ public class RegistrationActivity extends AppCompatActivity  {
     private EditText confirm_password;
     private Button   confirmButton;
     private Button   cancelButton;
+    private AppDatabase dp;
+    private User newUser;
+
+
+
+    // Create an AsyncTask class so the database operations can be done in the background
+    private class DatabaseAsync extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            // Add the user to the database
+            dp.userDao().addUser(newUser);
+            return null;
+        }
+    }
 
 
     @Override
@@ -48,7 +67,8 @@ public class RegistrationActivity extends AppCompatActivity  {
         cancelButton = (Button) findViewById(R.id.button_cancel);
 
 
-        //Confirm button takes you to Main page if inputs are valid
+
+        // Validate user input when the confirm button is clicked
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,8 +96,24 @@ public class RegistrationActivity extends AppCompatActivity  {
                 else if (!Objects.equals(password.getText().toString(), confirm_password.getText().toString())) {
                     confirm_password.setError("Passwords do not match");
                 }
-
+                // All inputs are valid
                 else {
+
+                    // Save user info in a User object so it can be saved in database
+
+                    newUser = new User();
+                    newUser.setHandle(handle.getText().toString());
+                    newUser.setName(name.getText().toString());
+
+
+                    // Get the database instance
+                    dp = AppDatabase.getDatabaseInstance(getApplicationContext());
+
+                    // Start the Async process that will save into the database
+                    new DatabaseAsync().execute();
+
+                    Log.e("handle: ", newUser.getHandle());
+
                     Intent intent = new Intent(view.getContext(), MainActivity.class);
                     startActivity(intent);
                 }
