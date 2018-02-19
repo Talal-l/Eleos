@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.net.PasswordAuthentication;
+
 @Entity
 public class User {
 
@@ -13,12 +15,13 @@ public class User {
     private String handle;
 
     private String name;
+    private String email;
+    private String password; // TODO: A better way to store passwords
     private int dateOfBirth;
     private String gender;
 
     public User() {
     }
-
 
     public String getHandle() {
         return handle;
@@ -50,5 +53,21 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

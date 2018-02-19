@@ -62,6 +62,8 @@ public class RegistrationActivity extends AppCompatActivity  {
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         confirm_password = (EditText) findViewById(R.id.confirm_password);
+        // TODO: Take input from spinners
+        // TODO: Take date of birth
 
         confirmButton = (Button) findViewById(R.id.button_confirm);
         cancelButton = (Button) findViewById(R.id.button_cancel);
@@ -69,7 +71,7 @@ public class RegistrationActivity extends AppCompatActivity  {
 
 
         // Validate user input when the confirm button is clicked
-
+        // TODO: Better error messages
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +106,8 @@ public class RegistrationActivity extends AppCompatActivity  {
                     newUser = new User();
                     newUser.setHandle(handle.getText().toString());
                     newUser.setName(name.getText().toString());
+                    newUser.setEmail(email.getText().toString());
+                    newUser.setPassword(password.getText().toString());
 
 
                     // Get the database instance
@@ -114,6 +118,7 @@ public class RegistrationActivity extends AppCompatActivity  {
 
                     Log.e("handle: ", newUser.getHandle());
 
+                    // Go to main screen
                     Intent intent = new Intent(view.getContext(), MainActivity.class);
                     startActivity(intent);
                 }

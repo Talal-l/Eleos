@@ -6,10 +6,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.data.User;
 
 public class MainActivity extends AppCompatActivity
 {
     private Button logOutButton;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
