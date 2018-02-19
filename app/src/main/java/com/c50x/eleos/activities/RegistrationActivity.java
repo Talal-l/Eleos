@@ -29,7 +29,7 @@ public class RegistrationActivity extends AppCompatActivity  {
     private EditText confirm_password;
     private Button   confirmButton;
     private Button   cancelButton;
-    private AppDatabase dp;
+    private AppDatabase db;
     private User newUser;
 
 
@@ -40,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity  {
         @Override
         protected Void doInBackground(Void... voids) {
             // Add the user to the database
-            dp.userDao().addUser(newUser);
+            db.userDao().addUser(newUser);
             return null;
         }
     }
@@ -111,7 +111,7 @@ public class RegistrationActivity extends AppCompatActivity  {
 
 
                     // Get the database instance
-                    dp = AppDatabase.getDatabaseInstance(getApplicationContext());
+                    db = AppDatabase.getDatabaseInstance(getApplicationContext());
 
                     // Start the Async process that will save into the database
                     new DatabaseAsync().execute();

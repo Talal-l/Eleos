@@ -11,7 +11,16 @@ public interface UserDao {
 
     @Insert
     Long addUser(User user);
+
     @Query("SELECT * FROM User")
     List<User> loadAllUsers();
+
+    @Query("SELECT * FROM User WHERE handle=:h ")
+    User loadUserWithHandle(String h);
+
+    @Query("SELECT * FROM User WHERE email=:e ")
+    User loadUserWithEmail(String e);
+
+
 }
 
