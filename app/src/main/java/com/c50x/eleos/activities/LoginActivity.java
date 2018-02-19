@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity
         passwordView = (EditText) findViewById(R.id.password);
         sign_in_button = (Button) findViewById(R.id.signIn_button);
         register_button = (Button) findViewById(R.id.Register_button);
-        loginFormView = (ScrollView) findViewById(R.id.login_form);
 
 
         register_button.setOnClickListener(new View.OnClickListener() // handles register button click

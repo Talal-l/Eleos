@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.c50x.eleos.activities.LoginActivity"
-    android:background="#e3e3e3">
+    android:background="@color/colorPrimary">
 
 
     <ScrollView
@@ -116,14 +116,17 @@
                     android:text="Confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:background="@color/colorButtons"/>
 
                 <Button
                     android:id="@+id/button_cancel"
                     android:text="Cancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:background="@color/colorButtons"/>
+                    />
             </LinearLayout>
 
         </LinearLayout>
