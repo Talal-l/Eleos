@@ -33,15 +33,5 @@
         tools:textColor="@android:color/black"
         android:id="@+id/user_email_textView"
         />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_email_textView"
-        android:text="log out"
-        android:id="@+id/activity_main_logout_button"
-        tools:textColor="@android:color/black"
-        android:background="@color/colorButtons"
-        android:layout_centerHorizontal="true"
-        />
 
 </RelativeLayout>
