@@ -1,10 +1,33 @@
 package com.c50x.eleos.data;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity
+@Entity(foreignKeys = {
+        @ForeignKey(entity = Team.class,
+                parentColumns = "teamName",
+                childColumns = "team1",
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE
+        ),
+        @ForeignKey(entity = Team.class,
+                parentColumns = "teamName",
+                childColumns =  "team2",
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE
+
+        ),
+                @ForeignKey(entity = Venue.class,
+                parentColumns = "venueAddress",
+                childColumns =  "venueAddress",
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE
+
+        )
+})
+
 public class Game {
 
     @PrimaryKey
