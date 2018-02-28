@@ -19,7 +19,7 @@ import android.support.annotation.NonNull;
                 onDelete = ForeignKey.CASCADE
 
         ),
-                @ForeignKey(entity = Venue.class,
+        @ForeignKey(entity = Venue.class,
                 parentColumns = "venueAddress",
                 childColumns =  "venueAddress",
                 onUpdate = ForeignKey.CASCADE,
