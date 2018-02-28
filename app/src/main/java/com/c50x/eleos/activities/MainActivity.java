@@ -1,5 +1,6 @@
 package com.c50x.eleos.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -7,6 +8,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -57,8 +59,6 @@ public class MainActivity extends AppCompatActivity
                 Log.w("email: ", l[i].getEmail());
             }
 
-            //emailView.append(currentUser.getEmail());
-            //nameView.append(currentUser.getName());
             handleView.append(currentUser.getHandle());
             return null;
         }
@@ -78,15 +78,18 @@ public class MainActivity extends AppCompatActivity
 
         // for navigation menu
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open , R.string.close);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
-        if(getSupportActionBar() != null)
-             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        configureNextButton();
     }
 
+    // for navigation menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -94,5 +97,17 @@ public class MainActivity extends AppCompatActivity
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+    // switches to game creation screen
+    private void configureNextButton()
+    {
+        Button create_game_button = (Button) findViewById(R.id.createGame_tab);
+        create_game_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(MainActivity.this , CreateGameActivity.class));
+            }
+        });
     }
 }

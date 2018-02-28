@@ -6,4 +6,10 @@
     <item android:id="@+id/createGame_tab"
         android:title="Create game"
     />
+
+    <item android:id="@+id/createTeam_tab"
+        android:title="Create team"
+        />
+
+
 </menu>
