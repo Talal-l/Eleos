@@ -1,7 +1,9 @@
 package com.c50x.eleos.data;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -26,7 +28,8 @@ import android.support.annotation.NonNull;
                 onDelete = ForeignKey.CASCADE
 
         )
-})
+    }, indices = {@Index(value = "team1"), @Index(value = "team2"), @Index(value = "venueAddress")}
+)
 
 public class Game {
 
@@ -44,6 +47,7 @@ public class Game {
 
     // Foreign keys
     private String venueAddress;
+
     private String team1;
     private String team2;
 

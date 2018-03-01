@@ -15,10 +15,10 @@ public interface GameDao {
     Long addGame(Game game);
 
     @Update
-    Long modifyGame(Game game);
+    int modifyGame(Game game);
 
     @Delete
-    Long deleteGame(Game game);
+    int deleteGame(Game game);
 
     @Query("SELECT * FROM Game WHERE gameId LIKE:id")
     Game[] loadGame(int id);

@@ -12,7 +12,7 @@ public class Venue {
 
     private String venueName;
     private String venueType;
-    private User venueManager;
+    private String venueManager;
     private int openingTime;
     private int closingTime;
     private int numOfGrounds;
@@ -43,11 +43,11 @@ public class Venue {
         this.venueType = venueType;
     }
 
-    public User getVenueManager() {
+    public String getVenueManager() {
         return venueManager;
     }
 
-    public void setVenueManager(User venueManager) {
+    public void setVenueManager(String venueManager) {
         this.venueManager = venueManager;
     }
 
