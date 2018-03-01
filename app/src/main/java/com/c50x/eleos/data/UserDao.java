@@ -13,6 +13,14 @@ public interface UserDao {
     @Insert
     Long addUser(User user);
 
+    @Query("SELECT * from User WHERE handle LIKE :handle AND password LIKE :pass ")
+    User[] authUsingHandle(String handle, String pass);
+
+
+    @Query("SELECT * FROM User WHERE email LIKE :email AND password LIKE :pass ")
+    User[] authUsingEmail(String email, String pass);
+
+
     @Query("SELECT * FROM User")
     User[] loadAllUsers();
 
