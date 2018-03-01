@@ -30,7 +30,7 @@ public class LoginTask {
             String userEmail = par[0];
             String userPassword = par[1];
 
-            // TODO check with remote server instead of local
+            // TODO: Check with remote server instead of local
 
             // Check if the user email and password match with the database
             userList = db.userDao().authUsingEmail(userEmail, userPassword);
@@ -54,7 +54,7 @@ public class LoginTask {
             }
             else {
                 // Show error message to user
-                // TODO better message
+                // TODO Better message
 
                 emailView.setError("Incorrect Email or Password");
                 emailView.requestFocus();

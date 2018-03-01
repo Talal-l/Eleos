@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserDao {
 
     @Insert
-    Long addUser(User user);
+    Long saveUser(User user);
 
     @Query("SELECT * from User WHERE handle LIKE :handle AND password LIKE :pass ")
     User[] authUsingHandle(String handle, String pass);
