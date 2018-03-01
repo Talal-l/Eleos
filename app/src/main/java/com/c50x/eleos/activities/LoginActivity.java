@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
 
@@ -30,76 +31,56 @@ public class LoginActivity extends AppCompatActivity
     private View loginFormView;
     private Button sign_in_button;
     private Button register_button;
-    private AppDatabase db;
-    private User l[];
+    private String userEmail;
+    private String userPassword;
 
 
 
-
-    // Create an AsyncTask class so the database operations can be done in the background
-    private class DatabaseAsync extends AsyncTask<Void,Void,Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-                sign_in_button.setOnClickListener(new View.OnClickListener() // handles sign in button click
-                {
-                    @Override
-                    public void onClick(View v) // checks if user input was correct by verifying email and password
-                    {
-                        Log.w("eamil: ", emailView.getText().toString());
-
-                        l = db.userDao().loadUserWithEmail(emailView.getText().toString());
-                        if (!validateEmail(emailView.getText().toString())) // if not a valid email address
-                        {
-                            emailView.setError("Invalid Email");
-                            emailView.requestFocus();
-                        }
-                        else if (!validatePassword(passwordView.getText().toString()))// if not a valid password
-                        {
-                            passwordView.setError("Invalid Password");
-                            passwordView.requestFocus();
-                        }
-                        else if (l.length == 0){ // Email not in database
-                            emailView.setError("No account with this email");
-                            emailView.requestFocus();
-                        }
-                        else if (l.length > 0 && !l[0].getPassword().equals(passwordView.getText().toString())){
-                            emailView.setError("Incorrect password");
-                            emailView.requestFocus();
-                        }
-                        else // valid email and password
-                        {
-                            Toast.makeText(LoginActivity.this, "LogIn successful !", Toast.LENGTH_LONG).show(); // prints on the screen that log in was successful
-                            Intent intent2 = new Intent(v.getContext(), MainActivity.class);
-                            intent2.putExtra("from","login"); // To tell what screen we came from
-                            // To load the logged in player when they move to the main screen
-                            intent2.putExtra("email",emailView.getText().toString());
-                            startActivity(intent2); // switch to main activity
-                        }
-                    }
-                });
-
-            return null;
-
-
-            }
-        }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
         setContentView(R.layout.activity_login);
-        db = AppDatabase.getDatabaseInstance(getApplicationContext());
-        new DatabaseAsync().execute();
-
 
         // Set up the login form.
-        emailView = (AutoCompleteTextView) findViewById(R.id.email);
-        passwordView = (EditText) findViewById(R.id.password);
-        sign_in_button = (Button) findViewById(R.id.signIn_button);
-        register_button = (Button) findViewById(R.id.Register_button);
+        emailView = findViewById(R.id.email);
+        passwordView = findViewById(R.id.password);
+        sign_in_button = findViewById(R.id.signIn_button);
+        register_button = findViewById(R.id.Register_button);
+
+        sign_in_button.setOnClickListener(new View.OnClickListener() // handles sign in button click
+        {
+            @Override
+            public void onClick(View v) // checks if user input was correct by verifying email and password
+            {
+                userEmail = emailView.getText().toString();
+                userPassword = passwordView.getText().toString();
+                Log.w("eamil: ", userEmail);
+
+                if (!validateEmail(userEmail)) // if not a valid email address
+                {
+                    emailView.setError("Invalid Email");
+                    emailView.requestFocus();
+                }
+                else if (!validatePassword(userPassword))// if not a valid password
+                {
+                    passwordView.setError("Invalid Password");
+                    passwordView.requestFocus();
+                }
+
+                else{ // syntax is correct for password and email
+
+                    // Check if user has an account (in database)
+
+                    // pass the activityContext so we can change UI elements from LoginTask
+                    LoginTask login = new LoginTask(getApplicationContext(),LoginActivity.this);
+                    login.authUsingEmail(userEmail,userPassword);
+
+
+                }
+            }
+        });
 
 
         register_button.setOnClickListener(new View.OnClickListener() // handles register button click
