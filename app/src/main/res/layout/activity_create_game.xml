@@ -11,24 +11,99 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="wrap_content"
-        android:layout_marginTop="1"
         android:text="Game name: "
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
     <EditText
         android:id="@+id/game_name_input"
-        android:layout_width="match_parent"
+        android:layout_width="201dp"
         android:layout_height="wrap_content"
         android:text="game name" />
 
     <TextView
         android:id="@+id/game_type_txt"
+        android:layout_column="0"
+        android:layout_row="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:text="Game type:"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/game_type_input"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="game type" />
+
+    <TextView
+        android:id="@+id/number_of_players_txt"
+        android:layout_column="0"
+        android:layout_row="2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of players:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/number of players_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="# of players"
+        android:layout_column="1"
+        android:layout_row="2"/>
+
+    <TextView
+        android:id="@+id/game_location_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:layout_column="0"
+        android:layout_row="3"/>
+
+    <EditText
+        android:id="@+id/create_game_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location"
+        android:layout_column="1"
+        android:layout_row="3"/>
+
+    <TextView
+        android:id="@+id/game_date_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:layout_row="4"
+        android:layout_column="0"/>
+
+    <EditText
+        android:id="@+id/game_time_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start time:"
+        android:textSize="18sp"
+        android:layout_row="4"
+        android:layout_column="1"/>
+
+    <Button
+        android:id="@+id/Cancel_button"
+        android:layout_width="150"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="200"
+        android:text="Cancel"
+        android:layout_row="6"
+        android:layout_column="1"/>
 </GridLayout>
 
