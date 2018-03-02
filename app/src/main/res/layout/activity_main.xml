@@ -16,22 +16,11 @@
 
         <TextView
             android:id="@+id/activity_main_user_handle_textView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="User handle:"
             android:textSize="24sp"
             tools:textColor="@android:color/black" />
-
-        <TextView
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="shit:"
-            android:textSize="24sp"
-            android:visibility="visible"
-            tools:textColor="@android:color/black" />
-
-
 
     </LinearLayout>
     
