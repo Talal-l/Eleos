@@ -1,5 +1,6 @@
 package com.c50x.eleos.activities;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     private User[] l;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+    FragmentTransaction fragmentTransaction;
 
     // Create an AsyncTask class so the database operations can be done in the background
     private class DatabaseAsync extends AsyncTask<Void,Void,Void> {
@@ -102,13 +104,14 @@ public class MainActivity extends AppCompatActivity
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open , R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
+       // fragmentTransaction = getSupportFragmentManager().beginTransaction();
         mToggle.syncState();
 
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
-
+    // for navigation menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
