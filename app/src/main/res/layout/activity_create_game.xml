@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
-
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/game_name_txt"
+        android:layout_width="97"
+        android:layout_height="wrap_content"
+        android:layout_margin="wrap_content"
+        android:text="Game name"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="1"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/game_name_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Game name:"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:layout_marginStart="100dp"
+        android:text="game name" />
 
     <TextView
         android:id="@+id/game_type_txt"
@@ -24,6 +31,13 @@
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
+    <EditText
+        android:id="@+id/game_type_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="game type" />
+
     <TextView
         android:id="@+id/number_of_players_txt"
         android:layout_width="wrap_content"
@@ -32,6 +46,13 @@
         android:text="Number of players:"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/number of players_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="# of players" />
 
     <TextView
         android:id="@+id/game_location_txt"
@@ -42,6 +63,13 @@
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
+    <EditText
+        android:id="@+id/create_game_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="game name" />
+
     <TextView
         android:id="@+id/game_date_txt"
         android:layout_width="wrap_content"
@@ -50,6 +78,7 @@
         android:text="Date:"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
+
 
     <TextView
         android:id="@+id/game_time_txt"
@@ -62,18 +91,10 @@
 
     <Button
         android:id="@+id/Cancel_button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="100dp"
+        android:layout_width="150"
+        android:layout_height="50dp"
+        android:layout_marginStart="100dp"
         android:text="Cancel" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
 
 
 </LinearLayout>
