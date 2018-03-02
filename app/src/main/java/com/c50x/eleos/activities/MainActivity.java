@@ -13,10 +13,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.c50x.eleos.R;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
+import android.app.Activity;
+import android.app.ActionBar;
+import android.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.os.Build;
+import android.view.Gravity;
+import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -78,6 +97,13 @@ public class MainActivity extends AppCompatActivity
 
         handleView = findViewById(R.id.activity_main_user_handle_textView);
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
+
+        setContentView(com.c50x.eleos.R.layout.activity_registration);
+
+
+    }
+/*
         // for navigation menu
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
@@ -90,16 +116,17 @@ public class MainActivity extends AppCompatActivity
 
             //configureCreateGameButton();
         }
-        Button create_game_button = findViewById(R.id.createGame_tab);
+        Button create_game_button = (Button)findViewById(R.id.createGame_tab);
         create_game_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 startActivity(new Intent(MainActivity.this , CreateGameActivity.class));
             }
-        });
+        });*/
     }
 
+/*
     // for navigation menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -113,35 +140,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if(id == R.id.createGame_tab)
-        {
-            Intent create_game_intent = new Intent(MainActivity.this , CreateGameActivity.class);
-            startActivity(create_game_intent);
-            return false;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /*
-    // for navigation menu
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(mToggle.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
     }
-    // switches to game creation screen
-    private void configureCreateGameButton()
-    {
-        Button create_game_button = findViewById(R.id.createGame_tab);
-        create_game_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                startActivity(new Intent(MainActivity.this , CreateGameActivity.class));
-            }
-        });
-    }*/
+
+*/
 }

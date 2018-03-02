@@ -67,5 +67,13 @@
         android:layout_margin="100dp"
         android:text="Cancel" />
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
 
 </LinearLayout>

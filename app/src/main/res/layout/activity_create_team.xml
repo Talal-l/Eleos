@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="center_horizontal"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.c50x.eleos.activities.CreateTeamActivity">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="87dp">
+
+        <EditText
+            android:id="@+id/team_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Team Name"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <EditText
+            android:id="@+id/player1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Player Names"
+            android:singleLine="true"
+            android:inputType="textMultiLine"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <EditText
+            android:id="@+id/player2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Player 2 Name"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <EditText
+            android:id="@+id/player3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Player 3 Name"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <EditText
+            android:id="@+id/player4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Player 4 Name"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <EditText
+            android:id="@+id/player5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Player 5 Name"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <EditText
+            android:id="@+id/player6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Player 6 Name"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout> -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/button_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorButtons"
+            android:layout_weight="1"
+            android:text="Confirm" />
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorButtons"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+    </LinearLayout>
+
+</LinearLayout>
