@@ -12,6 +12,7 @@ public abstract class AppDatabase extends RoomDatabase{
     private static AppDatabase INSTANCE;
     public abstract UserDao userDao();
     public abstract GameDao gameDao();
+    public abstract TeamDao teamDao();
 
     public static AppDatabase getDatabaseInstance(Context context) { // Create a database if it doesn't exist
         if (INSTANCE == null) {
