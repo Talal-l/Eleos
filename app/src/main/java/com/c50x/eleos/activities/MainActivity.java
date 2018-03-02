@@ -3,10 +3,12 @@ package com.c50x.eleos.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.sax.StartElementListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -83,12 +85,44 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        configureNextButton();
+            //configureCreateGameButton();
+        }
+        Button create_game_button = findViewById(R.id.createGame_tab);
+        create_game_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(MainActivity.this , CreateGameActivity.class));
+            }
+        });
     }
 
+    // for navigation menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.navigation_menu , menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        if(id == R.id.createGame_tab)
+        {
+            Intent create_game_intent = new Intent(MainActivity.this , CreateGameActivity.class);
+            startActivity(create_game_intent);
+            return false;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /*
     // for navigation menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -99,9 +133,9 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
     // switches to game creation screen
-    private void configureNextButton()
+    private void configureCreateGameButton()
     {
-        Button create_game_button = (Button) findViewById(R.id.createGame_tab);
+        Button create_game_button = findViewById(R.id.createGame_tab);
         create_game_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -109,5 +143,5 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this , CreateGameActivity.class));
             }
         });
-    }
+    }*/
 }
