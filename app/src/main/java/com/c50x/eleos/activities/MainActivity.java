@@ -64,8 +64,7 @@ public class MainActivity extends AppCompatActivity
                     currentUser = db.userDao().loadUserWithEmail(email)[0];
                     Log.w("email for user: ", currentUser.getEmail());
                 }
-            }
-            else {
+            } else {
                 handle = getIntent().getStringExtra("handle");
                 Log.w("Handle222: ", handle);
                 if (db.userDao().loadUserWithHandle(handle).length > 0) {
@@ -75,7 +74,8 @@ public class MainActivity extends AppCompatActivity
             }
 
             l = db.userDao().loadAllUsers();
-            for (int i = 0; i < l.length; i++){
+            for (int i = 0; i < l.length; i++)
+            {
                 Log.w("handle: ", l[i].getHandle());
                 Log.w("email: ", l[i].getEmail());
             }
@@ -97,53 +97,27 @@ public class MainActivity extends AppCompatActivity
 
         handleView = findViewById(R.id.activity_main_user_handle_textView);
 
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
-
-        setContentView(com.c50x.eleos.R.layout.activity_registration);
-
-
-    }
-/*
         // for navigation menu
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open , R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
-        if (getSupportActionBar() != null) {
+        if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            //configureCreateGameButton();
-        }
-        Button create_game_button = (Button)findViewById(R.id.createGame_tab);
-        create_game_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                startActivity(new Intent(MainActivity.this , CreateGameActivity.class));
-            }
-        });*/
     }
 
-/*
-    // for navigation menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.navigation_menu , menu);
-        return true;
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        int id = item.getItemId();
-
-        if(id == R.id.createGame_tab)
+        if(mToggle.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
     }
-
-*/
 }
+
+
+
