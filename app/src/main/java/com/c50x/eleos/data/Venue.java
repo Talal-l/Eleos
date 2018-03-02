@@ -1,14 +1,18 @@
 package com.c50x.eleos.data;
 
-/**
- * Created by ugin on 2/16/18.
- */
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
+@Entity
 public class Venue {
-    private String venueName;
+    @NonNull
+    @PrimaryKey
     private String venueAddress;
+
+    private String venueName;
     private String venueType;
-    private User venueManager;
+    private String venueManager;
     private int openingTime;
     private int closingTime;
     private int numOfGrounds;
@@ -39,11 +43,11 @@ public class Venue {
         this.venueType = venueType;
     }
 
-    public User getVenueManager() {
+    public String getVenueManager() {
         return venueManager;
     }
 
-    public void setVenueManager(User venueManager) {
+    public void setVenueManager(String venueManager) {
         this.venueManager = venueManager;
     }
 

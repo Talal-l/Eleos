@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.RegisterTask;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
 
@@ -29,21 +30,7 @@ public class RegistrationActivity extends AppCompatActivity  {
     private EditText confirm_password;
     private Button   confirmButton;
     private Button   cancelButton;
-    private AppDatabase db;
     private User newUser;
-
-
-
-    // Create an AsyncTask class so the database operations can be done in the background
-    private class DatabaseAsync extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            // Add the user to the database
-            db.userDao().addUser(newUser);
-            return null;
-        }
-    }
 
 
     @Override
@@ -57,16 +44,16 @@ public class RegistrationActivity extends AppCompatActivity  {
 
         //Assignment statements for fields and buttons
 
-        name = (EditText) findViewById(R.id.name);
-        handle = (EditText) findViewById(R.id.handle);
-        email = (EditText) findViewById(R.id.email);
-        password = (EditText) findViewById(R.id.password);
-        confirm_password = (EditText) findViewById(R.id.confirm_password);
+        name = findViewById(R.id.name);
+        handle = findViewById(R.id.handle);
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
+        confirm_password = findViewById(R.id.confirm_password);
         // TODO: Take input from spinners
         // TODO: Take date of birth
 
-        confirmButton = (Button) findViewById(R.id.button_confirm);
-        cancelButton = (Button) findViewById(R.id.button_cancel);
+        confirmButton = findViewById(R.id.button_confirm);
+        cancelButton = findViewById(R.id.button_cancel);
 
 
 
@@ -110,25 +97,17 @@ public class RegistrationActivity extends AppCompatActivity  {
                     newUser.setPassword(password.getText().toString());
 
 
-                    // Get the database instance
-                    db = AppDatabase.getDatabaseInstance(getApplicationContext());
 
                     // Start the Async process that will save into the database
-                    new DatabaseAsync().execute();
-
-                    Log.e("handle: ", newUser.getHandle());
-
-                    // Go to main screen
-                    Intent intent = new Intent(view.getContext(), MainActivity.class);
-                    intent.putExtra("from","registration");
-                    intent.putExtra("handle",newUser.getHandle());
-                    startActivity(intent);
+                    RegisterTask registerTask = new RegisterTask(getApplicationContext(),
+                            RegistrationActivity.this);
+                    registerTask.execute(newUser);
                 }
             }
         });
 
 
-        //Cancel button takes you back to Login Page
+        // Cancel button takes you back to Login Page
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
 
@@ -141,7 +120,7 @@ public class RegistrationActivity extends AppCompatActivity  {
     }
 
 
-    //Methods for checking whether the format for the inputs are valid
+    // Methods for checking whether the format for the inputs are valid
 
     public boolean nameIsValid(String name) {
 

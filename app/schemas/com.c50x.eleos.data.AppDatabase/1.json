@@ -1,0 +1,290 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "7775b4e3956f1df0bba5b054e5b31c49",
+    "entities": [
+      {
+        "tableName": "User",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`handle` TEXT NOT NULL, `name` TEXT, `email` TEXT, `password` TEXT, `dateOfBirth` INTEGER NOT NULL, `gender` TEXT, PRIMARY KEY(`handle`))",
+        "fields": [
+          {
+            "fieldPath": "handle",
+            "columnName": "handle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "password",
+            "columnName": "password",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateOfBirth",
+            "columnName": "dateOfBirth",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gender",
+            "columnName": "gender",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "handle"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Game",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` INTEGER NOT NULL, `team1Score` INTEGER NOT NULL, `team2Score` INTEGER NOT NULL, `duration` REAL NOT NULL, `startTime` TEXT, `startDate` TEXT, `ratting` INTEGER NOT NULL, `sport` TEXT, `venueAddress` TEXT, `team1` TEXT, `team2` TEXT, PRIMARY KEY(`gameId`), FOREIGN KEY(`team1`) REFERENCES `Team`(`teamName`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`team2`) REFERENCES `Team`(`teamName`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`venueAddress`) REFERENCES `Venue`(`venueAddress`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "gameId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "team1Score",
+            "columnName": "team1Score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "team2Score",
+            "columnName": "team2Score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startTime",
+            "columnName": "startTime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "startDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ratting",
+            "columnName": "ratting",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sport",
+            "columnName": "sport",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "venueAddress",
+            "columnName": "venueAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "team1",
+            "columnName": "team1",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "team2",
+            "columnName": "team2",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "gameId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Game_team1",
+            "unique": false,
+            "columnNames": [
+              "team1"
+            ],
+            "createSql": "CREATE  INDEX `index_Game_team1` ON `${TABLE_NAME}` (`team1`)"
+          },
+          {
+            "name": "index_Game_team2",
+            "unique": false,
+            "columnNames": [
+              "team2"
+            ],
+            "createSql": "CREATE  INDEX `index_Game_team2` ON `${TABLE_NAME}` (`team2`)"
+          },
+          {
+            "name": "index_Game_venueAddress",
+            "unique": false,
+            "columnNames": [
+              "venueAddress"
+            ],
+            "createSql": "CREATE  INDEX `index_Game_venueAddress` ON `${TABLE_NAME}` (`venueAddress`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Team",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "team1"
+            ],
+            "referencedColumns": [
+              "teamName"
+            ]
+          },
+          {
+            "table": "Team",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "team2"
+            ],
+            "referencedColumns": [
+              "teamName"
+            ]
+          },
+          {
+            "table": "Venue",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "venueAddress"
+            ],
+            "referencedColumns": [
+              "venueAddress"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Team",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`teamName` TEXT NOT NULL, `sport` TEXT, `teamAdmin` TEXT, PRIMARY KEY(`teamName`))",
+        "fields": [
+          {
+            "fieldPath": "teamName",
+            "columnName": "teamName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sport",
+            "columnName": "sport",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "teamAdmin",
+            "columnName": "teamAdmin",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "teamName"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Venue",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`venueAddress` TEXT NOT NULL, `venueName` TEXT, `venueType` TEXT, `venueManager` TEXT, `openingTime` INTEGER NOT NULL, `closingTime` INTEGER NOT NULL, `numOfGrounds` INTEGER NOT NULL, PRIMARY KEY(`venueAddress`))",
+        "fields": [
+          {
+            "fieldPath": "venueAddress",
+            "columnName": "venueAddress",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "venueName",
+            "columnName": "venueName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "venueType",
+            "columnName": "venueType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "venueManager",
+            "columnName": "venueManager",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "openingTime",
+            "columnName": "openingTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "closingTime",
+            "columnName": "closingTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numOfGrounds",
+            "columnName": "numOfGrounds",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "venueAddress"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7775b4e3956f1df0bba5b054e5b31c49\")"
+    ]
+  }
+}

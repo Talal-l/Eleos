@@ -1,10 +1,36 @@
 package com.c50x.eleos.data;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity
+@Entity(foreignKeys = {
+        @ForeignKey(entity = Team.class,
+                parentColumns = "teamName",
+                childColumns = "team1",
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE
+        ),
+        @ForeignKey(entity = Team.class,
+                parentColumns = "teamName",
+                childColumns =  "team2",
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE
+
+        ),
+        @ForeignKey(entity = Venue.class,
+                parentColumns = "venueAddress",
+                childColumns =  "venueAddress",
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE
+
+        )
+    }, indices = {@Index(value = "team1"), @Index(value = "team2"), @Index(value = "venueAddress")}
+)
+
 public class Game {
 
     @PrimaryKey
@@ -21,6 +47,7 @@ public class Game {
 
     // Foreign keys
     private String venueAddress;
+
     private String team1;
     private String team2;
 
