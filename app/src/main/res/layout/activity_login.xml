@@ -73,5 +73,14 @@
         android:textStyle="bold" />
 
 
+    <Button
+        android:id="@+id/PlayerSearch_button"
+        style="@android:style/Widget.Button"
+        android:layout_width="263dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorButtons"
+        android:text="Player Search"
+        android:textStyle="bold" />
 
 </LinearLayout>

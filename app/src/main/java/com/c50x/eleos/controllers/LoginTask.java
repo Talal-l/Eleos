@@ -32,6 +32,7 @@ public class LoginTask {
 
             // TODO: Check with remote server instead of local
 
+
             // Check if the user email and password match with the database
             userList = db.userDao().authUsingEmail(userEmail, userPassword);
             if (userList.length == 1)
@@ -66,5 +67,8 @@ public class LoginTask {
         new AuthUsingEmail().execute(email,password);
     }
 
+    public void networkAuthUsingEmail(){
+
+    }
 
 }

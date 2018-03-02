@@ -82,6 +82,19 @@ public class LoginActivity extends AppCompatActivity
             }
         });
 
+        Button playersearchbutton = findViewById(R.id.PlayerSearch_button);
+
+        playersearchbutton.setOnClickListener(new View.OnClickListener() // handles sign in button click
+        {
+            @Override
+            public void onClick(View view) // checks if user input was correct by verifying email and password
+            {
+                Intent intent = new Intent(view.getContext(), PlayerSearchActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
 
         register_button.setOnClickListener(new View.OnClickListener() // handles register button click
         {
