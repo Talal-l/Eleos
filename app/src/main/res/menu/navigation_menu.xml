@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/createGame_tab"
-        android:title="Create game"
-    />
-
-    <item android:id="@+id/createTeam_tab"
-        android:title="Create team"
-        />
-
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_menu_teamCreation"
+            android:icon="@drawable/ic_media_play_light"
+            android:title="Team Creation" />
+        <item
+            android:id="@+id/nav_menu_gameCreation"
+            android:title="Game Creation" />
+    </group>
 </menu>

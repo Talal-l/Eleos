@@ -10,9 +10,12 @@ import com.c50x.eleos.data.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -27,60 +30,48 @@ public class UserTask {
         db = AppDatabase.getDatabaseInstance(appContext);
     }
 
-    private class LoadAllUsers extends AsyncTask<String,String,JSONObject> {
+    private class LoadAllUsers extends AsyncTask<String,String,String> {
 
         @Override
-        protected JSONObject doInBackground(String ... par) {
+        protected String doInBackground(String ... par) {
+            HttpURLConnection urlConnection;
+            try{
+
+                URL url = new URL("http://192.168.1.101/printAll.php");;;;
+                urlConnection = (HttpURLConnection) url.openConnection();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                StringBuilder sb = new StringBuilder();
 
 
-            String str="http://192.168.43.171:8888/android_connect/get_all_players.php";
-            URLConnection urlConn = null;
-            BufferedReader bufferedReader = null;
-            try
-            {
+                // Read the stream into a string
 
-                URL url = new URL(str);
-                urlConn = url.openConnection();
-                bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
-
-                StringBuffer stringBuffer = new StringBuffer();
                 String line;
-                while ((line = bufferedReader.readLine()) != null)
-                {
-                    stringBuffer.append(line);
+                while ((line = br.readLine()) != null){
+                    sb.append(line+"\n");
                 }
-                return new JSONObject(stringBuffer.toString());
+                br.close();
+                return sb.toString();
 
 
             }
-            catch(Exception ex)
-            {
+            catch(Exception ex) {
                 Log.e("App", "yourDataTask", ex);
                 return null;
             }
-            finally
-            {
-                if(bufferedReader != null)
-                {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+            finally{
             }
         }
 
 
-
         @Override
-        protected void onPostExecute(JSONObject response)
+        protected void onPostExecute(String response)
         {
             if(response != null)
             {
                 try {
-                    Log.e("App", "Success: " + response.getString("yourJsonElement") );
-                } catch (JSONException ex) {
+                    Log.e("App", "Success: " + response);
+                } catch (Exception ex) {
                     Log.e("App", "Failure", ex);
                 }
             }

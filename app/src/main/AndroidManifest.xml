@@ -43,6 +43,11 @@
             android:label="Eleos">
         </activity>
 
+        <activity
+            android:name=".activities.CreateTeamActivity"
+            android:label="Eleos">
+        </activity>
+
     </application>
 
 </manifest>

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.sax.StartElementListener;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -107,11 +109,45 @@ public class MainActivity extends AppCompatActivity
        // fragmentTransaction = getSupportFragmentManager().beginTransaction();
         mToggle.syncState();
 
+
+        // switch to selected activity when selected from menu
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                        // create intent to use to switch to other activities
+                        Intent intent;
+                        // set item as selected to persist highlight
+                        item.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+                        switch (item.getItemId()){
+                            case R.id.nav_menu_gameCreation:
+                                intent = new Intent(MainActivity.this, CreateGameActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.nav_menu_teamCreation:
+                                intent = new Intent(MainActivity.this, CreateTeamActivity.class);
+                                startActivity(intent);
+                                break;
+                        }
+
+                        return false;
+                    }
+                }
+        );
+
+
+
+
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
-    // for navigation menu
+    // for navigation menu button
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
