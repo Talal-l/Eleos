@@ -36,18 +36,22 @@ public class AsyncGet extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... par) {
         String url = par[0];
-        String queryKey = par[1];
-        String queryValue = par[2];
+        if (par.length > 1) {
+            String queryKey = par[1];
+            String queryValue = par[2];
+
+            HttpUrl.Builder completeUrl = HttpUrl.parse(url).newBuilder();
+            completeUrl.addQueryParameter(queryKey,queryValue);
+
+            url = completeUrl.toString();
+
+        }
 
         // send get request
         String response;
         try {
 
-            HttpUrl.Builder completeUrl = HttpUrl.parse(url).newBuilder();
-            completeUrl.addQueryParameter(queryKey,queryValue);
-
-
-            response = getRequest(completeUrl.toString());
+            response = getRequest(url);
         } catch (Exception e) {
             // TODO: Send json string with error
             response = "connection broken";

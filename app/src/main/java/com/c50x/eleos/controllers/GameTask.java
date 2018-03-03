@@ -2,56 +2,74 @@ package com.c50x.eleos.controllers;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
+import android.util.Log;
 
-import com.c50x.eleos.data.AppDatabase;
+import com.c50x.eleos.R;
 import com.c50x.eleos.data.Game;
-import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.Game;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-public class GameTask{
-    private AppDatabase db;
-    private Context context;
-    private Team gameList[];
+import java.util.AbstractMap;
+import java.util.Map;
+
+public class GameTask {
+    private Game gameList[];
+    private String urlBase;
+    private Gson gson;
+    private AsyncResponse activityContext;
 
 
-    public GameTask(Context appContext, Context activityContext){
-        this.context = activityContext;
-        db = AppDatabase.getDatabaseInstance(appContext);
+    public GameTask(Context activityContext) {
+        // load the server address from string.xml
+        gson = new Gson();
+        this.activityContext = (AsyncResponse)activityContext;
+        urlBase = activityContext.getString(R.string.server_address);
+
     }
 
-    private class addTeam extends AsyncTask<Game,Void,Long> {
 
-        @Override
-        protected Long doInBackground(Game... par) {
+    // add game to remote database
+    public void addGame(Game gameToAdd) {
 
-            Game gameToAdd= par[0];
+        String script = "/addGame.php";
+
+        // convert into a JSON object
+        String json = gson.toJson(gameToAdd);
+        Log.i("GameTask_addGame", "json to be sent: " + json);
+
+        // construct the url
+        String url = urlBase + script;
+        Log.i("GameTask_addGame", "using server address: " + urlBase);
+        Log.i("GameTask_addGame", "url: " + url);
 
 
-            // Check if the user email and password match with the database
-            Long state;
 
-            // TODO: What is the return on abort?
-            state = db.gameDao().addGame(gameToAdd);
-
-        return state;
+        new AsyncPost(activityContext).execute(url,json);
     }
 
-        protected void onPostExecute(Long rowNum){
+    // TODO: Load games based on parameters
+     public void loadGames (){
 
-            if (rowNum >= 0) { // TODO: Check if this is correct
-                Toast.makeText(context, "Team created successfully !", Toast.LENGTH_LONG).show(); // prints on the screen that log in was successful
+        String script = "/loadGames.php";
+        String key = "gameName";
 
-            }
-            else {
-                // TODO: Show error that the game conflict with another
-                // load view from activity context and display message
-            }
-        }
-    }
+        String url = urlBase + script;
+        Log.i("GameTask_loadGame", "using server address: " + urlBase);
+        Log.i("GameTask_loadGame", "url: " + url);
 
-    public void addGame(Game game){
 
-        new addTeam().execute(game);
+        new AsyncGet(activityContext).execute(url);
 
+     }
+
+
+     // json to Game objects
+    public Game[] toObjects(String json){
+
+        Log.i("GameTasks_toObjects", "json to convert: " + json);
+        Game[] gameList = gson.fromJson(json,Game[].class);
+
+         return gameList;
     }
 }
