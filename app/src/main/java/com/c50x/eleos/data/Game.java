@@ -44,6 +44,7 @@ public class Game {
     private String startDate;
     private int ratting;
     private String sport;
+    private String gameAdmin;
 
     // Foreign keys
     private String venueAddress;
@@ -139,5 +140,13 @@ public class Game {
 
     public void setTeam2(String team2) {
         this.team2 = team2;
+    }
+
+    public String getGameAdmin() {
+        return gameAdmin;
+    }
+
+    public void setGameAdmin(String gameAdmin) {
+        this.gameAdmin = gameAdmin;
     }
 }
