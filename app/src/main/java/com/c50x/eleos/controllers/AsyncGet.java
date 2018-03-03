@@ -1,6 +1,7 @@
 package com.c50x.eleos.controllers;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -25,6 +26,7 @@ public class AsyncGet extends AsyncTask<String,Void,String> {
 
     private String getRequest(String url) throws IOException {
 
+        Log.i("AsyncGet","url: " + url );
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
@@ -41,8 +43,9 @@ public class AsyncGet extends AsyncTask<String,Void,String> {
         String response;
         try {
 
-            HttpUrl completeUrl = new HttpUrl.Builder().host(url).
-                    addQueryParameter(queryKey,queryValue).build();
+            HttpUrl.Builder completeUrl = HttpUrl.parse(url).newBuilder();
+            completeUrl.addQueryParameter(queryKey,queryValue);
+
 
             response = getRequest(completeUrl.toString());
         } catch (Exception e) {

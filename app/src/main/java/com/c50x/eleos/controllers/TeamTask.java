@@ -28,7 +28,6 @@ public class TeamTask {
     }
 
 
-
     // add team to remote database
     public void addTeam(Team teamToAdd) {
 
@@ -50,7 +49,24 @@ public class TeamTask {
 
      public void loadTeam (String teamName){
 
+        String script = "/loadTeam.php";
+        String key = "teamName";
+
+        String url = urlBase + script;
+        Log.i("TeamTask_loadTeam", "using server address: " + urlBase);
+        Log.i("TeamTask_loadTeam", "url: " + url);
+
+
+        new AsyncGet(activityContext).execute(url,key, teamName);
+
      }
+
+
+     // json to Team object
+    public Team getTeamObject(String json){
+
+         return gson.fromJson(json,Team.class);
+    }
 
 
 
