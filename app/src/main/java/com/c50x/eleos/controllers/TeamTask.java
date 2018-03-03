@@ -1,8 +1,10 @@
 package com.c50x.eleos.controllers;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.c50x.eleos.R;
 import com.c50x.eleos.data.Team;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,11 +16,15 @@ public class TeamTask {
     private Team teamList[];
     private String urlBase;
     private Gson gson;
+    private AsyncResponse activityContext;
 
 
-    public TeamTask() {
+    public TeamTask(Context activityContext) {
         // load the server address from string.xml
         gson = new Gson();
+        this.activityContext = (AsyncResponse)activityContext;
+        urlBase = activityContext.getString(R.string.server_address);
+
     }
 
 
@@ -37,7 +43,9 @@ public class TeamTask {
         Log.i("TeamTask_addTeam", "using server address: " + urlBase);
         Log.i("TeamTask_addTeam", "url: " + url);
 
-        new AsyncPost().execute(url,json);
+
+
+        new AsyncPost(activityContext).execute(url,json);
     }
 
      public void loadTeam (String teamName){
