@@ -26,6 +26,32 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
+        android:layout_height="87dp">
+
+        <EditText
+            android:id="@+id/team_sport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Team Sport"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="87dp">
+
+        <EditText
+            android:id="@+id/team_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Team Admin"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="60dp">
 
         <EditText
