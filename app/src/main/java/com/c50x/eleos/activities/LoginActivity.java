@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
             {
                 userEmail = emailView.getText().toString();
                 userPassword = passwordView.getText().toString();
-                Log.w("eamil: ", userEmail);
 
                 if (!validateEmail(userEmail)) // if not a valid email address
                 {
@@ -72,8 +71,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
                     // Check if user has an account (in database)
 
                     // pass the activityContext so we can change UI elements from LoginTask
+                    Log.i("LoginActivity_signIn","email: " + userEmail + " password: " + userPassword);
                     LoginTask login = new LoginTask(LoginActivity.this);
-                    login.authUsingEmail(userEmail,userPassword);
+                    //login.authUsingEmail(userEmail,userPassword);
+
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    startActivity(intent);
                 }
             }
         });

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "89e6366ef36b1fb8273a8cdecd3a7126",
+    "identityHash": "afb641a6f185f88d1edf714aae20e81b",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`handle` TEXT NOT NULL, `name` TEXT, `email` TEXT, `password` TEXT, `dateOfBirth` INTEGER NOT NULL, `gender` TEXT, PRIMARY KEY(`handle`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`handle` TEXT NOT NULL, `name` TEXT, `email` TEXT, `password` TEXT, `dateOfBirth` TEXT, `gender` TEXT, `token` TEXT, PRIMARY KEY(`handle`))",
         "fields": [
           {
             "fieldPath": "handle",
@@ -35,12 +35,18 @@
           {
             "fieldPath": "dateOfBirth",
             "columnName": "dateOfBirth",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "gender",
             "columnName": "gender",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "token",
+            "columnName": "token",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -290,7 +296,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"89e6366ef36b1fb8273a8cdecd3a7126\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"afb641a6f185f88d1edf714aae20e81b\")"
     ]
   }
 }

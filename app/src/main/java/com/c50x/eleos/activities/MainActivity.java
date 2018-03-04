@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
         currentUser = new User();
 
         db = AppDatabase.getDatabaseInstance(getApplicationContext());
-        new DatabaseAsync().execute();
+        //new DatabaseAsync().execute();
 
         handleView = findViewById(R.id.activity_main_user_handle_textView);
 

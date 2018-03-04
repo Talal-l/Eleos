@@ -14,7 +14,7 @@ public class LoginTask {
     private String urlBase;
 
 
-    public static Auth currentAuthUser;
+    public static User currentAuthUser = new User();
 
     private class LoginInfo{
        String email;
@@ -22,7 +22,6 @@ public class LoginTask {
     }
 
     public LoginTask(Context activityContext){
-       currentAuthUser = new Auth();
        gson = new Gson();
         urlBase = activityContext.getString(R.string.server_address);
         this.activityContext = (AsyncResponse)activityContext;
@@ -35,12 +34,15 @@ public class LoginTask {
 
         String script = "/authUsingEmail.php";
         String url = urlBase + script;
+        Log.i("LoginTask_authEmail","url: " + url);
 
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.email = email;
         loginInfo.password = password;
 
         String json = gson.toJson(loginInfo,LoginInfo.class);
+
+        Log.i("LoginTask_authEmail","jsonToSend: " + json);
 
         new AsyncPost(activityContext).execute(url,json);
 
@@ -51,7 +53,7 @@ public class LoginTask {
     public void setToken(String json){
         // json is an auth class
         Log.i("LoginTask_setToken","json: " + json);
-        currentAuthUser = gson.fromJson(json,Auth.class);
+        currentAuthUser = gson.fromJson(json,User.class);
         Log.i("LoginTask_setToken", "token: " + currentAuthUser.getToken());
     }
 

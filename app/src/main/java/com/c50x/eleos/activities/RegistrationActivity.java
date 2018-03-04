@@ -99,9 +99,15 @@ public class RegistrationActivity extends AppCompatActivity  {
 
 
                     // Start the Async process that will save into the database
-                    RegisterTask registerTask = new RegisterTask(getApplicationContext(),
-                            RegistrationActivity.this);
-                    registerTask.execute(newUser);
+                    //RegisterTask registerTask = new RegisterTask(getApplicationContext(),
+                     //       RegistrationActivity.this);
+                    //registerTask.execute(newUser);
+
+            // Go to main screen
+
+            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+            startActivity(intent);
+
                 }
             }
         });

@@ -17,11 +17,13 @@ public class User {
     private String name;
     private String email;
     private String password; // TODO: A better way to store passwords
-    private int dateOfBirth;
+    private String dateOfBirth;
     private String gender;
+    private String token;
 
     public User() {
     }
+
 
     public String getHandle() {
         return handle;
@@ -39,11 +41,11 @@ public class User {
         this.name = name;
     }
 
-    public int getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(int dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -69,5 +71,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
