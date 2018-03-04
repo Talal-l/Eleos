@@ -1,7 +1,6 @@
 package com.c50x.eleos.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,12 +9,10 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
-import com.c50x.eleos.data.AppDatabase;
-import com.c50x.eleos.data.User;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +20,7 @@ import java.util.regex.Pattern;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity
+public class LoginActivity extends AppCompatActivity implements AsyncResponse
 {
     // UI references.
     private AutoCompleteTextView emailView;
@@ -74,10 +71,8 @@ public class LoginActivity extends AppCompatActivity
                     // Check if user has an account (in database)
 
                     // pass the activityContext so we can change UI elements from LoginTask
-                    LoginTask login = new LoginTask(getApplicationContext(),LoginActivity.this);
+                    LoginTask login = new LoginTask(LoginActivity.this);
                     login.authUsingEmail(userEmail,userPassword);
-
-
                 }
             }
         });
@@ -134,6 +129,21 @@ public class LoginActivity extends AppCompatActivity
             return true;
         else // if he did not
             return false;
+    }
+
+    @Override
+    public void taskFinished(String output) {
+        // handle login
+
+        // output should include user info and token that can be used to retrieve data from server
+
+
+
+
+
+
+
+
     }
 }
 
