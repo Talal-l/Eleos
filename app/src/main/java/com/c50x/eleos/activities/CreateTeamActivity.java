@@ -14,8 +14,8 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
 
-public class CreateTeamActivity extends AppCompatActivity implements AsyncResponse
-{
+public class CreateTeamActivity extends AppCompatActivity implements AsyncResponse {
+
     private Team newTeam;
     private Button confirmButton;
     private Button cancelButton;
@@ -27,6 +27,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+
         super.onCreate(savedInstanceState);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
