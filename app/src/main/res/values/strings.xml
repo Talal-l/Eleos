@@ -47,4 +47,14 @@
     <string name="server_address">http://192.168.1.101</string>
 
 
+    <!-- Dummy Data for Player Search -->
+    <string-array name="dummy1">
+        <item>Ahmad</item>
+        <item>Talal</item>
+        <item>Loha</item>
+        <item>Naib</item>
+        <item>Maito</item>
+    </string-array>
+
+
 </resources>
