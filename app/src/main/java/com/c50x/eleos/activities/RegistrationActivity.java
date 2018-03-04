@@ -86,7 +86,8 @@ public class RegistrationActivity extends AppCompatActivity  {
                     confirm_password.setError("Passwords do not match");
                 }
                 // All inputs are valid
-                else {
+                else
+                    {
 
                     // Save user info in a User object so it can be saved in database
 
@@ -105,8 +106,8 @@ public class RegistrationActivity extends AppCompatActivity  {
 
             // Go to main screen
 
-            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-            startActivity(intent);
+                     Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                     startActivity(intent);
 
                 }
             }

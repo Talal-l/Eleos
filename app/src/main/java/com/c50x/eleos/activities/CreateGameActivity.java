@@ -25,6 +25,7 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
 public class CreateGameActivity extends AppCompatActivity
@@ -47,6 +48,11 @@ public class CreateGameActivity extends AppCompatActivity
 
         date = (TextView) findViewById(R.id.game_date_input);
         time = (Button) findViewById(R.id.game_time_input);
+        game_name = (EditText) findViewById(R.id.game_name_input);
+        game_type = (EditText) findViewById(R.id.game_type_input);
+        number_of_players = (EditText) findViewById(R.id.number_of_players_input);
+        location = (EditText) findViewById(R.id.location_input);
+
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -122,13 +128,28 @@ public class CreateGameActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(v.getContext(),MainActivity.class);
-                startActivity(intent);
+                if( !(gameNameIsValid(game_name.getText().toString())) )
+                    game_name.setError("Empty or Incorrect Length (Between 4 and 20 characters)");
+
+                else if( !(gameTypeIaVslid(game_type.getText().toString())) )
+                    game_type.setError("Empty or did not enter 'Football'");
+
+                else if( !(numberOfPlayersIsValid(number_of_players.getText().toString())) )
+                    number_of_players.setError("Empty or players not between 11 - 15");
+
+                else if( !(locationIsValid(location.getText().toString())) )
+                    location.setError("Empty field");
+
+                else
+                {
+                    Intent intent = new Intent(v.getContext(),MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
 
-    public boolean gameNameIaValid(String gn)
+    public boolean gameNameIsValid(String gn)
     {
         if(gn.isEmpty() || !(gn.length() >= 4 && gn.length() <= 20))
             return false;
@@ -136,16 +157,16 @@ public class CreateGameActivity extends AppCompatActivity
             else
                 return true;
     }
-    public boolean gameTypeIaValid(String gt)
+    public boolean gameTypeIaVslid(String gt)
     {
-        if(gt.isEmpty() || !(gt.equals("football")) || !(gt.equals("Football")) )
+        if(gt.isEmpty() )
             return false;
 
         else
             return true;
     }
 
-    public boolean numberOfPlayersIaValid(String np)
+    public boolean numberOfPlayersIsValid(String np)
     {
         if(np.isEmpty() || !(np.length() >= 11) && !(np.length() <= 15) )
             return false;
@@ -154,7 +175,12 @@ public class CreateGameActivity extends AppCompatActivity
             return true;
     }
 
+    public boolean locationIsValid(String np)
+    {
+        if(np.isEmpty())
+            return false;
 
-
-
+        else
+            return true;
+    }
 }

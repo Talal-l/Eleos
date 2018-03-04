@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity
 
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
     // for navigation menu button
     @Override
