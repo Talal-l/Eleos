@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
 import android.app.Activity;
@@ -100,6 +101,12 @@ public class MainActivity extends AppCompatActivity
         //new DatabaseAsync().execute();
 
         handleView = findViewById(R.id.activity_main_user_handle_textView);
+        // test load from shared preferences
+
+        SharedPreferences pref = this.getSharedPreferences("token_file",Context.MODE_PRIVATE);
+
+        String token = pref.getString("token","");
+        handleView.setText(token);
 
         // for navigation menu
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);

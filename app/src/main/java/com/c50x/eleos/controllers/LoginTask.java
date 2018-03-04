@@ -1,14 +1,18 @@
 package com.c50x.eleos.controllers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.data.User;
 import com.google.gson.Gson;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class LoginTask {
     private  AsyncResponse activityContext;
+    private Context context;
     private User userList[];
     private Gson gson;
     private String urlBase;
@@ -23,6 +27,7 @@ public class LoginTask {
 
     public LoginTask(Context activityContext){
        gson = new Gson();
+       context = activityContext;
         urlBase = activityContext.getString(R.string.server_address);
         this.activityContext = (AsyncResponse)activityContext;
     }
@@ -55,6 +60,14 @@ public class LoginTask {
         Log.i("LoginTask_setToken","json: " + json);
         currentAuthUser = gson.fromJson(json,User.class);
         Log.i("LoginTask_setToken", "token: " + currentAuthUser.getToken());
+
+        // Save new token in shared preferences
+        SharedPreferences pref = context.getSharedPreferences("token_file",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("token",currentAuthUser.getToken());
+        editor.commit();
+
+
     }
 
 
