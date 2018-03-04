@@ -64,19 +64,21 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        currentUser = new User();
 
         // Load token from shared preferences
         SharedPreferences pref = this.getSharedPreferences("token_file",Context.MODE_PRIVATE);
-        String token = pref.getString("token","");
+        String token = pref.getString("token","null");
         // check if token exist
-        if (token.isEmpty()){ // user not logged in
+        if (token.contains("null")){ // user not logged in
+            Log.i("mainActivity","savedT: " + token);
             // go to login activity
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            finish();
             startActivity(intent);
+            Log.i("mainActivity","BYE: " + token);
         }
 
+        else{
         // needed to access the auth methods
         loginTask = new LoginTask(this);
 
@@ -124,6 +126,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
                                 intent = new Intent(MainActivity.this, CreateTeamActivity.class);
                                 startActivity(intent);
                                 break;
+                            case R.id.nav_menu_logout:
+                                loginTask.clearToken();
+                                intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
                         }
 
                         return false;
@@ -139,7 +145,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
 
     }
     // for navigation menu button
-    @Override
+
+
+
+
+
+        }
+
+   @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         if(mToggle.onOptionsItemSelected(item))
@@ -152,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
     public void taskFinished(String output) {
         // Info associated with token is ready
         Log.i("mainActivity_taskF", "output: " + output);
-        if (!output.contains("null")) { // user is valid
+        if (!output.contains("null") || !output.contains("false")) { // user is valid
             loginTask.setToken(output);
         }
 

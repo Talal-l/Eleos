@@ -80,8 +80,16 @@ public class LoginTask {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("token",currentAuthUser.getToken());
         editor.commit();
+
     }
 
+    public void clearToken(){
+        currentAuthUser = null;
+        SharedPreferences pref = context.getSharedPreferences("token_file",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("token","");
+        editor.commit();
+    }
 
 
 }
