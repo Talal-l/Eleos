@@ -68,17 +68,22 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
         // Load token from shared preferences
         SharedPreferences pref = this.getSharedPreferences("token_file",Context.MODE_PRIVATE);
         String token = pref.getString("token","null");
+        Log.i("mainActivity","savedT: " + token);
+
         // check if token exist
         if (token.contains("null")){ // user not logged in
-            Log.i("mainActivity","savedT: " + token);
             // go to login activity
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-            finish();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
             Log.i("mainActivity","BYE: " + token);
         }
 
         else{
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
+        setContentView(R.layout.activity_main);
+
         // needed to access the auth methods
         loginTask = new LoginTask(this);
 
@@ -165,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
     public void taskFinished(String output) {
         // Info associated with token is ready
         Log.i("mainActivity_taskF", "output: " + output);
-        if (!output.contains("null") || !output.contains("false")) { // user is valid
+        if (!output.contains("null")) { // user is valid
             loginTask.setToken(output);
         }
 

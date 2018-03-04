@@ -78,7 +78,9 @@ public class LoginTask {
         // Save new token in shared preferences
         SharedPreferences pref = context.getSharedPreferences("token_file",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("token",currentAuthUser.getToken());
+        if (currentAuthUser.getToken().isEmpty())
+            currentAuthUser.setToken("null");
+        editor.putString("token","null");
         editor.commit();
 
     }
@@ -87,7 +89,7 @@ public class LoginTask {
         currentAuthUser = null;
         SharedPreferences pref = context.getSharedPreferences("token_file",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("token","");
+        editor.putString("token","null");
         editor.commit();
     }
 
