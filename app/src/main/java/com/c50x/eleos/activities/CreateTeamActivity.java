@@ -77,7 +77,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
                 }*/
                 String s = players.getText().toString();
                 System.out.print(players.getText().toString());
-                Log.e(players.getText().toString(), "");
+                Log.i("multLine",players.getText().toString());
                 
 
 
