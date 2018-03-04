@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
@@ -41,7 +42,9 @@ import android.os.Build;
 import android.view.Gravity;
 import android.view.WindowManager;
 
-public class MainActivity extends AppCompatActivity
+import static com.c50x.eleos.activities.LoginActivity.EXPECTED_MIN_RESPONSE_LENGTH;
+
+public class MainActivity extends AppCompatActivity implements AsyncResponse
 {
     private Button logOutButton;
     private User currentUser;
@@ -54,41 +57,8 @@ public class MainActivity extends AppCompatActivity
     private User[] l;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+    private LoginTask loginTask;
     FragmentTransaction fragmentTransaction;
-
-    // Create an AsyncTask class so the database operations can be done in the background
-    private class DatabaseAsync extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            // Get user from database
-            String source = getIntent().getStringExtra("from");
-            if (source.equals("login")) {
-                email = getIntent().getStringExtra("email");
-                Log.w("Email is : ", email);
-                if (db.userDao().loadUserWithEmail(email).length > 0) {
-                    currentUser = db.userDao().loadUserWithEmail(email)[0];
-                    Log.w("email for user: ", currentUser.getEmail());
-                }
-            } else {
-                handle = getIntent().getStringExtra("handle");
-                Log.w("Handle222: ", handle);
-                if (db.userDao().loadUserWithHandle(handle).length > 0) {
-                    currentUser = db.userDao().loadUserWithHandle(handle)[0];
-                    Log.w("Handle: ", currentUser.getHandle());
-                }
-            }
-
-            l = db.userDao().loadAllUsers();
-            for (int i = 0; i < l.length; i++)
-            {
-                Log.w("handle: ", l[i].getHandle());
-                Log.w("email: ", l[i].getEmail());
-            }
-
-            handleView.append(currentUser.getHandle());
-            return null;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -97,15 +67,29 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         currentUser = new User();
 
-        db = AppDatabase.getDatabaseInstance(getApplicationContext());
-        //new DatabaseAsync().execute();
+        // Load token from shared preferences
+        SharedPreferences pref = this.getSharedPreferences("token_file",Context.MODE_PRIVATE);
+        String token = pref.getString("token","");
+        // check if token exist
+        if (token.isEmpty()){ // user not logged in
+            // go to login activity
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+        }
+
+        // needed to access the auth methods
+        loginTask = new LoginTask(this);
+
+        // set the global current user using token
+        loginTask.authUsingToken(token);
+
+
+
+
+
 
         handleView = findViewById(R.id.activity_main_user_handle_textView);
-        // test load from shared preferences
 
-        SharedPreferences pref = this.getSharedPreferences("token_file",Context.MODE_PRIVATE);
-
-        String token = pref.getString("token","");
         handleView.setText(token);
 
         // for navigation menu
@@ -162,6 +146,23 @@ public class MainActivity extends AppCompatActivity
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void taskFinished(String output) {
+        // Info associated with token is ready
+        Log.i("mainActivity_taskF", "output: " + output);
+        if (!output.contains("null")) { // user is valid
+            loginTask.setToken(output);
+        }
+
+
+        Log.i("mainActivity_taskF", "current user handle: " + LoginTask.currentAuthUser.getHandle());
+
+
+
+
+
     }
 }
 
