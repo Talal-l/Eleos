@@ -1,6 +1,7 @@
 package com.c50x.eleos.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.data.User;
@@ -47,8 +48,11 @@ public class LoginTask {
         // check if valid and set the token in this class using Token method
     }
 
-    public void setToken(String token, User user, Boolean in){
-        currentAuthUser.setAuth(token,user,in);
+    public void setToken(String json){
+        // json is an auth class
+        Log.i("LoginTask_setToken","json: " + json);
+        currentAuthUser = gson.fromJson(json,Auth.class);
+        Log.i("LoginTask_setToken", "token: " + currentAuthUser.getToken());
     }
 
 

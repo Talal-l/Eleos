@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
     private Button register_button;
     private String userEmail;
     private String userPassword;
+    private LoginTask loginTask;
 
 
 
@@ -134,6 +135,19 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
     @Override
     public void taskFinished(String output) {
         // handle login
+        loginTask = new LoginTask(this);
+        if (!output.equals("null")) { // user is valid
+            loginTask.setToken(output);
+        }
+        else {
+                // Auth failed
+                passwordView.setError("Incorrect email or password");
+                passwordView.requestFocus();
+
+        }
+
+
+
 
         // output should include user info and token that can be used to retrieve data from server
 
