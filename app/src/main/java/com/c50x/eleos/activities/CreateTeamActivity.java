@@ -22,6 +22,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
     private EditText teamSport;
     private EditText teamName;
     private EditText teamAdmin;
+    private EditText players;
 
 
 
@@ -43,6 +44,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         teamName = findViewById(R.id.team_name);
         teamSport = findViewById(R.id.team_sport);
         teamAdmin = findViewById(R.id.team_admin);
+        players = findViewById(R.id.players);
 
         confirmButton = findViewById(R.id.button_confirm);
         cancelButton = findViewById(R.id.button_cancel);
@@ -51,8 +53,34 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+
+                String[] playerList = new String[players.getLineCount()];
+
+                /*for(int i = 0; i < playerList.length; i++) {
+                    playerList[i] = players.g
+                }*/
+
+
+
+                /*players.setInputType(InputType.TYPE_CLASS_TEXT |
+                        InputType.TYPE_TEXT_FLAG_MULTI_LINE |
+                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                InputFilter[] fArray = new InputFilter[1];
+                fArray[0] = new InputFilter.LengthFilter(players.getLineCount());
+                players.setFilters(fArray);*/
+
+                /*for(int i = 0; i < playerList.length; i++) {
+                    System.out.println(players.);
+                }*/
+                String s = players.getText().toString();
+                System.out.print(players.getText().toString());
+                Log.e(players.getText().toString(), "");
+                
+
+
                 if (!teamAdminValid(teamName.getText().toString())) {
                     teamName.setError("Team name is INVALID!");
                 } else if (!teamSportValid(teamSport.getText().toString())) {

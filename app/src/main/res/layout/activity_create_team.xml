@@ -44,6 +44,10 @@
             android:hint="Player Names"
             android:singleLine="true" />
 
+        <RichEditText
+
+            />
+
     </LinearLayout>
 
 
