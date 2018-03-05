@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
     public void taskFinished(String output) {
         // handle login
         loginTask = new LoginTask(this);
-        if (output.length()> EXPECTED_MIN_RESPONSE_LENGTH) { // user is valid
+        if (!output.contains("null")) { // user is valid
             loginTask.setToken(output);
 
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
