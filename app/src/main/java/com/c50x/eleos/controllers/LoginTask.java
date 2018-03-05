@@ -70,28 +70,25 @@ public class LoginTask {
         // go to login activity for result
     }
 
+    // used with login and registration
     public void setToken(String json){
-        // json is an auth class
         Log.i("LoginTask_setToken","json: " + json);
         currentAuthUser = gson.fromJson(json,User.class);
 
         // Save new token in shared preferences
         SharedPreferences pref = context.getSharedPreferences("token_file",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        if (currentAuthUser.getToken().isEmpty())
-            currentAuthUser.setToken("null");
-        editor.putString("token","null");
+        editor.putString("token", currentAuthUser.getToken());
         editor.commit();
 
     }
 
     public void clearToken(){
-        currentAuthUser = null;
+        currentAuthUser = new User();
         SharedPreferences pref = context.getSharedPreferences("token_file",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("token","null");
+        editor.clear();
         editor.commit();
     }
-
 
 }
