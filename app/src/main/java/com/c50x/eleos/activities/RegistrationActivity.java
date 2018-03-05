@@ -178,20 +178,15 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
             Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
             startActivity(intent);
         }
-        else if (!output.contains("null")){
+        else if (output.contains("error")){
                 // Auth failed because of invalid input
 
-            // convert to hash
-            Gson gson = new Gson();
-            Type type= new TypeToken<Map<String,Integer>>(){}.getType();
-            Map<String,Integer> errorMsg = gson.fromJson(output,type);
 
-            errorMsg = gson.fromJson(output,type);
-                if (errorMsg.get("error") == ERROR_HANDLE_TAKEN){
+                if (output.contains("PRIMARY")){
 
                     handle.setError("Handle is taken");
                 }
-                else if (errorMsg.get("error") == ERROR_EMAIL_TAKEN){
+                if (output.contains("email")){
 
                     email.setError("Email exist");
                 }
