@@ -3,6 +3,7 @@ package com.c50x.eleos.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.EditText;
@@ -11,100 +12,42 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.activities.MainActivity;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
+import com.google.gson.Gson;
 
-public class RegisterTask extends AsyncTask<User, Void,Integer>{
+import java.util.HashMap;
 
-    private AppDatabase db;
-    private Context activityContext;
+public class RegisterTask {
+
+    private  AsyncResponse activityContext;
     private User newUser;
+    private Gson gson;
+    private Context context;
+    private String urlBase;
 
     public final static Integer USER_WITH_EMAIL_EXIST = 1;
     public final static Integer USER_WITH_HANDLE_EXIST = 2;
     public final static Integer USER_WITH_HANDLE_AND_EMAIL_EXIST = 3;
 
 
-    public RegisterTask(Context appContext, Context activityContext) {
-        db = AppDatabase.getDatabaseInstance(appContext);
-        this.activityContext = activityContext;
+    public RegisterTask (Context activityContext){
+       gson = new Gson();
+       context = activityContext;
+        urlBase = activityContext.getString(R.string.server_address);
+        this.activityContext = (AsyncResponse)activityContext;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
 
-    @Override
-    protected Integer doInBackground(User ... users) {
+    public void addUser (User userToAdd){
 
-        newUser = users[0];
+        String script = "/addUser.php";
+        String url = urlBase + script;
+        Log.i("RegisterTask_addUser","url: " + url);
 
+        String json = gson.toJson(userToAdd,User.class);
 
+        Log.i("RegisterTask_addUser","jsonToSend: " + json);
 
-        // TODO: Do this in one query
-        User[] userWithHandle;
-        User[] userWithEmail;
-
-        // Check if handle exist
-        userWithHandle = db.userDao().loadUserWithHandle(newUser.getHandle());
-
-        // Check if email exist
-        userWithEmail=  db.userDao().loadUserWithEmail(newUser.getEmail());
-
-
-        if (userWithHandle.length != 0 && userWithEmail.length !=0)
-            return USER_WITH_HANDLE_AND_EMAIL_EXIST;
-       else if (userWithEmail.length != 0)
-            return  USER_WITH_EMAIL_EXIST;
-       else if (userWithHandle.length != 0)
-           return USER_WITH_HANDLE_EXIST;
-       else { // User has valid info
-
-            db.userDao().saveUser(newUser);
-        }
-
-
-        return 0;
-    }
-
-    @Override
-    protected void onPostExecute(Integer state) {
-        super.onPostExecute(state);
-
-        EditText emailView = ((Activity) activityContext).findViewById(R.id.email);
-        EditText handleView = ((Activity) activityContext).findViewById(R.id.handle);
-
-        if (state.equals(USER_WITH_HANDLE_AND_EMAIL_EXIST)){
-
-            // Show error for email and handle
-
-            emailView.setError("Email taken");
-            handleView.setError("Handle taken");
-
-        }
-        else if (state.equals(USER_WITH_EMAIL_EXIST)){
-
-            // Show error for email
-
-            emailView.setError("Email taken");
-        }
-        else if (state.equals(USER_WITH_HANDLE_EXIST)){
-
-            // Show error for handle
-
-            handleView.setError("Handle taken");
-
-        }
-        else {
-
-
-            // Go to main screen
-
-            Intent intent = new Intent(activityContext, MainActivity.class);
-            intent.putExtra("from","registration");
-            intent.putExtra("handle",newUser.getHandle());
-            activityContext.startActivity(intent);
-
-
-        }
+        new AsyncPost(activityContext).execute(url,json);
+        // go to registration activity for result
     }
 }

@@ -33,6 +33,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
     private LoginTask loginTask;
 
 
+    public static final int EXPECTED_MIN_RESPONSE_LENGTH = 6;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -73,10 +76,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
                     // pass the activityContext so we can change UI elements from LoginTask
                     Log.i("LoginActivity_signIn","email: " + userEmail + " password: " + userPassword);
                     LoginTask login = new LoginTask(LoginActivity.this);
-                    //login.authUsingEmail(userEmail,userPassword);
+                    login.authUsingEmail(userEmail,userPassword);
 
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    startActivity(intent);
+
                 }
             }
         });
@@ -139,8 +141,15 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
     public void taskFinished(String output) {
         // handle login
         loginTask = new LoginTask(this);
-        if (!output.equals("null")) { // user is valid
+        if (!output.contains("null")) { // user is valid
             loginTask.setToken(output);
+
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            // prevent back button from returning to this activity
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            finish();
+
+            startActivity(intent);
         }
         else {
                 // Auth failed

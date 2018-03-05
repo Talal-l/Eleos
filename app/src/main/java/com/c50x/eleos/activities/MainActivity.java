@@ -15,13 +15,38 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
+import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity
+import android.app.Activity;
+import android.app.ActionBar;
+import android.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.os.Build;
+import android.view.Gravity;
+import android.view.WindowManager;
+
+import static com.c50x.eleos.activities.LoginActivity.EXPECTED_MIN_RESPONSE_LENGTH;
+
+public class MainActivity extends AppCompatActivity implements AsyncResponse
 {
     private Button logOutButton;
-    private User currentUser;
     private AppDatabase db;
     private String handle;
     private String email;
@@ -31,53 +56,46 @@ public class MainActivity extends AppCompatActivity
     private User[] l;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+    private LoginTask loginTask;
     FragmentTransaction fragmentTransaction;
-
-    // Create an AsyncTask class so the database operations can be done in the background
-    private class DatabaseAsync extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            // Get user from database
-            String source = getIntent().getStringExtra("from");
-            if (source.equals("login")) {
-                email = getIntent().getStringExtra("email");
-                Log.w("Email is : ", email);
-                if (db.userDao().loadUserWithEmail(email).length > 0) {
-                    currentUser = db.userDao().loadUserWithEmail(email)[0];
-                    Log.w("email for user: ", currentUser.getEmail());
-                }
-            } else {
-                handle = getIntent().getStringExtra("handle");
-                Log.w("Handle222: ", handle);
-                if (db.userDao().loadUserWithHandle(handle).length > 0) {
-                    currentUser = db.userDao().loadUserWithHandle(handle)[0];
-                    Log.w("Handle: ", currentUser.getHandle());
-                }
-            }
-
-            l = db.userDao().loadAllUsers();
-            for (int i = 0; i < l.length; i++)
-            {
-                Log.w("handle: ", l[i].getHandle());
-                Log.w("email: ", l[i].getEmail());
-            }
-
-            handleView.append(currentUser.getHandle());
-            return null;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        currentUser = new User();
 
-        db = AppDatabase.getDatabaseInstance(getApplicationContext());
-        //new DatabaseAsync().execute();
+        // Load token from shared preferences
+        SharedPreferences pref = getSharedPreferences("token_file",Context.MODE_PRIVATE);
+        String token = pref.getString("token","null");
+        Log.i("mainActivity","shared: " + token);
+
+        // check if token exist
+        if (token.contains("null")){ // user not logged in
+            // go to login activity
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            finish();
+            startActivity(intent);
+            Log.i("mainActivity","BYE: " + token);
+        }
+
+        else{ // token exist
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
+        setContentView(R.layout.activity_main);
+
+        // needed to access the auth methods
+        loginTask = new LoginTask(this);
+
+        if (LoginTask.currentAuthUser != null) { // we have a token but no user is loaded
+            // set the global current user using the token
+            loginTask.authUsingToken(token);
+        }
+
 
         handleView = findViewById(R.id.activity_main_user_handle_textView);
+
+        handleView.setText(token);
 
         // for navigation menu
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -112,10 +130,12 @@ public class MainActivity extends AppCompatActivity
                                 startActivity(intent);
                                 break;
 
-                            case R.id.nav_menu_playerSearch:
-                                intent = new Intent(MainActivity.this, PlayerSearchActivity.class);
+                            case R.id.nav_menu_logout:
+                                loginTask.clearToken();
+                                intent = new Intent(MainActivity.this, LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                                finish();
                                 startActivity(intent);
-                                break;
                         }
 
                         return false;
@@ -123,20 +143,32 @@ public class MainActivity extends AppCompatActivity
                 }
         );
 
-
-
-
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+        }
+
     // for navigation menu button
-    @Override
+   @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         if(mToggle.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void taskFinished(String output) {
+        // Info associated with token is ready
+        Log.i("mainActivity_taskF", "output: " + output);
+        if (!output.contains("null")) { // user is valid
+            // load data from json to current user
+            Gson gson = new Gson();
+            LoginTask.currentAuthUser = gson.fromJson(output,User.class);
+            Log.i("mainActivity_taskF", "current user handle: " + LoginTask.currentAuthUser.getHandle());
+
+        }
     }
 }
 

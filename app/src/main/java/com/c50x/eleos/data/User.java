@@ -22,6 +22,12 @@ public class User {
     private String token;
 
     public User() {
+        name = "";
+        email = "";
+        password = "";
+        dateOfBirth = "";
+        gender = "";
+        token = "";
     }
 
 

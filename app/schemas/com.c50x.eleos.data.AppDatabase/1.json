@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "afb641a6f185f88d1edf714aae20e81b",
+    "identityHash": "c92924cf4e98357f5029d60759def126",
     "entities": [
       {
         "tableName": "User",
@@ -62,13 +62,19 @@
       },
       {
         "tableName": "Game",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` INTEGER NOT NULL, `team1Score` INTEGER NOT NULL, `team2Score` INTEGER NOT NULL, `duration` REAL NOT NULL, `startTime` TEXT, `startDate` TEXT, `ratting` INTEGER NOT NULL, `sport` TEXT, `gameAdmin` TEXT, `venueAddress` TEXT, `team1` TEXT, `team2` TEXT, PRIMARY KEY(`gameId`), FOREIGN KEY(`team1`) REFERENCES `Team`(`teamName`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`team2`) REFERENCES `Team`(`teamName`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`venueAddress`) REFERENCES `Venue`(`venueAddress`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` INTEGER NOT NULL, `gameName` TEXT, `team1Score` INTEGER NOT NULL, `team2Score` INTEGER NOT NULL, `duration` REAL NOT NULL, `startTime` TEXT, `startDate` TEXT, `ratting` INTEGER NOT NULL, `sport` TEXT, `gameAdmin` TEXT, `venueAddress` TEXT, `team1` TEXT, `team2` TEXT, PRIMARY KEY(`gameId`), FOREIGN KEY(`team1`) REFERENCES `Team`(`teamName`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`team2`) REFERENCES `Team`(`teamName`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`venueAddress`) REFERENCES `Venue`(`venueAddress`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "gameId",
             "columnName": "gameId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "gameName",
+            "columnName": "gameName",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "team1Score",
@@ -296,7 +302,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"afb641a6f185f88d1edf714aae20e81b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c92924cf4e98357f5029d60759def126\")"
     ]
   }
 }

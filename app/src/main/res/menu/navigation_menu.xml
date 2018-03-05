@@ -13,5 +13,9 @@
             android:id="@+id/nav_menu_playerSearch"
             android:title="Player Search" />
 
+        <item
+            android:id="@+id/nav_menu_logout"
+            android:title="Logout"/>
+
     </group>
 </menu>
