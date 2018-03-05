@@ -11,17 +11,21 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.RegisterTask;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
-/**
- * Created by eris on 11/19/17.
- */
 
-public class RegistrationActivity extends AppCompatActivity  {
+public class RegistrationActivity extends AppCompatActivity implements AsyncResponse {
 
     private EditText name;
     private EditText handle;
@@ -31,6 +35,9 @@ public class RegistrationActivity extends AppCompatActivity  {
     private Button   confirmButton;
     private Button   cancelButton;
     private User newUser;
+
+    private final static int ERROR_HANDLE_TAKEN = 1;
+    private final static int ERROR_EMAIL_TAKEN = 2;
 
 
     @Override
@@ -95,18 +102,17 @@ public class RegistrationActivity extends AppCompatActivity  {
                     newUser.setName(name.getText().toString());
                     newUser.setEmail(email.getText().toString());
                     newUser.setPassword(password.getText().toString());
+                    newUser.setGender("male");
+                    newUser.setDateOfBirth("10/2/2019");
 
 
 
                     // Start the Async process that will save into the database
-                    //RegisterTask registerTask = new RegisterTask(getApplicationContext(),
-                     //       RegistrationActivity.this);
-                    //registerTask.execute(newUser);
+                    RegisterTask regTask = new RegisterTask(RegistrationActivity.this);
+                    regTask.addUser(newUser);
 
             // Go to main screen
 
-            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-            startActivity(intent);
 
                 }
             }
@@ -161,4 +167,39 @@ public class RegistrationActivity extends AppCompatActivity  {
             return true;
     }
 
+    @Override
+    public void taskFinished(String output) {
+
+        Log.i("RegActivity","output: " + output);
+        LoginTask loginTask = new LoginTask(this);
+        if(!output.contains("null") && !output.contains("error")) {
+            loginTask.setToken(output);
+
+            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+        else if (!output.contains("null")){
+                // Auth failed because of invalid input
+
+            // convert to hash
+            Gson gson = new Gson();
+            Type type= new TypeToken<Map<String,Integer>>(){}.getType();
+            Map<String,Integer> errorMsg = gson.fromJson(output,type);
+
+            errorMsg = gson.fromJson(output,type);
+                if (errorMsg.get("error") == ERROR_HANDLE_TAKEN){
+
+                    handle.setError("Handle is taken");
+                }
+                else if (errorMsg.get("error") == ERROR_EMAIL_TAKEN){
+
+                    email.setError("Email exist");
+                }
+        }
+        else{
+              // something is wrong
+                    Log.i("RegActivity","Something is wrong with server response "+ "\n" +
+                            "response from server: " + output);
+        }
+    }
 }
