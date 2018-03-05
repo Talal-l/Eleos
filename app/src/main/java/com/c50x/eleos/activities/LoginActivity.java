@@ -145,6 +145,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
             loginTask.setToken(output);
 
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            // prevent back button from returning to this activity
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            finish();
+
             startActivity(intent);
         }
         else {

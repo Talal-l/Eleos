@@ -176,6 +176,11 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
             loginTask.setToken(output);
 
             Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+
+            // prevent back button from coming back to this screen
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            finish();
+
             startActivity(intent);
         }
         else if (output.contains("error")){
