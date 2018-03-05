@@ -37,6 +37,7 @@ public class Game {
     @NonNull
     private int gameId;
 
+    private String gameName;
     private int team1Score;
     private int team2Score;
     private double duration;
@@ -52,6 +53,20 @@ public class Game {
     private String team1;
     private String team2;
 
+    public Game(){
+        gameId= 0;
+        gameAdmin = "";
+        team1 = "";
+        team2 = "";
+        team1Score = 0;
+        team2Score = 0;
+        ratting = 0;
+        sport = "";
+        venueAddress = "";
+        startDate = "";
+        startTime = "";
+
+    }
 
     @NonNull
     public int getGameId() {
@@ -148,5 +163,13 @@ public class Game {
 
     public void setGameAdmin(String gameAdmin) {
         this.gameAdmin = gameAdmin;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
     }
 }

@@ -22,12 +22,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.GameTask;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.AppDatabase;
+import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.User;
 
 import java.util.Calendar;
 
-public class CreateGameActivity extends AppCompatActivity
+public class CreateGameActivity extends AppCompatActivity implements AsyncResponse
 {
     private static final String TAG = "CreateGameActivity";
     private EditText game_name;
@@ -36,6 +40,7 @@ public class CreateGameActivity extends AppCompatActivity
     private EditText location;
     private TextView date;
     private Button time;
+    private Game newGame;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private TimePickerDialog.OnTimeSetListener mTimeSetListener;
 
@@ -45,6 +50,10 @@ public class CreateGameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
 
+        newGame = new Game();
+
+        game_name =  findViewById(R.id.game_name_input);
+        game_type = findViewById(R.id.game_type_input);
         date = (TextView) findViewById(R.id.game_date_input);
         time = (Button) findViewById(R.id.game_time_input);
         date.setOnClickListener(new View.OnClickListener() {
@@ -69,10 +78,12 @@ public class CreateGameActivity extends AppCompatActivity
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
             {
                 month = month + 1;
-                Log.d(TAG, "onDateSet: date: " + year + "/" + month + "/" + dayOfMonth);
+                Log.i(TAG, "onDateSet: date: " + year + "/" + month + "/" + dayOfMonth);
 
                 String date2 = month + "/" + dayOfMonth + "/" +year;
                 date.setText(date2);
+
+                newGame.setStartDate(date2);
             }
         };
 
@@ -90,6 +101,7 @@ public class CreateGameActivity extends AppCompatActivity
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute)
                     {
                         time.setText(hourOfDay + ":" + minute);
+                        newGame.setStartTime(hourOfDay + ":" + minute);
                     }
                 }, hour,minute,false);
                 timePickerDialog.show();
@@ -97,14 +109,23 @@ public class CreateGameActivity extends AppCompatActivity
             }
         });
 
-        configureCancelButton();
-        configureConfirmButton();
-    }
+        Button confirm_button = (Button) findViewById(R.id.confirm_create_game_button);
+        confirm_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                newGame.setGameName(game_name.getText().toString());
+                Log.i(TAG,"getting current user and setting them as admin");
+                newGame.setGameAdmin(LoginTask.currentAuthUser.getHandle());
+                newGame.setSport(game_type.getText().toString());
 
+                // save info in database
+                GameTask gameTask = new GameTask(CreateGameActivity.this);
+                gameTask.addGame(newGame);
 
+            }
+        });
 
-    private void configureCancelButton()
-    {
         Button cancel_button = (Button) findViewById(R.id.Cancel_create_game_button);
         cancel_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -113,20 +134,10 @@ public class CreateGameActivity extends AppCompatActivity
                 finish();
             }
         });
+
     }
 
-    private void configureConfirmButton()
-    {
-        Button confirm_button = (Button) findViewById(R.id.confirm_create_game_button);
-        confirm_button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(v.getContext(),MainActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+
 
     public boolean gameNameIaValid(String gn)
     {
@@ -155,6 +166,37 @@ public class CreateGameActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void taskFinished(String output) {
+        // save/check if input valid
+
+        Log.i(TAG,"output: " + output);
+        LoginTask loginTask = new LoginTask(this);
+        if(!output.contains("null") && !output.contains("error")) {
+
+            // TODO: SHow message that game was created
+
+            Intent intent = new Intent(CreateGameActivity.this, MainActivity.class);
+
+            // prevent back button from coming back to this screen
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            finish();
+
+            startActivity(intent);
+        }
+        else if (output.contains("error")){
+            // another game is happening at same place an date/time
+            Log.i(TAG,"error: " + output);
 
 
+        }
+        else{
+
+            // something is wrong
+            Log.i(TAG,"Something is wrong with server response "+ "\n" +
+                            "response from server: " + output);
+        }
+
+
+    }
 }
