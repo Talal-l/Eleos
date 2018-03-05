@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
 
@@ -23,13 +24,15 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
     private EditText teamName;
     private EditText teamAdmin;
 
+    private static final String TAG = "CreateTeamActivity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
+
+        newTeam = new Team();
 
         setContentView(R.layout.activity_create_team);
 
@@ -82,12 +85,6 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
     }
 
-    // code to handle received response from server
-    @Override
-    public void taskFinished(String output){
-        Log.i("CreateTeamActivity", "json response: " + output);
-    }
-
 
 
     public boolean teamNameValid(String name){
@@ -109,6 +106,41 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
             return true;
         else
             return false;
+    }
+
+    // code to handle received response from server
+    @Override
+    public void taskFinished(String output){
+        Log.i("CreateTeamActivity", "json response: " + output);
+        // save/check if input valid
+
+        Log.i(TAG,"output: " + output);
+        LoginTask loginTask = new LoginTask(this);
+        if(!output.contains("null") && !output.contains("error")) {
+
+            // TODO: SHow message that game was created
+
+            Intent intent = new Intent(CreateTeamActivity.this, MainActivity.class);
+
+            // prevent back button from coming back to this screen
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            finish();
+
+            startActivity(intent);
+        }
+        else if (output.contains("error")){
+            teamName.setError("Team name taken!");
+            Log.i(TAG,"error: " + output);
+
+
+        }
+        else{
+
+            // something is wrong
+            Log.i(TAG,"Something is wrong with server response "+ "\n" +
+                            "response from server: " + output);
+        }
+
     }
 
 
