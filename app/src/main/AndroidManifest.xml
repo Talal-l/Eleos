@@ -37,17 +37,12 @@
         </activity>
         <activity android:name=".activities.RegistrationActivity" />
         <activity android:name=".activities.LoginActivity" />
-
         <activity
             android:name=".activities.CreateGameActivity"
-            android:label="Eleos">
-        </activity>
-
+            android:label="Eleos"></activity>
         <activity
             android:name=".activities.CreateTeamActivity"
-            android:label="Eleos">
-        </activity>
-
+            android:label="Eleos"></activity>
     </application>
 
 </manifest>

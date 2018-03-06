@@ -14,38 +14,20 @@
         android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/activity_main_user_handle_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="User handle:"
-            android:textSize="24sp"
-            tools:textColor="@android:color/black" />
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_recycler_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/game1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/game2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/game3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/game4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/game5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/game6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+
+</android.support.v4.widget.SwipeRefreshLayout>
 
 
     </LinearLayout>

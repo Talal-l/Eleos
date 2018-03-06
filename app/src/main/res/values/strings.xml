@@ -55,6 +55,9 @@
         <item>Naib</item>
         <item>Maito</item>
     </string-array>
+    <string name="title_activity_game_list">GameListActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 
 </resources>
