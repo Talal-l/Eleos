@@ -9,12 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,11 +20,8 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
-import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.Game;
-import com.c50x.eleos.data.User;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -144,9 +136,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 else if (!(gameTypeIaVslid(game_type.getText().toString())))
                     game_type.setError("Empty or did not enter 'Football'");
 
-                else if (!(numberOfPlayersIsValid(game_players.getText().toString())))
-                    game_players.setError("Empty or odd number of players");
-
                 else if (!(locationIsValid(location.getText().toString())))
                     location.setError("Empty field");
 
@@ -157,6 +146,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     newGame.setSport(game_type.getText().toString());
 
                     // save info in database
+                    playersToAdd.add(LoginTask.currentAuthUser.getHandle());
+                    newGame.setGamePlayers(playersToAdd.toArray(new String[0]));
                     GameTask gameTask = new GameTask(CreateGameActivity.this);
                     gameTask.addGame(newGame);
 

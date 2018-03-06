@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c92924cf4e98357f5029d60759def126",
+    "identityHash": "c17e869a2750c340f68a63dbe7a4c9f5",
     "entities": [
       {
         "tableName": "User",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "Game",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` INTEGER NOT NULL, `gameName` TEXT, `team1Score` INTEGER NOT NULL, `team2Score` INTEGER NOT NULL, `duration` REAL NOT NULL, `startTime` TEXT, `startDate` TEXT, `ratting` INTEGER NOT NULL, `sport` TEXT, `gameAdmin` TEXT, `venueAddress` TEXT, `team1` TEXT, `team2` TEXT, PRIMARY KEY(`gameId`), FOREIGN KEY(`team1`) REFERENCES `Team`(`teamName`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`team2`) REFERENCES `Team`(`teamName`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`venueAddress`) REFERENCES `Venue`(`venueAddress`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` INTEGER NOT NULL, `gameName` TEXT, `team1Score` INTEGER NOT NULL, `team2Score` INTEGER NOT NULL, `duration` REAL NOT NULL, `startTime` TEXT, `startDate` TEXT, `ratting` INTEGER NOT NULL, `sport` TEXT, `gameAdmin` TEXT, `gamePlayers` TEXT, `venueAddress` TEXT, `team1` TEXT, `team2` TEXT)",
         "fields": [
           {
             "fieldPath": "gameId",
@@ -125,6 +125,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "gamePlayers",
+            "columnName": "gamePlayers",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "venueAddress",
             "columnName": "venueAddress",
             "affinity": "TEXT",
@@ -144,72 +150,11 @@
           }
         ],
         "primaryKey": {
-          "columnNames": [
-            "gameId"
-          ],
+          "columnNames": [],
           "autoGenerate": false
         },
-        "indices": [
-          {
-            "name": "index_Game_team1",
-            "unique": false,
-            "columnNames": [
-              "team1"
-            ],
-            "createSql": "CREATE  INDEX `index_Game_team1` ON `${TABLE_NAME}` (`team1`)"
-          },
-          {
-            "name": "index_Game_team2",
-            "unique": false,
-            "columnNames": [
-              "team2"
-            ],
-            "createSql": "CREATE  INDEX `index_Game_team2` ON `${TABLE_NAME}` (`team2`)"
-          },
-          {
-            "name": "index_Game_venueAddress",
-            "unique": false,
-            "columnNames": [
-              "venueAddress"
-            ],
-            "createSql": "CREATE  INDEX `index_Game_venueAddress` ON `${TABLE_NAME}` (`venueAddress`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "Team",
-            "onDelete": "CASCADE",
-            "onUpdate": "CASCADE",
-            "columns": [
-              "team1"
-            ],
-            "referencedColumns": [
-              "teamName"
-            ]
-          },
-          {
-            "table": "Team",
-            "onDelete": "CASCADE",
-            "onUpdate": "CASCADE",
-            "columns": [
-              "team2"
-            ],
-            "referencedColumns": [
-              "teamName"
-            ]
-          },
-          {
-            "table": "Venue",
-            "onDelete": "CASCADE",
-            "onUpdate": "CASCADE",
-            "columns": [
-              "venueAddress"
-            ],
-            "referencedColumns": [
-              "venueAddress"
-            ]
-          }
-        ]
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "Team",
@@ -302,7 +247,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c92924cf4e98357f5029d60759def126\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c17e869a2750c340f68a63dbe7a4c9f5\")"
     ]
   }
 }

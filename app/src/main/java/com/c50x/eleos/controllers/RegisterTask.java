@@ -1,20 +1,11 @@
 package com.c50x.eleos.controllers;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.EditText;
 
 import com.c50x.eleos.R;
-import com.c50x.eleos.activities.MainActivity;
-import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
 import com.google.gson.Gson;
-
-import java.util.HashMap;
 
 public class RegisterTask {
 

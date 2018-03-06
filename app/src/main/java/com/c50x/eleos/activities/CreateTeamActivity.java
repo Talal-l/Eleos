@@ -62,6 +62,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         });
 
 
+        newTeam = new Team();
 
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -83,8 +84,11 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
                     teamSport.setError("Team sport is INVALID!");
                 } else {
                     newTeam.setSport(teamSport.getText().toString());
-                    newTeam.setTeamAdmin(teamAdmin.getText().toString());
+                    newTeam.setTeamAdmin(LoginTask.currentAuthUser.getHandle());
                     newTeam.setTeamName(teamName.getText().toString());
+
+                    playersToAdd.add(LoginTask.currentAuthUser.getHandle());
+                    newTeam.setTeamPlayers(playersToAdd.toArray(new String[0]));
 
                 }
                 // when button is pressed try to save team

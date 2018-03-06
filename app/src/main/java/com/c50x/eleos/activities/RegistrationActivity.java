@@ -1,7 +1,6 @@
 package com.c50x.eleos.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,14 +13,8 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.RegisterTask;
-import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 

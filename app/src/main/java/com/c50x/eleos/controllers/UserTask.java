@@ -1,28 +1,13 @@
 package com.c50x.eleos.controllers;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.c50x.eleos.R;
-import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-
 public class UserTask {
-    private AppDatabase db;
     private Context context;
     private User userList[];
 

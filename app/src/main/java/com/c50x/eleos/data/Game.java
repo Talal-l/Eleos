@@ -1,40 +1,7 @@
 package com.c50x.eleos.data;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-
-@Entity(foreignKeys = {
-        @ForeignKey(entity = Team.class,
-                parentColumns = "teamName",
-                childColumns = "team1",
-                onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE
-        ),
-        @ForeignKey(entity = Team.class,
-                parentColumns = "teamName",
-                childColumns =  "team2",
-                onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE
-
-        ),
-        @ForeignKey(entity = Venue.class,
-                parentColumns = "venueAddress",
-                childColumns =  "venueAddress",
-                onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE
-
-        )
-    }, indices = {@Index(value = "team1"), @Index(value = "team2"), @Index(value = "venueAddress")}
-)
-
 public class Game {
 
-    @PrimaryKey
-    @NonNull
     private int gameId;
 
     private String gameName;
@@ -46,6 +13,7 @@ public class Game {
     private int ratting;
     private String sport;
     private String gameAdmin;
+    private String[] gamePlayers;
 
     // Foreign keys
     private String venueAddress;
@@ -68,12 +36,11 @@ public class Game {
 
     }
 
-    @NonNull
     public int getGameId() {
         return gameId;
     }
 
-    public void setGameId(@NonNull int gameId) {
+    public void setGameId(int gameId) {
         this.gameId = gameId;
     }
 
@@ -171,5 +138,13 @@ public class Game {
 
     public void setGameName(String gameName) {
         this.gameName = gameName;
+    }
+
+    public String[] getGamePlayers() {
+        return gamePlayers;
+    }
+
+    public void setGamePlayers(String[] gamePlayers) {
+        this.gamePlayers = gamePlayers;
     }
 }

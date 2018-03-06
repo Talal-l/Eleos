@@ -26,7 +26,6 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
-import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.User;
 import com.google.gson.Gson;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AsyncResponse
 {
     private Button logOutButton;
-    private AppDatabase db;
     private String handle;
     private String email;
     private TextView handleView;
