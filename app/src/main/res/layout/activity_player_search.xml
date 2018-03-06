@@ -20,7 +20,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
+        android:layout_weight="20"
         android:background="@color/cardview_dark_background"/>
+
+
+    <Button
+        android:id="@+id/player_search_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="confirm"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+
+
+        />
 
 
 

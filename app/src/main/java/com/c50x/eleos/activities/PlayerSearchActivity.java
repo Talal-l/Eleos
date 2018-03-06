@@ -1,5 +1,6 @@
 package com.c50x.eleos.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.view.View;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.c50x.eleos.R;
@@ -23,6 +25,7 @@ import com.c50x.eleos.data.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import android.widget.Button;
 import android.widget.Toast;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
@@ -56,6 +59,8 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
     private ArrayList<String> playersToAdd;
 
 
+    private Button confirmButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +69,31 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
         userTask = new UserTask(PlayerSearchActivity.this);
         playersToAdd = new ArrayList<>();
 
+        confirmButton = findViewById(R.id.player_search_confirm);
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // if selected return with result
+                if (playersToAdd.size() > 0){
+                    Intent intent = new Intent();
+                    intent.putExtra("players",playersToAdd);
+                    setResult(RESULT_OK,intent);
+                    finish();
+
+                }
+                else {
+                    Toast.makeText(PlayerSearchActivity.this,
+                            "no player selected, press cancel to go back", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // ButterKnife.bind(this);
         findViews();
         initToolbar("player search");
         setAdapter();
-
 
     }
 
@@ -183,8 +207,17 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
 
                 Toast.makeText(PlayerSearchActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
 
+                if (isChecked) {
+                    playersToAdd.add(model.getTitle());
+                    Log.i(TAG,"add to array: " + Arrays.toString(playersToAdd.toArray()));
+                }
 
-                playersToAdd.add(model.getMessage());
+                else{
+
+                    playersToAdd.remove(model.getTitle());
+                    Log.i(TAG,"remove from array: " + Arrays.toString(playersToAdd.toArray()));
+                }
+
 
 
 
