@@ -125,7 +125,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
 
 
-        Button cancel_button = (Button) findViewById(R.id.Cancel_create_game_button);
+        Button cancel_button = (Button) findViewById(R.id.cancel_create_game_button);
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

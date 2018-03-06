@@ -8,12 +8,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CreateTeamActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -23,7 +27,9 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
     private EditText teamSport;
     private EditText teamName;
     private EditText teamAdmin;
-    private EditText players;
+    private TextView players;
+    private ArrayList<String> playersToAdd;
+
 
     private static final String TAG = "CreateTeamActivity";
 
@@ -38,19 +44,22 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
         setContentView(R.layout.activity_create_team);
 
-        // test addTeam
+        teamName = findViewById(R.id.team_name_input);
+        teamSport = findViewById(R.id.team_sport_input);
+        players = findViewById(R.id.game_players_input);
 
-//        newTeam.setTeamName("first");
-//        newTeam.setSport("football");
-//        newTeam.setTeamAdmin("ph1");
+        confirmButton = findViewById(R.id.confirm_create_team_button);
+        cancelButton = findViewById(R.id.cancel_create_team_button);
 
-        teamName = findViewById(R.id.team_name);
-        teamSport = findViewById(R.id.team_sport);
-        teamAdmin = findViewById(R.id.team_admin);
-        players = findViewById(R.id.players);
+        // go to player search
+        players.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CreateTeamActivity.this,PlayerSearchActivity.class);
+                startActivityForResult(intent,1);
 
-        confirmButton = findViewById(R.id.button_confirm);
-        cancelButton = findViewById(R.id.button_cancel);
+            }
+        });
 
 
 
@@ -62,22 +71,6 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
                 String[] playerList = new String[players.getLineCount()];
 
-                /*for(int i = 0; i < playerList.length; i++) {
-                    playerList[i] = players.g
-                }*/
-
-
-
-                /*players.setInputType(InputType.TYPE_CLASS_TEXT |
-                        InputType.TYPE_TEXT_FLAG_MULTI_LINE |
-                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-                InputFilter[] fArray = new InputFilter[1];
-                fArray[0] = new InputFilter.LengthFilter(players.getLineCount());
-                players.setFilters(fArray);*/
-
-                /*for(int i = 0; i < playerList.length; i++) {
-                    System.out.println(players.);
-                }*/
                 String s = players.getText().toString();
                 System.out.print(players.getText().toString());
                 Log.i("multLine",players.getText().toString());
@@ -136,7 +129,20 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         else
             return false;
     }
+    // get player search result
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == 1){
+            if(resultCode == RESULT_OK){
+                playersToAdd = data.getStringArrayListExtra("players");
+                Log.i(TAG,"players from search: " + Arrays.toString(playersToAdd.toArray()));
+                players.setText(Arrays.toString(playersToAdd.toArray()));
 
+            }
+        }
+
+    }
     // code to handle received response from server
     @Override
     public void taskFinished(String output){
