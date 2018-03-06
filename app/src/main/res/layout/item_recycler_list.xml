@@ -52,8 +52,12 @@
                 android:textColor="#727272"
                 android:textSize="14dp" />
 
-        </LinearLayout>
 
+        </LinearLayout>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/check_list"/>
 
     </LinearLayout>
 

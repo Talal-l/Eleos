@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.c50x.eleos.R;
 import com.c50x.eleos.data.AppDatabase;
 import com.c50x.eleos.data.User;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,62 +26,43 @@ public class UserTask {
     private Context context;
     private User userList[];
 
+    private User userist[];
+    private String urlBase;
+    private Gson gson;
+    private AsyncResponse activityContext;
 
-    public UserTask(Context appContext, Context activityContext){
-        this.context = activityContext;
-        db = AppDatabase.getDatabaseInstance(appContext);
-    }
+    private static final String TAG = "UserTask";
 
-    private class LoadAllUsers extends AsyncTask<String,String,String> {
-
-        @Override
-        protected String doInBackground(String ... par) {
-            HttpURLConnection urlConnection;
-            try{
-
-                URL url = new URL("http://192.168.1.101/printAll.php");;;;
-                urlConnection = (HttpURLConnection) url.openConnection();
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-
-
-                // Read the stream into a string
-
-                String line;
-                while ((line = br.readLine()) != null){
-                    sb.append(line+"\n");
-                }
-                br.close();
-                return sb.toString();
-
-
-            }
-            catch(Exception ex) {
-                Log.e("App", "yourDataTask", ex);
-                return null;
-            }
-            finally{
-            }
-        }
-
-
-        @Override
-        protected void onPostExecute(String response)
-        {
-            if(response != null)
-            {
-                try {
-                    Log.e("App", "Success: " + response);
-                } catch (Exception ex) {
-                    Log.e("App", "Failure", ex);
-                }
-            }
-        }
-    }
-    public void loadAllPlayers(){
-
-        new LoadAllUsers().execute();
+    public UserTask(Context activityContext) {
+        // load the server address from string.xml
+        gson = new Gson();
+        this.activityContext = (AsyncResponse)activityContext;
+        urlBase = activityContext.getString(R.string.server_address);
 
     }
+
+     public void loadUser (String handle){
+
+        String script = "/loadUser.php";
+        String key = "handle";
+
+        String url = urlBase + script;
+        Log.i(TAG, "using server address: " + urlBase);
+        Log.i(TAG, "url: " + url);
+
+        new AsyncGet(activityContext).execute(url,key, handle);
+
+     }
+
+     public void searchPlayer (String handle){
+
+        String script = "/searchPlayer.php";
+        String key = "handle";
+
+        String url = urlBase + script;
+        Log.i(TAG, "using server address: " + urlBase);
+        Log.i(TAG, "url: " + url);
+
+        new AsyncGet(activityContext).execute(url,key, handle);
+     }
 }

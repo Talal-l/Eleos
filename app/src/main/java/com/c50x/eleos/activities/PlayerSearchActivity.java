@@ -1,79 +1,218 @@
 package com.c50x.eleos.activities;
 
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+import android.support.v7.widget.LinearLayoutManager;
+
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.c50x.eleos.R;
-import com.c50x.eleos.controllers.TeamTask;
-import com.c50x.eleos.data.Team;
+import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.UserTask;
+import com.c50x.eleos.data.Game;
+import com.c50x.eleos.data.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-public class PlayerSearchActivity extends AppCompatActivity {
+import android.widget.Toast;
+import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 
-    private TeamTask task;
-    private Team newTeam;
+import android.view.Menu;
+import android.support.v7.widget.SearchView;
+import android.support.v4.view.MenuItemCompat;
+import android.app.SearchManager;
+import android.widget.EditText;
+import android.graphics.Color;
+import android.text.InputFilter;
+import android.text.Spanned;
 
-    private Context activityContext;
 
-    private EditText playerSearch;
-    private Button confirmButton;
-    private Button cancelButton;
+public class PlayerSearchActivity extends AppCompatActivity implements AsyncResponse{
 
-    int flag = 0;
+    private RecyclerView recyclerView;
+
+    // @BindView(R.id.recycler_view)
+    // RecyclerView recyclerView;
+
+    //@BindView(R.id.toolbar)
+    //Toolbar toolbar;
+    private Toolbar toolbar;
+
+    private static final String TAG = "PlayerSearchActivity";
+    private RecyclerViewAdapter2 mAdapter;
+
+    private ArrayList<AbstractModel2> modelList = new ArrayList<>();
+    private UserTask userTask;
+    private ArrayList<String> playersToAdd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_player_search);
 
-        setContentView(R.layout.activity_playersearch);
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
-
-        playerSearch = (EditText) findViewById(R.id.player_search);
-        confirmButton = (Button) findViewById(R.id.button_confirm);
-        cancelButton = (Button) findViewById(R.id.button_cancel);
+        userTask = new UserTask(PlayerSearchActivity.this);
+        playersToAdd = new ArrayList<>();
 
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        // ButterKnife.bind(this);
+        findViews();
+        initToolbar("player search");
+        setAdapter();
 
-            String[] androidStrings = getResources().getStringArray(R.array.dummy1);
+
+    }
+
+    private void findViews() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    }
+
+    public void initToolbar(String title) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+
+        // Retrieve the SearchView and plug it into SearchManager
+        //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        final SearchView searchView = (SearchView) (menu.findItem(R.id.action_search).getActionView());
+
+        SearchManager searchManager = (SearchManager) this.getSystemService(this.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+
+        //changing edittext color
+        EditText searchEdit = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
+        searchEdit.setTextColor(Color.WHITE);
+        searchEdit.setHintTextColor(Color.WHITE);
+        searchEdit.setBackgroundColor(Color.TRANSPARENT);
+        searchEdit.setHint("Search");
+
+        InputFilter[] fArray = new InputFilter[2];
+        fArray[0] = new InputFilter.LengthFilter(40);
+        fArray[1] = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+                for (int i = start; i < end; i++) {
+
+                    if (!Character.isLetterOrDigit(source.charAt(i)))
+                        return "";
+                }
+
+                return null;
+
+
+            }
+        };
+        searchEdit.setFilters(fArray);
+        View v = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        v.setBackgroundColor(Color.TRANSPARENT);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                Log.i(TAG,"Query to submit: " + s);
+                userTask.searchPlayer(s);
+
+                return false;
+            }
 
             @Override
-            public void onClick(View v) {
-
-                if (playerSearch.getText().toString().equals("")) {
-                    playerSearch.setError("Empty");
-                } else {
-                    for (int i = 0; i < androidStrings.length; i++) {
-                        if (playerSearch.getText().toString().equals((androidStrings[i]))) {
-                            flag = 1;
-                        }
-                        else
-                            continue;
-                    }
-                    if (flag == 0)
-                        playerSearch.setError("Player Does Not Exist");
-
-                    else if (flag == 1)
-                        playerSearch.setError("Player Exists");
-                }
+            public boolean onQueryTextChange(String s) {
+               return false;
             }
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(intent);
+        return true;
+    }
+
+
+    private void setAdapter() {
+
+
+
+        mAdapter = new RecyclerViewAdapter2(PlayerSearchActivity.this, modelList);
+
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        recyclerView.setAdapter(mAdapter);
+
+
+        mAdapter.SetOnItemClickListener(new RecyclerViewAdapter2.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, AbstractModel2 model) {
+
+                //handle item click events here
+                Toast.makeText(PlayerSearchActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+
+
             }
         });
+
+
+        mAdapter.SetOnCheckedListener(new RecyclerViewAdapter2.OnCheckedListener() {
+            @Override
+            public void onChecked(View view, boolean isChecked, int position, AbstractModel2 model) {
+
+                Toast.makeText(PlayerSearchActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
+
+
+                playersToAdd.add(model.getMessage());
+
+
+
+
+
+            }
+        });
+
+
+    }
+
+
+    @Override
+    public void taskFinished(String output) {
+        Gson gson = new Gson();
+        Log.i(TAG,"output: " + output);
+
+            if (output.contains("handle")){
+
+            User[] matchingUsers = gson.fromJson(output,User[].class);
+
+            modelList = new ArrayList<>();
+            for (int i = 0; i < matchingUsers.length; i++){
+                Log.i(TAG, "Match: " + matchingUsers[i].getHandle());
+                modelList.add(new AbstractModel2(matchingUsers[i]));
+            }
+            mAdapter.updateList(modelList);
+        }
 
     }
 }

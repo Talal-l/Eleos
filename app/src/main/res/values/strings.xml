@@ -58,6 +58,7 @@
     <string name="title_activity_game_list">GameListActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_player_search">PlayerSearchActivity</string>
 
 
 </resources>
