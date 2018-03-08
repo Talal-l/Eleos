@@ -21,13 +21,13 @@ import java.util.Arrays;
 
 public class CreateTeamActivity extends AppCompatActivity implements AsyncResponse {
 
+    private Button confirm_btn;
+    private Button cancel_btn;
+    private EditText team_sport_et;
+    private EditText team_name_et;
+    private EditText team_admin;
+    private TextView players_tv;
     private Team newTeam;
-    private Button confirmButton;
-    private Button cancelButton;
-    private EditText teamSport;
-    private EditText teamName;
-    private EditText teamAdmin;
-    private TextView players;
     private ArrayList<String> playersToAdd;
 
 
@@ -40,19 +40,20 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         super.onCreate(savedInstanceState);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
 
-        newTeam = new Team();
-
         setContentView(R.layout.activity_create_team);
 
-        teamName = findViewById(R.id.team_name_input);
-        teamSport = findViewById(R.id.team_sport_input);
-        players = findViewById(R.id.game_players_input);
+        newTeam = new Team();
 
-        confirmButton = findViewById(R.id.confirm_create_team_button);
-        cancelButton = findViewById(R.id.cancel_create_team_button);
+        // initializing the views
+        team_name_et = findViewById(R.id.team_name_input);
+        team_sport_et = findViewById(R.id.team_sport_input);
+        players_tv = findViewById(R.id.game_players_input);
+        confirm_btn = findViewById(R.id.confirm_create_team_button);
+        cancel_btn = findViewById(R.id.cancel_create_team_button);
+
 
         // go to player search
-        players.setOnClickListener(new View.OnClickListener() {
+        players_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CreateTeamActivity.this,PlayerSearchActivity.class);
@@ -62,30 +63,23 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         });
 
 
-        newTeam = new Team();
-
-
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        confirm_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-                String[] playerList = new String[players.getLineCount()];
+                String[] playerList = new String[players_tv.getLineCount()];
 
-                String s = players.getText().toString();
-                System.out.print(players.getText().toString());
-                Log.i("multLine",players.getText().toString());
-                
+                String s = players_tv.getText().toString();
 
-
-                if (!teamAdminValid(teamName.getText().toString())) {
-                    teamName.setError("Team name is INVALID!");
-                } else if (!teamSportValid(teamSport.getText().toString())) {
-                    teamSport.setError("Team sport is INVALID!");
+                if (!teamAdminValid(team_name_et.getText().toString())) {
+                    team_name_et.setError("Team name is INVALID!");
+                } else if (!teamSportValid(team_sport_et.getText().toString())) {
+                    team_sport_et.setError("Team sport is INVALID!");
                 } else {
-                    newTeam.setSport(teamSport.getText().toString());
+                    newTeam.setSport(team_sport_et.getText().toString());
                     newTeam.setTeamAdmin(LoginTask.currentAuthUser.getHandle());
-                    newTeam.setTeamName(teamName.getText().toString());
+                    newTeam.setTeamName(team_name_et.getText().toString());
 
                     playersToAdd.add(LoginTask.currentAuthUser.getHandle());
                     newTeam.setTeamPlayers(playersToAdd.toArray(new String[0]));
@@ -101,7 +95,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
         // Cancel button takes you back to Login Page
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
@@ -139,18 +133,19 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 1){
             if(resultCode == RESULT_OK){
-                playersToAdd = data.getStringArrayListExtra("players");
-                Log.i(TAG,"players from search: " + Arrays.toString(playersToAdd.toArray()));
-                players.setText(Arrays.toString(playersToAdd.toArray()));
+                playersToAdd = data.getStringArrayListExtra("players_tv");
+                Log.i(TAG,"players_tv from search: " + Arrays.toString(playersToAdd.toArray()));
+                players_tv.setText(Arrays.toString(playersToAdd.toArray()));
 
             }
         }
 
     }
+
     // code to handle received response from server
     @Override
     public void taskFinished(String output){
-        Log.i("CreateTeamActivity", "json response: " + output);
+        Log.i(TAG, "json response: " + output);
         // save/check if input valid
 
         Log.i(TAG,"output: " + output);
@@ -168,7 +163,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
             startActivity(intent);
         }
         else if (output.contains("error")){
-            teamName.setError("Team name taken!");
+            team_name_et.setError("Team name taken!");
             Log.i(TAG,"error: " + output);
 
 
@@ -181,6 +176,4 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         }
 
     }
-
-
 }
