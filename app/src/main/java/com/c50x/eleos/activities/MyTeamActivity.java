@@ -93,6 +93,7 @@ public class MyTeamActivity extends AppCompatActivity {
                 Toast.makeText(MyTeamActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
 
 
+
             }
         });
 

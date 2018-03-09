@@ -1,7 +1,10 @@
 package com.c50x.eleos.activities;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +24,21 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
     private Context mContext;
     private ArrayList<TeamModel> modelList;
 
+    private int prevSelectedItem;
+    private int currSelecteItem;
+
+    private boolean set;
+
+
+
     private OnItemClickListener mItemClickListener;
 
 
     public RecyclerViewTeamAdapter(Context context, ArrayList<TeamModel> modelList) {
         this.mContext = context;
         this.modelList = modelList;
+        this.prevSelectedItem = -1;
+
     }
 
     public void updateList(ArrayList<TeamModel> modelList) {
@@ -53,6 +65,25 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
             genericViewHolder.itemTxtMessage.setText(model.getMessage());
+
+
+            if (currSelecteItem == holder.getAdapterPosition()){
+
+                Log.i("TeamAdapter", "current pos" + holder.getAdapterPosition() + "  prev pos " + prevSelectedItem);
+                holder.itemView.setActivated(true);
+                holder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.LIGHTEN);
+                prevSelectedItem = holder.getAdapterPosition();
+            }
+            else{
+
+                Log.i("TeamAdapter", "current pos" + position + "  prev pos " + prevSelectedItem);
+                holder.itemView.setActivated(false);
+                holder.itemView.setBackgroundColor(Color.WHITE);
+
+
+
+            }
+
 
 
         }
@@ -83,6 +114,7 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
         private ImageView imgUser;
         private TextView itemTxtTitle;
         private TextView itemTxtMessage;
+        private TeamModel lastChecked;
 
 
         // @BindView(R.id.img_user)
@@ -110,6 +142,8 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onClick(View view) {
                     mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
 
+                    currSelecteItem = getAdapterPosition();
+                    notifyDataSetChanged();
 
                 }
             });
