@@ -87,7 +87,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
             loginTask.authUsingToken(token);
         }
 
+        gameTask = new GameTask(MainActivity.this);
 
+        gameTask.loadGames();
 
 
 
@@ -138,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
                         if (swipeRefreshRecyclerList.isRefreshing())
                             swipeRefreshRecyclerList.setRefreshing(false);
 
-                        gameTask = new GameTask(MainActivity.this);
                         gameTask.loadGames();
 
                     }

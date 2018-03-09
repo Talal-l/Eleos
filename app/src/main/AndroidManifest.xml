@@ -39,7 +39,7 @@
         <activity
             android:name=".activities.MyTeamActivity"
             android:label="@string/title_activity_my_team"
-            android:theme="@style/AppTheme"></activity>
+            />
     </application>
 
 </manifest>

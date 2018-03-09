@@ -24,10 +24,9 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
     private Context mContext;
     private ArrayList<TeamModel> modelList;
 
-    private int prevSelectedItem;
-    private int currSelecteItem;
+    private static int currentSelection = -1;
 
-    private boolean set;
+
 
 
 
@@ -37,7 +36,6 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerViewTeamAdapter(Context context, ArrayList<TeamModel> modelList) {
         this.mContext = context;
         this.modelList = modelList;
-        this.prevSelectedItem = -1;
 
     }
 
@@ -67,22 +65,18 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
 
-            if (currSelecteItem == holder.getAdapterPosition()){
+            if (currentSelection == position){
+                holder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.DARKEN);
+                Log.i("TeamAdapter", "pos: " + position +"adapter pos: " + holder.getAdapterPosition() + "  current pos " + currentSelection);
+                Log.i("TeamAdapter", "title: " + ((ViewHolder) holder).itemTxtTitle.getText().toString());
+            }
+            else if (currentSelection != position){
 
-                Log.i("TeamAdapter", "current pos" + holder.getAdapterPosition() + "  prev pos " + prevSelectedItem);
-                holder.itemView.setActivated(true);
                 holder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.LIGHTEN);
-                prevSelectedItem = holder.getAdapterPosition();
             }
-            else{
-
-                Log.i("TeamAdapter", "current pos" + position + "  prev pos " + prevSelectedItem);
-                holder.itemView.setActivated(false);
-                holder.itemView.setBackgroundColor(Color.WHITE);
 
 
 
-            }
 
 
 
@@ -142,9 +136,10 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onClick(View view) {
                     mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
 
-                    currSelecteItem = getAdapterPosition();
-                    notifyDataSetChanged();
+                        currentSelection = getAdapterPosition();
 
+
+                    notifyDataSetChanged();
                 }
             });
 
