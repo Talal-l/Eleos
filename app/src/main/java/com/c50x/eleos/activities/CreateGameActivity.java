@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -28,15 +29,21 @@ import java.util.Calendar;
 
 public class CreateGameActivity extends AppCompatActivity implements AsyncResponse {
     private static final String TAG = "CreateGameActivity";
-    private EditText game_name_et;
-    private EditText game_type_et;
-    private TextView game_players_tv;
-    private EditText location_et;
-    private TextView date_tv;
-    private Button time_btn;
-    private Button cancel_btn;
-    private Button confirm_btn;
+
+    private Spinner spn_game_sport;
+
+    private EditText et_game_name;
+
+    private TextView tv_main_team;
+    private TextView tv_game_location;
+    private TextView tv_game_date;
+    private TextView tv_game_time;
+
+    private Button btn_create_game_cancel;
+    private Button btn_create_game_confirm;
+
     private Game newGame;
+
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
     private ArrayList<String> playersToAdd;
@@ -49,19 +56,19 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         newGame = new Game();
 
         // initializing the views
-        game_name_et = findViewById(R.id.game_name_input);
-        game_type_et = findViewById(R.id.game_type_input);
-        date_tv = findViewById(R.id.game_date_input);
-        time_btn = findViewById(R.id.game_time_input);
-        game_name_et = findViewById(R.id.game_name_input);
-        game_type_et = findViewById(R.id.game_type_input);
-        game_players_tv = findViewById(R.id.game_players_input);
-        location_et = findViewById(R.id.location_input);
-        cancel_btn = findViewById(R.id.cancel_create_game_button);
-        confirm_btn = (Button) findViewById(R.id.confirm_create_game_button);
+        et_game_name = findViewById(R.id.et_game_name);
+        spn_game_sport = findViewById(R.id.spn_game_sport);
+        tv_game_date = findViewById(R.id.tv_game_date);
+        tv_game_time = findViewById(R.id.tv_game_time);
+        et_game_name = findViewById(R.id.et_game_name);
+        spn_game_sport = findViewById(R.id.spn_game_sport);
+        tv_main_team = findViewById(R.id.tv_main_team);
+        tv_game_location = findViewById(R.id.tv_game_location);
+        btn_create_game_cancel = findViewById(R.id.btn_create_game_cancel);
+        btn_create_game_confirm = (Button) findViewById(R.id.btn_create_game_confirm);
 
         // get the date from user
-        date_tv.setOnClickListener(new View.OnClickListener() {
+        tv_game_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -83,14 +90,14 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 Log.i(TAG, "onDateSet: date_tv: " + year + "/" + month + "/" + dayOfMonth);
 
                 String date2 = month + "/" + dayOfMonth + "/" + year;
-                date_tv.setText(date2);
+                tv_game_date.setText(date2);
 
                 newGame.setStartDate(date2);
             }
         };
 
         // get time from user
-        time_btn.setOnClickListener(new View.OnClickListener() {
+        tv_game_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar time2 = Calendar.getInstance();
@@ -101,7 +108,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 timePickerDialog = new TimePickerDialog(CreateGameActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        time_btn.setText(hourOfDay + ":" + minute);
+                        tv_game_time.setText(hourOfDay + ":" + minute);
                         newGame.setStartTime(hourOfDay + ":" + minute);
                     }
                 }, hour, minute, false);
@@ -111,7 +118,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         });
 
         // go to player search
-        game_players_tv.setOnClickListener(new View.OnClickListener() {
+        // TODO: Change to team search
+        tv_main_team.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CreateGameActivity.this,PlayerSearchActivity.class);
@@ -122,7 +130,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
 
 
-        cancel_btn.setOnClickListener(new View.OnClickListener() {
+        btn_create_game_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -130,23 +138,19 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         });
 
 
-        confirm_btn.setOnClickListener(new View.OnClickListener() {
+        btn_create_game_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(gameNameIaValid(game_name_et.getText().toString())))
-                    game_name_et.setError("Empty or Incorrect Length (Between 4 and 20 characters)");
+                if (!(gameNameIaValid(et_game_name.getText().toString())))
+                    et_game_name.setError("Empty or Incorrect Length (Between 4 and 20 characters)");
 
-                else if (!(gameTypeIaVslid(game_type_et.getText().toString())))
-                    game_type_et.setError("Empty or did not enter 'Football'");
-
-                else if (!(locationIsValid(location_et.getText().toString())))
-                    location_et.setError("Empty field");
-
+                // TODO: Check if location is valid
                 else {
-                    newGame.setGameName(game_name_et.getText().toString());
+                    newGame.setGameName(et_game_name.getText().toString());
+
                     Log.i(TAG, "getting current user and setting them as admin");
                     newGame.setGameAdmin(LoginTask.currentAuthUser.getHandle());
-                    newGame.setSport(game_type_et.getText().toString());
+                    newGame.setSport(spn_game_sport.getSelectedItem().toString());
 
                     // save info in database
                     playersToAdd.add(LoginTask.currentAuthUser.getHandle());
@@ -168,7 +172,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             if(resultCode == RESULT_OK){
                 playersToAdd = data.getStringArrayListExtra("players");
                 Log.i(TAG,"players from search: " + Arrays.toString(playersToAdd.toArray()));
-                game_players_tv.setText(Arrays.toString(playersToAdd.toArray()));
+                // TODO: Add team instead
+                //game_players_tv.setText(Arrays.toString(playersToAdd.toArray()));
 
             }
         }
