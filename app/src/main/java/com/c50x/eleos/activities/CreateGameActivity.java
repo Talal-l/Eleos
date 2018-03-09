@@ -67,6 +67,9 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         btn_create_game_cancel = findViewById(R.id.btn_create_game_cancel);
         btn_create_game_confirm = (Button) findViewById(R.id.btn_create_game_confirm);
 
+
+
+
         // get the date from user
         tv_game_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,12 +120,12 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             }
         });
 
-        // go to player search
+        // go to myTeam screen
         // TODO: Change to team search
         tv_main_team.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CreateGameActivity.this,PlayerSearchActivity.class);
+                Intent intent = new Intent(CreateGameActivity.this,MyTeamActivity.class);
                 startActivityForResult(intent,1);
 
             }

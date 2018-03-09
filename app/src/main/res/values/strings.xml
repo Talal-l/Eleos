@@ -59,6 +59,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_player_search">PlayerSearchActivity</string>
+    <string name="title_activity_my_team">MyTeamActivity</string>
 
 
 </resources>

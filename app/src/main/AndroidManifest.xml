@@ -35,7 +35,11 @@
         <activity
             android:name=".activities.PlayerSearchActivity"
             android:label="@string/title_activity_player_search"
-            android:theme="@style/AppTheme.Template.Base"></activity>
+            android:theme="@style/AppTheme.Template.Base" />
+        <activity
+            android:name=".activities.MyTeamActivity"
+            android:label="@string/title_activity_my_team"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
