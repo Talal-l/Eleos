@@ -23,8 +23,9 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private Context mContext;
     private ArrayList<TeamModel> modelList;
-
-    private static int currentSelection = -1;
+    private TeamModel selectedModel;
+    private  int currentSelection = -1;
+    private  int prevSelection = -1;
 
 
 
@@ -67,11 +68,10 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             if (currentSelection == position){
                 holder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.DARKEN);
-                Log.i("TeamAdapter", "pos: " + position +"adapter pos: " + holder.getAdapterPosition() + "  current pos " + currentSelection);
-                Log.i("TeamAdapter", "title: " + ((ViewHolder) holder).itemTxtTitle.getText().toString());
+                selectedModel = model;
+                Log.i("TeamAdapter", "current selection: " + currentSelection);
             }
             else if (currentSelection != position){
-
                 holder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.LIGHTEN);
             }
 
@@ -88,6 +88,17 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
     public int getItemCount() {
 
         return modelList.size();
+    }
+    public void resetSelection(){
+        currentSelection = -1;
+        selectedModel = null;
+    }
+    public int getCurrentSelectionPosition(){
+        return currentSelection;
+    }
+    public TeamModel getSelection(){
+
+        return selectedModel;
     }
 
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
@@ -134,12 +145,15 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
 
                         currentSelection = getAdapterPosition();
+                        if (currentSelection == prevSelection)
+                            resetSelection();
+                        prevSelection = currentSelection;
 
-
+                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
                     notifyDataSetChanged();
+
                 }
             });
 

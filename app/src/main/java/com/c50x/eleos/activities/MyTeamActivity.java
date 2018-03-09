@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,12 +33,17 @@ public class MyTeamActivity extends AppCompatActivity {
     private RecyclerViewTeamAdapter mAdapter;
 
     private ArrayList<TeamModel> modelList = new ArrayList<>();
-
+    private Menu mnu_team_select;
+    private MenuItem mnut_done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_team);
+
+
+
+
 
         // ButterKnife.bind(this);
         findViews();
@@ -54,11 +60,18 @@ public class MyTeamActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_actionbar, menu);
+        mnu_team_select = menu;
+        mnut_done = mnu_team_select.findItem(R.id.mnut_done);
+
+        // hide done when nothing is selected
+        mnut_done.setVisible(false);
+
         return true;
     }
 
     @Override
     public boolean onSupportNavigateUp(){
+        mAdapter.resetSelection();
         finish();
         return true;
     }
@@ -68,7 +81,7 @@ public class MyTeamActivity extends AppCompatActivity {
             case R.id.homeAsUp:
                 // User chose the "Settings" item, show the app settings UI...
 
-            case R.id.action_favorite:
+            case R.id.mnut_done:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
                 return true;
@@ -80,9 +93,6 @@ public class MyTeamActivity extends AppCompatActivity {
 
         }
     }
-
-
-
 
 
 
@@ -138,6 +148,15 @@ public class MyTeamActivity extends AppCompatActivity {
             public void onItemClick(View view, int position, TeamModel model) {
 
                 //handle item click events here
+
+                // show done action when an item is selected
+                if (mAdapter.getCurrentSelectionPosition() > -1)
+                    mnut_done.setVisible(true);
+                else
+                    mnut_done.setVisible(false);
+
+                Log.i("teamActivity","pos: " + mAdapter.getCurrentSelectionPosition());
+
                 Toast.makeText(MyTeamActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
 
 
