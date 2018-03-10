@@ -15,6 +15,7 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;

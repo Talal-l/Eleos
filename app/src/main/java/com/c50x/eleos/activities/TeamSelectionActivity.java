@@ -1,5 +1,6 @@
 package com.c50x.eleos.activities;
 
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -14,16 +15,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvTeamAdapter;
+import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.LoginTask;
+import com.c50x.eleos.controllers.TeamTask;
+import com.c50x.eleos.data.Team;
 import com.c50x.eleos.models.RvTeamModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.widget.Toast;
 
 
-public class TeamSelectionActivity extends AppCompatActivity {
+public class TeamSelectionActivity extends AppCompatActivity implements AsyncResponse{
 
     private RecyclerView recyclerView;
 
@@ -32,23 +43,25 @@ public class TeamSelectionActivity extends AppCompatActivity {
 
 
     private RvTeamAdapter mAdapter;
-
     private ArrayList<RvTeamModel> modelList = new ArrayList<>();
+    private TeamTask teamTask;
+    private LoginTask loginTask;
+
     private Menu mnu_team_select;
     private MenuItem mnut_done;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_team);
 
-
-
-
-
-        // ButterKnife.bind(this);
+        // setup the views and adapters
         findViews();
-        setAdapter();
+        teamTask = new TeamTask(TeamSelectionActivity.this);
+
+        // load current players teams
+        teamTask.loadAdminTeams(LoginTask.currentAuthUser.getHandle());
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -108,24 +121,6 @@ public class TeamSelectionActivity extends AppCompatActivity {
 
     private void setAdapter() {
 
-
-        modelList.add(new RvTeamModel("Android", "Hello " + " Android"));
-        modelList.add(new RvTeamModel("Beta", "Hello " + " Beta"));
-        modelList.add(new RvTeamModel("Cupcake", "Hello " + " Cupcake"));
-        modelList.add(new RvTeamModel("Donut", "Hello " + " Donut"));
-        modelList.add(new RvTeamModel("Eclair", "Hello " + " Eclair"));
-        modelList.add(new RvTeamModel("Froyo", "Hello " + " Froyo"));
-        modelList.add(new RvTeamModel("Gingerbread", "Hello " + " Gingerbread"));
-        modelList.add(new RvTeamModel("Honeycomb", "Hello " + " Honeycomb"));
-        modelList.add(new RvTeamModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
-        modelList.add(new RvTeamModel("Jelly Bean", "Hello " + " Jelly Bean"));
-        modelList.add(new RvTeamModel("KitKat", "Hello " + " KitKat"));
-        modelList.add(new RvTeamModel("Lollipop", "Hello " + " Lollipop"));
-        modelList.add(new RvTeamModel("Marshmallow", "Hello " + " Marshmallow"));
-        modelList.add(new RvTeamModel("Nougat", "Hello " + " Nougat"));
-        modelList.add(new RvTeamModel("Android O", "Hello " + " Android O"));
-
-
         mAdapter = new RvTeamAdapter(TeamSelectionActivity.this, modelList);
 
         recyclerView.setHasFixedSize(true);
@@ -159,14 +154,29 @@ public class TeamSelectionActivity extends AppCompatActivity {
                 Log.i("teamActivity","pos: " + mAdapter.getCurrentSelectionPosition());
 
                 Toast.makeText(TeamSelectionActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
-
-
-
-            }
+          }
         });
 
 
     }
 
 
+    @Override
+    public void taskFinished(String output) {
+        Gson gson = new Gson();
+
+        // convert
+        ArrayList<Team> adminTeams = gson.fromJson(output, new TypeToken<ArrayList<Team>>(){}.getType());
+
+        // convert Team to TeamModle so it can be displayed
+        for (Team team: adminTeams){
+
+            RvTeamModel model = new RvTeamModel(team.getTeamName(), Arrays.toString(team.getTeamPlayers()));
+
+            modelList.add(model);
+
+            // let adapter load the models
+            setAdapter();
+        }
+    }
 }
