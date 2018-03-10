@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -43,7 +44,9 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
 
     //@BindView(R.id.toolbar)
     //Toolbar toolbar;
-    private Toolbar toolbar;
+    private MenuItem mnut_done;
+    private Menu actionMenu;
+
 
     private static final String TAG = "PlayerSearchActivity";
     private RvPlayerAdapter mAdapter;
@@ -53,7 +56,6 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
     private ArrayList<String> playersToAdd;
 
 
-    private Button confirmButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,41 +65,24 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
         userTask = new UserTask(PlayerSearchActivity.this);
         playersToAdd = new ArrayList<>();
 
-        confirmButton = findViewById(R.id.player_search_confirm);
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // if selected return with result
-                if (playersToAdd.size() > 0){
-                    Intent intent = new Intent();
-                    intent.putExtra("players",playersToAdd);
-                    setResult(RESULT_OK,intent);
-                    finish();
-
-                }
-                else {
-                    Toast.makeText(PlayerSearchActivity.this,
-                            "no player selected, press cancel to go back", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         // ButterKnife.bind(this);
         findViews();
+
+        // get all users when activity starts
+        userTask.searchPlayer("");
+
         initToolbar("player search");
         setAdapter();
 
     }
 
     private void findViews() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     }
 
     public void initToolbar(String title) {
-        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(title);
     }
@@ -106,15 +91,24 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        actionMenu = menu;
+        mnut_done = menu.findItem(R.id.mnut_done);
+
+        // hide done when nothing is selected
+        mnut_done.setVisible(false);
 
 
         // Retrieve the SearchView and plug it into SearchManager
         //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        final SearchView searchView = (SearchView) (menu.findItem(R.id.action_search).getActionView());
+        final SearchView searchView = (SearchView) (findViewById(R.id.player_actionbar_search));
 
         SearchManager searchManager = (SearchManager) this.getSystemService(this.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+
+        // set the search bar to always on
+        searchView.setIconifiedByDefault(false);
+
 
         //changing edittext color
         EditText searchEdit = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
@@ -141,6 +135,7 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
             }
         };
         searchEdit.setFilters(fArray);
+
         View v = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
         v.setBackgroundColor(Color.TRANSPARENT);
 
@@ -156,7 +151,18 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
 
             @Override
             public boolean onQueryTextChange(String s) {
-               return false;
+                ArrayList<RvPlayerModel> filterList = new ArrayList<>();
+                if (s.length() > 0) {
+                    for (int i = 0; i < modelList.size(); i++) {
+                        if (modelList.get(i).getTitle().toLowerCase().contains(s.toString().toLowerCase())) {
+                            filterList.add(modelList.get(i));
+                            mAdapter.updateList(filterList);
+                        }
+                    }
+                } else {
+                    mAdapter.updateList(modelList);
+                }
+                return false;
             }
         });
 
@@ -164,7 +170,32 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mnut_done:
+                // select done option
+        // if selected return with result
+                if (playersToAdd.size() > 0){
+                    Intent intent = new Intent();
+                    intent.putExtra("players",playersToAdd);
+                    setResult(RESULT_OK,intent);
+                    finish();
 
+                }
+                else {
+                    Toast.makeText(PlayerSearchActivity.this,
+                            "no player selected, press cancel to go back", Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void setAdapter() {
 
 

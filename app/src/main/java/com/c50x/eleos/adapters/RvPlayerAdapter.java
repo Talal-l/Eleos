@@ -163,6 +163,5 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
     }
-
 }
 
