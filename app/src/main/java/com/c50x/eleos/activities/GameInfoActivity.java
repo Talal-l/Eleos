@@ -11,10 +11,11 @@ import com.c50x.eleos.R;
 public class GameInfoActivity extends AppCompatActivity
 {
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState)
+    protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState, persistentState);
+        super.onCreate(savedInstanceState);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
         setContentView(R.layout.game_info);
+
     }
 }

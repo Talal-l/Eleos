@@ -1,86 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:addStatesFromChildren="true"
     android:background="@color/colorPrimary"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.c50x.eleos.activities.GameInfo">
+    >
 
-    <android.support.design.widget.TextInputLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
-        <AutoCompleteTextView
-            android:id="@+id/email"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="59dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:theme="@style/Autocomplete"
-            android:textColorHighlight="@color/colorAccent" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp">
 
-    </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:id="@+id/et_game_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="Game name: "
+                    android:textColor="#000000"
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+                    />
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="63dp"
-            android:layout_weight="1"
-            android:background="#009688"
-            android:hint="Password"
-            android:imeActionId="6"
-            android:theme="@style/Autocomplete"
-            android:imeActionLabel="@string/action_sign_in_short"
-            android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:singleLine="true" />
+                <TextView
+                    android:id="@+id/et_game_team1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="Team 1: "
+                    android:textColor="#000000" />
 
-    </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:id="@+id/et_game_team2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="Team 2: "
+                    android:textColor="#000000" />
 
-    <Button
-        android:id="@+id/signIn_button"
-        style="@android:style/Widget.Button"
-        android:layout_width="263dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorButtons"
-        android:text="@string/action_sign_in"
-        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/et_sport_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="Sport type: "
+                    android:textColor="#000000"
 
-    <Button
-        android:id="@+id/Register_button"
-        style="@android:style/Widget.Button"
-        android:layout_width="263dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorButtons"
-        android:text="@string/action_register"
-        android:textStyle="bold" />
+                    android:textSize="18sp" />
 
+                <TextView
+                    android:id="@+id/tv_game_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="Date: "
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/PlayerSearch_button"
-        style="@android:style/Widget.Button"
-        android:layout_width="263dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorButtons"
-        android:text="Player Search"
-        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_game_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="Time: "
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_game_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_add_location_black_24dp"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text="Venue: "
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/btn_cancel_create_game"
+                    android:layout_width="230"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/btn_confirm_create_game"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:text="Confirm" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
