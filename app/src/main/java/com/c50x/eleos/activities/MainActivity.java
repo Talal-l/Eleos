@@ -23,11 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.adapters.RvGameAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.User;
+import com.c50x.eleos.models.RvGameModel;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -48,9 +50,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
     private RecyclerView recyclerView;
 
     private SwipeRefreshLayout swipeRefreshRecyclerList;
-    private RecyclerViewAdapter mAdapter;
+    private RvGameAdapter mAdapter;
 
-    private ArrayList<AbstractModel> modelList = new ArrayList<>();
+    private ArrayList<RvGameModel> modelList = new ArrayList<>();
 
     FragmentTransaction fragmentTransaction;
 
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
 
 
 
-        mAdapter = new RecyclerViewAdapter(MainActivity.this, modelList);
+        mAdapter = new RvGameAdapter(MainActivity.this, modelList);
 
         recyclerView.setHasFixedSize(true);
 
@@ -116,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
         recyclerView.setAdapter(mAdapter);
 
 
-        mAdapter.SetOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+        mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, AbstractModel model) {
+            public void onItemClick(View view, int position, RvGameModel model) {
 
                 //handle item click events here
                 Toast.makeText(MainActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
@@ -229,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
 
             modelList = new ArrayList<>();
             for (int i = 0; i < games.length; i++){
-                modelList.add(new AbstractModel(games[i]));
+                modelList.add(new RvGameModel(games[i]));
             }
             Log.i("MainActivity","adding to game list");
             mAdapter.updateList(modelList);

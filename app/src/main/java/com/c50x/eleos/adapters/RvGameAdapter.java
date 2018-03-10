@@ -1,4 +1,4 @@
-package com.c50x.eleos.activities;
+package com.c50x.eleos.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,42 +8,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import android.support.v7.widget.LinearLayoutManager;
-
 import com.c50x.eleos.R;
+import com.c50x.eleos.models.RvGameModel;
 
-import android.widget.CheckBox;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import android.widget.CompoundButton;
+import java.util.ArrayList;
 
 
 /**
  * A custom adapter to use with the RecyclerView widget.
  */
-public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<AbstractModel2> modelList;
+    private ArrayList<RvGameModel> modelList;
 
     private OnItemClickListener mItemClickListener;
 
-    private OnCheckedListener mOnCheckedListener;
 
-
-    private Set<Integer> checkSet = new HashSet<>();
-
-
-    public RecyclerViewAdapter2(Context context, ArrayList<AbstractModel2> modelList) {
+    public RvGameAdapter(Context context, ArrayList<RvGameModel> modelList) {
         this.mContext = context;
         this.modelList = modelList;
     }
 
-    public void updateList(ArrayList<AbstractModel2> modelList) {
+    public void updateList(ArrayList<RvGameModel> modelList) {
         this.modelList = modelList;
         notifyDataSetChanged();
 
@@ -62,33 +49,11 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerView.View
 
         //Here you can fill your row view
         if (holder instanceof ViewHolder) {
-            final AbstractModel2 model = getItem(position);
+            final RvGameModel model = getItem(position);
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
             genericViewHolder.itemTxtMessage.setText(model.getMessage());
-
-
-            //in some cases, it will prevent unwanted situations
-            genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
-
-            //if true, your checkbox will be selected, else unselected
-            genericViewHolder.itemCheckList.setChecked(checkSet.contains(position));
-
-            genericViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    if (isChecked) {
-                        checkSet.add(position);
-                    } else {
-                        checkSet.remove(position);
-                    }
-
-                    mOnCheckedListener.onChecked(buttonView, isChecked, position, model);
-
-                }
-            });
 
 
         }
@@ -105,22 +70,13 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerView.View
         this.mItemClickListener = mItemClickListener;
     }
 
-    public void SetOnCheckedListener(final OnCheckedListener onCheckedListener) {
-        this.mOnCheckedListener = onCheckedListener;
-
-    }
-
-    private AbstractModel2 getItem(int position) {
+    private RvGameModel getItem(int position) {
         return modelList.get(position);
     }
 
+
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, AbstractModel2 model);
-    }
-
-
-    public interface OnCheckedListener {
-        void onChecked(View view, boolean isChecked, int position, AbstractModel2 model);
+        void onItemClick(View view, int position, RvGameModel model);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -129,8 +85,6 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerView.View
         private TextView itemTxtTitle;
         private TextView itemTxtMessage;
 
-
-        private CheckBox itemCheckList;
 
         // @BindView(R.id.img_user)
         // ImageView imgUser;
@@ -150,7 +104,6 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerView.View
             this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
             this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
             this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
-            this.itemCheckList = (CheckBox) itemView.findViewById(R.id.check_list);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

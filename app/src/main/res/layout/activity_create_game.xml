@@ -28,6 +28,7 @@
 
     <Spinner
         android:id="@+id/spn_game_sport"
+        android:entries="@array/sports"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
@@ -103,7 +104,7 @@
 
     <Button
         android:layout_width="0dp"
-        android:id="@+id/btn_create_game_cancel"
+        android:id="@+id/btn_cancel_create_game"
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:layout_weight="1"
@@ -111,7 +112,7 @@
 
     <Button
         android:layout_width="0dp"
-        android:id="@+id/btn_create_game_confirm"
+        android:id="@+id/btn_confirm_create_game"
         android:layout_height="50dp"
         android:layout_weight="1"
         android:text="Confirm"

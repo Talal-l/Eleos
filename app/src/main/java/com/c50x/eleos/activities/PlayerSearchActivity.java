@@ -6,33 +6,27 @@ import android.os.Bundle;
 
 import android.support.v7.widget.LinearLayoutManager;
 
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.adapters.RvPlayerAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.UserTask;
-import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.User;
+import com.c50x.eleos.models.RvPlayerModel;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import android.widget.Button;
 import android.widget.Toast;
-import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 
 import android.view.Menu;
 import android.support.v7.widget.SearchView;
-import android.support.v4.view.MenuItemCompat;
 import android.app.SearchManager;
 import android.widget.EditText;
 import android.graphics.Color;
@@ -52,9 +46,9 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
     private Toolbar toolbar;
 
     private static final String TAG = "PlayerSearchActivity";
-    private RecyclerViewAdapter2 mAdapter;
+    private RvPlayerAdapter mAdapter;
 
-    private ArrayList<AbstractModel2> modelList = new ArrayList<>();
+    private ArrayList<RvPlayerModel> modelList = new ArrayList<>();
     private UserTask userTask;
     private ArrayList<String> playersToAdd;
 
@@ -175,7 +169,7 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
 
 
 
-        mAdapter = new RecyclerViewAdapter2(PlayerSearchActivity.this, modelList);
+        mAdapter = new RvPlayerAdapter(PlayerSearchActivity.this, modelList);
 
         recyclerView.setHasFixedSize(true);
 
@@ -189,9 +183,9 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
         recyclerView.setAdapter(mAdapter);
 
 
-        mAdapter.SetOnItemClickListener(new RecyclerViewAdapter2.OnItemClickListener() {
+        mAdapter.SetOnItemClickListener(new RvPlayerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, AbstractModel2 model) {
+            public void onItemClick(View view, int position, RvPlayerModel model) {
 
                 //handle item click events here
                 Toast.makeText(PlayerSearchActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
@@ -201,9 +195,9 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
         });
 
 
-        mAdapter.SetOnCheckedListener(new RecyclerViewAdapter2.OnCheckedListener() {
+        mAdapter.SetOnCheckedListener(new RvPlayerAdapter.OnCheckedListener() {
             @Override
-            public void onChecked(View view, boolean isChecked, int position, AbstractModel2 model) {
+            public void onChecked(View view, boolean isChecked, int position, RvPlayerModel model) {
 
                 Toast.makeText(PlayerSearchActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
 
@@ -242,7 +236,7 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
             modelList = new ArrayList<>();
             for (int i = 0; i < matchingUsers.length; i++){
                 Log.i(TAG, "Match: " + matchingUsers[i].getHandle());
-                modelList.add(new AbstractModel2(matchingUsers[i]));
+                modelList.add(new RvPlayerModel(matchingUsers[i]));
             }
             mAdapter.updateList(modelList);
         }

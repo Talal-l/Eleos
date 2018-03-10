@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,11 +17,13 @@ import android.view.View;
 import java.util.ArrayList;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.adapters.RvTeamAdapter;
+import com.c50x.eleos.models.RvTeamModel;
 
 import android.widget.Toast;
 
 
-public class MyTeamActivity extends AppCompatActivity {
+public class TeamSelectionActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
@@ -30,9 +31,9 @@ public class MyTeamActivity extends AppCompatActivity {
     // RecyclerView recyclerView;
 
 
-    private RecyclerViewTeamAdapter mAdapter;
+    private RvTeamAdapter mAdapter;
 
-    private ArrayList<TeamModel> modelList = new ArrayList<>();
+    private ArrayList<RvTeamModel> modelList = new ArrayList<>();
     private Menu mnu_team_select;
     private MenuItem mnut_done;
 
@@ -108,24 +109,24 @@ public class MyTeamActivity extends AppCompatActivity {
     private void setAdapter() {
 
 
-        modelList.add(new TeamModel("Android", "Hello " + " Android"));
-        modelList.add(new TeamModel("Beta", "Hello " + " Beta"));
-        modelList.add(new TeamModel("Cupcake", "Hello " + " Cupcake"));
-        modelList.add(new TeamModel("Donut", "Hello " + " Donut"));
-        modelList.add(new TeamModel("Eclair", "Hello " + " Eclair"));
-        modelList.add(new TeamModel("Froyo", "Hello " + " Froyo"));
-        modelList.add(new TeamModel("Gingerbread", "Hello " + " Gingerbread"));
-        modelList.add(new TeamModel("Honeycomb", "Hello " + " Honeycomb"));
-        modelList.add(new TeamModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
-        modelList.add(new TeamModel("Jelly Bean", "Hello " + " Jelly Bean"));
-        modelList.add(new TeamModel("KitKat", "Hello " + " KitKat"));
-        modelList.add(new TeamModel("Lollipop", "Hello " + " Lollipop"));
-        modelList.add(new TeamModel("Marshmallow", "Hello " + " Marshmallow"));
-        modelList.add(new TeamModel("Nougat", "Hello " + " Nougat"));
-        modelList.add(new TeamModel("Android O", "Hello " + " Android O"));
+        modelList.add(new RvTeamModel("Android", "Hello " + " Android"));
+        modelList.add(new RvTeamModel("Beta", "Hello " + " Beta"));
+        modelList.add(new RvTeamModel("Cupcake", "Hello " + " Cupcake"));
+        modelList.add(new RvTeamModel("Donut", "Hello " + " Donut"));
+        modelList.add(new RvTeamModel("Eclair", "Hello " + " Eclair"));
+        modelList.add(new RvTeamModel("Froyo", "Hello " + " Froyo"));
+        modelList.add(new RvTeamModel("Gingerbread", "Hello " + " Gingerbread"));
+        modelList.add(new RvTeamModel("Honeycomb", "Hello " + " Honeycomb"));
+        modelList.add(new RvTeamModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
+        modelList.add(new RvTeamModel("Jelly Bean", "Hello " + " Jelly Bean"));
+        modelList.add(new RvTeamModel("KitKat", "Hello " + " KitKat"));
+        modelList.add(new RvTeamModel("Lollipop", "Hello " + " Lollipop"));
+        modelList.add(new RvTeamModel("Marshmallow", "Hello " + " Marshmallow"));
+        modelList.add(new RvTeamModel("Nougat", "Hello " + " Nougat"));
+        modelList.add(new RvTeamModel("Android O", "Hello " + " Android O"));
 
 
-        mAdapter = new RecyclerViewTeamAdapter(MyTeamActivity.this, modelList);
+        mAdapter = new RvTeamAdapter(TeamSelectionActivity.this, modelList);
 
         recyclerView.setHasFixedSize(true);
 
@@ -137,15 +138,15 @@ public class MyTeamActivity extends AppCompatActivity {
 
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(MyTeamActivity.this, R.drawable.divider_recyclerview));
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(TeamSelectionActivity.this, R.drawable.divider_recyclerview));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         recyclerView.setAdapter(mAdapter);
 
 
-        mAdapter.SetOnItemClickListener(new RecyclerViewTeamAdapter.OnItemClickListener() {
+        mAdapter.SetOnItemClickListener(new RvTeamAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, TeamModel model) {
+            public void onItemClick(View view, int position, RvTeamModel model) {
 
                 //handle item click events here
 
@@ -157,7 +158,7 @@ public class MyTeamActivity extends AppCompatActivity {
 
                 Log.i("teamActivity","pos: " + mAdapter.getCurrentSelectionPosition());
 
-                Toast.makeText(MyTeamActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(TeamSelectionActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
 
 
 

@@ -1,20 +1,24 @@
-package com.c50x.eleos.activities;
+package com.c50x.eleos.models;
+
+import com.c50x.eleos.data.User;
 
 import java.util.ArrayList;
 
-public class TeamModel {
+public class RvPlayerModel {
 
     private String title;
 
     private String message;
 
 
-    public TeamModel(String title, String message) {
+    public RvPlayerModel(String title, String message) {
         this.title = title;
         this.message = message;
     }
 
-    public TeamModel() {
+    public RvPlayerModel(User user) {
+        this.title = user.getHandle();
+        this.message = user.getName();
 
     }
 

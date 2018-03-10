@@ -47,17 +47,15 @@
     <string name="server_address">http://159.65.81.211</string>
 
 
-    <!-- Dummy Data for Player Search -->
-    <string-array name="dummy1">
-        <item>Ahmad</item>
-        <item>Talal</item>
-        <item>Loha</item>
-        <item>Naib</item>
-        <item>Maito</item>
+    <!-- available sports -->
+    <string-array name="sports">
+        <item>Football</item>
+        <item>Basketball</item>
+        <item>Volleyball</item>
     </string-array>
+
     <string name="title_activity_game_list">GameListActivity</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_player_search">PlayerSearchActivity</string>
     <string name="title_activity_my_team">MyTeamActivity</string>
 

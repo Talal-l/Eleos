@@ -21,12 +21,11 @@ import java.util.Arrays;
 
 public class CreateTeamActivity extends AppCompatActivity implements AsyncResponse {
 
-    private Button confirm_btn;
-    private Button cancel_btn;
-    private EditText team_sport_et;
-    private EditText team_name_et;
-    private EditText team_admin;
-    private TextView players_tv;
+    private Button btnConfirmCreateTeam;
+    private Button btnCancelCreateTeam;
+    private EditText etTeamSport;
+    private EditText etTeamName;
+    private TextView tvPlayers;
     private Team newTeam;
     private ArrayList<String> playersToAdd;
 
@@ -45,15 +44,15 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         newTeam = new Team();
 
         // initializing the views
-        team_name_et = findViewById(R.id.team_name_input);
-        team_sport_et = findViewById(R.id.team_sport_input);
-        players_tv = findViewById(R.id.game_players_input);
-        confirm_btn = findViewById(R.id.confirm_create_team_button);
-        cancel_btn = findViewById(R.id.cancel_create_team_button);
+        etTeamName = findViewById(R.id.et_team_name);
+        etTeamSport = findViewById(R.id.et_team_sport);
+        tvPlayers = findViewById(R.id.tv_game_players);
+        btnConfirmCreateTeam = findViewById(R.id.btn_confirm_create_team);
+        btnCancelCreateTeam = findViewById(R.id.btn_cancel_create_team);
 
 
         // go to player search
-        players_tv.setOnClickListener(new View.OnClickListener() {
+        tvPlayers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CreateTeamActivity.this,PlayerSearchActivity.class);
@@ -63,23 +62,22 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         });
 
 
-        confirm_btn.setOnClickListener(new View.OnClickListener() {
-
+        btnConfirmCreateTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String[] playerList = new String[players_tv.getLineCount()];
+                String[] playerList = new String[tvPlayers.getLineCount()];
 
-                String s = players_tv.getText().toString();
+                String s = tvPlayers.getText().toString();
 
-                if (!teamAdminValid(team_name_et.getText().toString())) {
-                    team_name_et.setError("Team name is INVALID!");
-                } else if (!teamSportValid(team_sport_et.getText().toString())) {
-                    team_sport_et.setError("Team sport is INVALID!");
+                if (!teamAdminValid(etTeamName.getText().toString())) {
+                    etTeamName.setError("Team name is INVALID!");
+                } else if (!teamSportValid(etTeamSport.getText().toString())) {
+                    etTeamSport.setError("Team sport is INVALID!");
                 } else {
-                    newTeam.setSport(team_sport_et.getText().toString());
+                    newTeam.setSport(etTeamSport.getText().toString());
                     newTeam.setTeamAdmin(LoginTask.currentAuthUser.getHandle());
-                    newTeam.setTeamName(team_name_et.getText().toString());
+                    newTeam.setTeamName(etTeamName.getText().toString());
 
                     playersToAdd.add(LoginTask.currentAuthUser.getHandle());
                     newTeam.setTeamPlayers(playersToAdd.toArray(new String[0]));
@@ -95,7 +93,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
         // Cancel button takes you back to Login Page
 
-        cancel_btn.setOnClickListener(new View.OnClickListener() {
+        btnCancelCreateTeam.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
@@ -133,9 +131,9 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 1){
             if(resultCode == RESULT_OK){
-                playersToAdd = data.getStringArrayListExtra("players_tv");
-                Log.i(TAG,"players_tv from search: " + Arrays.toString(playersToAdd.toArray()));
-                players_tv.setText(Arrays.toString(playersToAdd.toArray()));
+                playersToAdd = data.getStringArrayListExtra("tvPlayers");
+                Log.i(TAG,"tvPlayers from search: " + Arrays.toString(playersToAdd.toArray()));
+                tvPlayers.setText(Arrays.toString(playersToAdd.toArray()));
 
             }
         }
@@ -163,7 +161,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
             startActivity(intent);
         }
         else if (output.contains("error")){
-            team_name_et.setError("Team name taken!");
+            etTeamName.setError("Team name taken!");
             Log.i(TAG,"error: " + output);
 
 

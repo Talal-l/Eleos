@@ -1,20 +1,20 @@
-package com.c50x.eleos.activities;
+package com.c50x.eleos.models;
 
 import com.c50x.eleos.data.Game;
 
-public class AbstractModel {
+public class RvGameModel {
 
     private String title;
 
     private String message;
 
 
-    public AbstractModel(String title, String message) {
+    public RvGameModel(String title, String message) {
         this.title = title;
         this.message = message;
     }
 
-    public AbstractModel(Game game) {
+    public RvGameModel(Game game) {
         this.title = game.getGameName();
         this.message = game.getGameAdmin();
 

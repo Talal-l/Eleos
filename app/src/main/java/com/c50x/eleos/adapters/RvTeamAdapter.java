@@ -1,4 +1,4 @@
-package com.c50x.eleos.activities;
+package com.c50x.eleos.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,16 +14,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.models.RvTeamModel;
 
 
 /**
  * A custom adapter to use with the RecyclerView widget.
  */
-public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RvTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<TeamModel> modelList;
-    private TeamModel selectedModel;
+    private ArrayList<RvTeamModel> modelList;
+    private RvTeamModel selectedModel;
     private  int currentSelection = -1;
     private  int prevSelection = -1;
 
@@ -34,13 +35,13 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
     private OnItemClickListener mItemClickListener;
 
 
-    public RecyclerViewTeamAdapter(Context context, ArrayList<TeamModel> modelList) {
+    public RvTeamAdapter(Context context, ArrayList<RvTeamModel> modelList) {
         this.mContext = context;
         this.modelList = modelList;
 
     }
 
-    public void updateList(ArrayList<TeamModel> modelList) {
+    public void updateList(ArrayList<RvTeamModel> modelList) {
         this.modelList = modelList;
         notifyDataSetChanged();
 
@@ -59,7 +60,7 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         //Here you can fill your row view
         if (holder instanceof ViewHolder) {
-            final TeamModel model = getItem(position);
+            final RvTeamModel model = getItem(position);
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
@@ -96,7 +97,7 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
     public int getCurrentSelectionPosition(){
         return currentSelection;
     }
-    public TeamModel getSelection(){
+    public RvTeamModel getSelection(){
 
         return selectedModel;
     }
@@ -105,13 +106,13 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.mItemClickListener = mItemClickListener;
     }
 
-    private TeamModel getItem(int position) {
+    private RvTeamModel getItem(int position) {
         return modelList.get(position);
     }
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, TeamModel model);
+        void onItemClick(View view, int position, RvTeamModel model);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -119,7 +120,7 @@ public class RecyclerViewTeamAdapter extends RecyclerView.Adapter<RecyclerView.V
         private ImageView imgUser;
         private TextView itemTxtTitle;
         private TextView itemTxtMessage;
-        private TeamModel lastChecked;
+        private RvTeamModel lastChecked;
 
 
         // @BindView(R.id.img_user)
