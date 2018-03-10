@@ -23,7 +23,6 @@ import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CreateGameActivity extends AppCompatActivity implements AsyncResponse {
@@ -34,6 +33,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     private EditText etGameName;
 
     private TextView tvMainTeam;
+    private TextView tvGameChallengeTeam;
     private TextView tvGameLocation;
     private TextView tvGameDate;
     private TextView tvGameTime;
@@ -46,6 +46,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
     private String mainTeamToAdd;
+    private String challengeTeam;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         spnGameSport = findViewById(R.id.spn_game_sport);
         tvMainTeam = findViewById(R.id.tv_main_team);
         tvGameLocation = findViewById(R.id.tv_game_location);
+        tvGameChallengeTeam = findViewById(R.id.tv_game_challenged_team);
         btnCancelCreateGame = findViewById(R.id.btn_cancel_create_game);
         btnConfirmCreateGame = findViewById(R.id.btn_confirm_create_game);
 
@@ -125,7 +127,18 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CreateGameActivity.this,TeamSelectionActivity.class);
+                intent.putExtra("source",0);
                 startActivityForResult(intent,1);
+            }
+        });
+
+        // go to team selection screen to display all available teams
+        tvGameChallengeTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CreateGameActivity.this,TeamSelectionActivity.class);
+                intent.putExtra("source",1);
+                startActivityForResult(intent,2);
             }
         });
 
@@ -167,9 +180,15 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 1){ // coming from selecting the main team
             if(resultCode == RESULT_OK){
-                // TODO: Get team name and display it in tvMainTeam and prepare it to be saved to db
                 String mainTeam = data.getStringExtra("mainTeam");
                 tvMainTeam.setText("Your Team: "+ mainTeam);
+
+            }
+        }
+        else if(requestCode == 2){
+            if (resultCode == RESULT_OK){
+                challengeTeam = data.getStringExtra("challengeTeam");
+                tvGameChallengeTeam.setText("Challenged Team: " + challengeTeam);
 
             }
         }

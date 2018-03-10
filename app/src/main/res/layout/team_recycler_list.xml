@@ -6,7 +6,9 @@
     android:background="#FFFFFF"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="12dp">
+    android:padding="12dp"
+
+    >
 
     <ImageView
         android:id="@+id/img_user"

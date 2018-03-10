@@ -49,6 +49,7 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
     private TeamTask teamTask;
     private LoginTask loginTask;
     private String selectedTeam;
+    private int sourceOfRequest; // main team or challenged team option
 
     private Menu mnu_team_select;
     private MenuItem mnut_done;
@@ -64,8 +65,15 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
         setAdapter();
         teamTask = new TeamTask(TeamSelectionActivity.this);
 
+        // were did search request come from
+        sourceOfRequest = getIntent().getIntExtra("source",0);
+
         // load current players teams
-        teamTask.loadAdminTeams(LoginTask.currentAuthUser.getHandle());
+        if (sourceOfRequest == 0)
+            teamTask.loadAdminTeams(LoginTask.currentAuthUser.getHandle());
+        // load all teams
+        else if (sourceOfRequest == 1)
+            teamTask.loadAllTeams();
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,10 +106,19 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
         switch (item.getItemId()) {
             case R.id.mnut_done:
                 // select done option
-                Intent intent = new Intent();
-                intent.putExtra("mainTeam",selectedTeam);
-                setResult(RESULT_OK,intent);
-                finish();
+
+                if (sourceOfRequest == 0) { // coming from select main team
+                    Intent intent = new Intent();
+                    intent.putExtra("mainTeam", selectedTeam);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                else if (sourceOfRequest == 1){
+                    Intent intent = new Intent();
+                    intent.putExtra("challengeTeam", selectedTeam);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
 
 
                 return true;
@@ -110,7 +127,6 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 

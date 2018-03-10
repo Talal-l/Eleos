@@ -70,6 +70,19 @@ public class TeamTask {
          new AsyncGet(activityContext).execute(url,key,teamAdmin);
      }
 
+     public void loadAllTeams(){
+         // TODO: Change to post
+
+         String script = "/loadAllTeams.php";
+         String key = "";
+
+         String url = urlBase + script;
+         Log.i("TeamTask_loadAllTeams", "url: " + url);
+
+         new AsyncGet(activityContext).execute(url,key,"");
+
+
+     }
      // json to Team object
     public Team getTeamObject(String json){
 
