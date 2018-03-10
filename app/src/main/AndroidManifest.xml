@@ -41,9 +41,14 @@
             android:label="@string/title_activity_my_team"
             />
         <activity
-            android:name=".activities.JoinGameANDViewGame"
-            android:label="JoinViewActivity"
+        android:name=".activities.JoinGameANDViewGame"
+        android:label="JoinViewActivity"
+        />
+        <activity
+            android:name=".activities.GameInfoActivity"
+            android:label="Game Info"
             />
+
     </application>
 
 </manifest>
