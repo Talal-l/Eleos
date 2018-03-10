@@ -128,7 +128,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
             }
         });
 
+            mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(View view, int position, RvGameModel model)
+                {
+                    Intent intent = new Intent(MainActivity.this,JoinGameANDViewGame.class);
+                    startActivityForResult(intent,1);
 
+                }
+            });
 
         swipeRefreshRecyclerList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
