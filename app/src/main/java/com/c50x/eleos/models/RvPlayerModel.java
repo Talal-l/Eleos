@@ -10,6 +10,8 @@ public class RvPlayerModel {
 
     private String message;
 
+    private boolean isChecked;
+
 
     public RvPlayerModel(String title, String message) {
         this.title = title;
@@ -19,6 +21,7 @@ public class RvPlayerModel {
     public RvPlayerModel(User user) {
         this.title = user.getHandle();
         this.message = user.getName();
+        this.isChecked = false;
 
     }
 
@@ -36,5 +39,13 @@ public class RvPlayerModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

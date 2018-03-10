@@ -171,11 +171,17 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
     }
 
     @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mnut_done:
                 // select done option
-        // if selected return with result
+                // if selected return with result
                 if (playersToAdd.size() > 0){
                     Intent intent = new Intent();
                     intent.putExtra("players",playersToAdd);
@@ -235,12 +241,20 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
                 if (isChecked) {
                     playersToAdd.add(model.getTitle());
                     Log.i(TAG,"add to array: " + Arrays.toString(playersToAdd.toArray()));
+
+                    // at least one player is selected so show the done option
+                    mnut_done.setVisible(true);
                 }
 
                 else{
 
                     playersToAdd.remove(model.getTitle());
                     Log.i(TAG,"remove from array: " + Arrays.toString(playersToAdd.toArray()));
+
+                    // if not players are selected remove the done option
+
+                    if (playersToAdd.size() == 0)
+                        mnut_done.setVisible(false);
                 }
 
 

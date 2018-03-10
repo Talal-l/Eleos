@@ -132,8 +132,8 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 1){
             if(resultCode == RESULT_OK){
-                playersToAdd = data.getStringArrayListExtra("tvPlayers");
-                Log.i(TAG,"tvPlayers from search: " + Arrays.toString(playersToAdd.toArray()));
+                playersToAdd = data.getStringArrayListExtra("players");
+                Log.i(TAG,"players from search: " + Arrays.toString(playersToAdd.toArray()));
                 tvPlayers.setText(Arrays.toString(playersToAdd.toArray()));
 
             }
