@@ -12,6 +12,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="standard_padding">8dp</string>
+    <string name="standard_margin">16dp</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
 
