@@ -133,8 +133,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
                 @Override
                 public void onItemClick(View view, int position, RvGameModel model)
                 {
-                    Intent intent = new Intent(MainActivity.this,JoinGameANDViewGame.class);
-                    startActivityForResult(intent,1);
+                    Intent intent = new Intent(MainActivity.this,GameInfoActivity.class);
+                    startActivity(intent);
 
                 }
             });
