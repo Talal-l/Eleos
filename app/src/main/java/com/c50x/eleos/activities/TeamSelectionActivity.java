@@ -1,5 +1,6 @@
 package com.c50x.eleos.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,11 +42,13 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
     // @BindView(R.id.recycler_view)
     // RecyclerView recyclerView;
 
+    private static final String TAG = "TeamSelectionActivity";
 
     private RvTeamAdapter mAdapter;
     private ArrayList<RvTeamModel> modelList = new ArrayList<>();
     private TeamTask teamTask;
     private LoginTask loginTask;
+    private String selectedTeam;
 
     private Menu mnu_team_select;
     private MenuItem mnut_done;
@@ -58,6 +61,7 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
 
         // setup the views and adapters
         findViews();
+        setAdapter();
         teamTask = new TeamTask(TeamSelectionActivity.this);
 
         // load current players teams
@@ -92,12 +96,14 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.homeAsUp:
-                // User chose the "Settings" item, show the app settings UI...
-
             case R.id.mnut_done:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
+                // select done option
+                Intent intent = new Intent();
+                intent.putExtra("mainTeam",selectedTeam);
+                setResult(RESULT_OK,intent);
+                finish();
+
+
                 return true;
 
             default:
@@ -146,12 +152,21 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
                 //handle item click events here
 
                 // show done action when an item is selected
-                if (mAdapter.getCurrentSelectionPosition() > -1)
+                if (mAdapter.getCurrentSelectionPosition() > -1){
                     mnut_done.setVisible(true);
-                else
+                    // set the selected team
+                    RvTeamModel selectedModel = modelList.get(mAdapter.getCurrentSelectionPosition());
+                    // get the team name from title
+                    selectedTeam = selectedModel.getTitle().split(" ")[1];
+                    Log.i(TAG,"selected team: " + selectedTeam);
+                }
+                else {
                     mnut_done.setVisible(false);
+                    // unset the selected team
+                    selectedTeam = "";
+                }
 
-                Log.i("teamActivity","pos: " + mAdapter.getCurrentSelectionPosition());
+                //Log.i("teamActivity","selected team: " + selectedTeam);
 
                 Toast.makeText(TeamSelectionActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
           }
@@ -168,15 +183,18 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
         // convert
         ArrayList<Team> adminTeams = gson.fromJson(output, new TypeToken<ArrayList<Team>>(){}.getType());
 
-        // convert Team to TeamModle so it can be displayed
+        // convert Team to TeamModel so it can be displayed
         for (Team team: adminTeams){
 
-            RvTeamModel model = new RvTeamModel(team.getTeamName(), Arrays.toString(team.getTeamPlayers()));
+            RvTeamModel model = new RvTeamModel( "TeamName: " + team.getTeamName(),
+                    "players: " +Arrays.toString(team.getTeamPlayers()));
 
             modelList.add(model);
 
-            // let adapter load the models
-            setAdapter();
         }
+
+        //update list in adapter
+        mAdapter.updateList(modelList);
+
     }
 }

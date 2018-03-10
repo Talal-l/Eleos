@@ -168,6 +168,9 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         if(requestCode == 1){ // coming from selecting the main team
             if(resultCode == RESULT_OK){
                 // TODO: Get team name and display it in tvMainTeam and prepare it to be saved to db
+                String mainTeam = data.getStringExtra("mainTeam");
+                tvMainTeam.setText("Your Team: "+ mainTeam);
+
             }
         }
     }
