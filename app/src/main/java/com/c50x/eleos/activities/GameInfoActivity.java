@@ -31,6 +31,7 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
     private TextView tvGameDate;
     private TextView tvGameTime;
     private TextView tvGameVenue;
+    private TextView tvGameAdmin;
 
     private Gson gson;
     private Game selectedGame;
@@ -68,9 +69,11 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
         tvGameTime = findViewById(R.id.tv_game_time_info);
         tvGameSport = findViewById(R.id.tv_game_game_sport_info);
         tvGameVenue = findViewById(R.id.tv_game_location_info);
+        tvGameAdmin = findViewById(R.id.tv_game_admin_info);
 
 
         tvGameName.setText(selectedGame.getGameName());
+        tvGameAdmin.setText(selectedGame.getGameAdmin());
         tvGameTeam1.setText(selectedGame.getTeam1());
         tvGameTeam2.setText(selectedGame.getTeam2());
         tvGameDate.setText(selectedGame.getStartDate());

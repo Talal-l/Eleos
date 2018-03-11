@@ -1,6 +1,7 @@
 package com.c50x.eleos.activities;
 
 import android.content.Intent;
+import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -17,10 +18,12 @@ import java.util.Arrays;
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvPlayerAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.UserTask;
 import com.c50x.eleos.data.User;
 import com.c50x.eleos.models.RvPlayerModel;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.widget.Button;
 import android.widget.Toast;
@@ -255,16 +258,11 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
                     playersToAdd.remove(model.getTitle());
                     Log.i(TAG,"remove from array: " + Arrays.toString(playersToAdd.toArray()));
 
-                    // if not players are selected remove the done option
+                    // if no players are selected remove the done option
 
                     if (playersToAdd.size() == 0)
                         mnut_done.setVisible(false);
                 }
-
-
-
-
-
 
             }
         });
@@ -279,13 +277,22 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
         Log.i(TAG,"output: " + output);
 
             if (output.contains("handle")){
+            ArrayList<User> matchingUsers = gson.fromJson(output, new TypeToken<ArrayList<User>>(){}.getType());
 
-            User[] matchingUsers = gson.fromJson(output,User[].class);
+            // remove current user
+            for (User item: matchingUsers){
+                if(item.getHandle().equals(LoginTask.currentAuthUser.getHandle())){
+                    matchingUsers.remove(item);
+                    break;
+                }
+            }
+
+
 
             modelList = new ArrayList<>();
-            for (int i = 0; i < matchingUsers.length; i++){
-                Log.i(TAG, "Match: " + matchingUsers[i].getHandle());
-                modelList.add(new RvPlayerModel(matchingUsers[i]));
+            for (int i = 0; i < matchingUsers.size(); i++){
+                Log.i(TAG, "Match: " + matchingUsers.get(i).getHandle());
+                modelList.add(new RvPlayerModel(matchingUsers.get(i)));
             }
             mAdapter.updateList(modelList);
         }

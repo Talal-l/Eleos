@@ -16,8 +16,8 @@ public class RvGameModel {
     }
 
     public RvGameModel(Game game) {
-        this.title = game.getGameName();
-        this.message = game.getGameAdmin();
+        this.title = game.getGameName() + " [ Admin: " + game.getGameAdmin() + " ]";
+        this.message = game.getTeam1() + " Vs " + game.getTeam2();
         this.gameid = game.getGameId();
     }
 
