@@ -39,7 +39,6 @@ public class TeamTask {
 
         // construct the url
         String url = urlBase + script;
-        Log.i("TeamTask_addTeam", "using server address: " + urlBase);
         Log.i("TeamTask_addTeam", "url: " + url);
 
 
@@ -53,7 +52,6 @@ public class TeamTask {
         String key = "teamName";
 
         String url = urlBase + script;
-        Log.i("TeamTask_loadTeam", "using server address: " + urlBase);
         Log.i("TeamTask_loadTeam", "url: " + url);
 
 
@@ -61,7 +59,30 @@ public class TeamTask {
 
      }
 
+     public void loadAdminTeams(String teamAdmin){
 
+         String script = "/loadAdminTeams.php";
+         String key = "teamAdmin";
+
+         String url = urlBase + script;
+         Log.i("TeamTask_loadAdminTeams", "url: " + url);
+
+         new AsyncGet(activityContext).execute(url,key,teamAdmin);
+     }
+
+     public void loadAllTeams(){
+         // TODO: Change to post
+
+         String script = "/loadAllTeams.php";
+         String key = "";
+
+         String url = urlBase + script;
+         Log.i("TeamTask_loadAllTeams", "url: " + url);
+
+         new AsyncGet(activityContext).execute(url,key,"");
+
+
+     }
      // json to Team object
     public Team getTeamObject(String json){
 

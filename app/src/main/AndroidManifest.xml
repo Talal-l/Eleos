@@ -34,8 +34,7 @@
             android:label="Eleos" />
         <activity
             android:name=".activities.PlayerSearchActivity"
-            android:label="@string/title_activity_player_search"
-            android:theme="@style/AppTheme.Template.Base" />
+            android:label="@string/title_activity_player_search" />
         <activity
             android:name=".activities.TeamSelectionActivity"
             android:label="@string/title_activity_my_team"

@@ -15,6 +15,7 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -131,8 +132,8 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 1){
             if(resultCode == RESULT_OK){
-                playersToAdd = data.getStringArrayListExtra("tvPlayers");
-                Log.i(TAG,"tvPlayers from search: " + Arrays.toString(playersToAdd.toArray()));
+                playersToAdd = data.getStringArrayListExtra("players");
+                Log.i(TAG,"players from search: " + Arrays.toString(playersToAdd.toArray()));
                 tvPlayers.setText(Arrays.toString(playersToAdd.toArray()));
 
             }

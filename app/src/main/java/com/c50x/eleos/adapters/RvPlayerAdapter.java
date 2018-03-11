@@ -1,7 +1,10 @@
 package com.c50x.eleos.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,8 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private OnCheckedListener mOnCheckedListener;
 
+    private ViewHolder playerViewHolder;
+    private boolean isChecked;
 
     private Set<Integer> checkSet = new HashSet<>();
 
@@ -51,7 +56,7 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_recycler_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.player_card, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -59,32 +64,42 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        //Here you can fill your row view
         if (holder instanceof ViewHolder) {
             final RvPlayerModel model = getItem(position);
-            ViewHolder genericViewHolder = (ViewHolder) holder;
+            playerViewHolder = (ViewHolder) holder;
 
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
+            playerViewHolder.itemTxtTitle.setText(model.getTitle());
+            playerViewHolder.itemTxtMessage.setText(model.getMessage());
 
+            if (getItem(position).isChecked())
+                playerViewHolder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.DARKEN);
 
             //in some cases, it will prevent unwanted situations
-            genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
+            playerViewHolder.itemCheckList.setOnCheckedChangeListener(null);
 
-            //if true, your checkbox will be selected, else unselected
-            genericViewHolder.itemCheckList.setChecked(checkSet.contains(position));
-
-            genericViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                public void onClick(View view) {
 
-                    if (isChecked) {
+                    if (!checkSet.contains(position)) {
                         checkSet.add(position);
                     } else {
                         checkSet.remove(position);
                     }
 
-                    mOnCheckedListener.onChecked(buttonView, isChecked, position, model);
+                    mOnCheckedListener.onChecked(playerViewHolder.itemCheckList, checkSet.contains(position), position, model);
+                    notifyDataSetChanged();
+
+                }
+            });
+
+            //if true, your checkbox will be selected, else unselected
+            playerViewHolder.itemCheckList.setChecked(checkSet.contains(position));
+
+
+            playerViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 }
             });
@@ -146,6 +161,7 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             // ButterKnife.bind(this, itemView);
 
+
             this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
             this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
             this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
@@ -157,12 +173,10 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 public void onClick(View view) {
                     mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
 
-
                 }
             });
 
         }
     }
-
 }
 
