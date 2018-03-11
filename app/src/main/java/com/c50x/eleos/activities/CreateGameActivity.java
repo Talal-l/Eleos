@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
@@ -45,8 +46,10 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
-    private String mainTeamToAdd;
+    private String mainTeam;
     private String challengeTeam;
+    private String gameTime;
+    private String gameDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +57,11 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         setContentView(R.layout.activity_create_game);
 
         newGame = new Game();
+
+        mainTeam = null;
+        challengeTeam = null;
+        gameDate = null;
+        gameTime = null;
 
         // initializing the views
         etGameName = findViewById(R.id.et_game_name);
@@ -93,10 +101,9 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 month = month + 1;
                 Log.i(TAG, "onDateSet: date_tv: " + year + "/" + month + "/" + dayOfMonth);
 
-                String date2 = month + "/" + dayOfMonth + "/" + year;
-                tvGameDate.setText(date2);
+                gameDate = "" + year + "-" + month + "-" + dayOfMonth;
+                tvGameDate.setText(gameDate);
 
-                newGame.setStartDate(date2);
             }
         };
 
@@ -106,7 +113,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             @Override
             public void onClick(View v) {
                 Calendar time2 = Calendar.getInstance();
-                int hour = time2.get(Calendar.HOUR);
+                final int hour = time2.get(Calendar.HOUR);
                 int minute = time2.get(Calendar.MINUTE);
 
                 TimePickerDialog timePickerDialog;
@@ -114,7 +121,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         tvGameTime.setText(hourOfDay + ":" + minute);
-                        newGame.setStartTime(hourOfDay + ":" + minute);
+
+                        gameTime = hourOfDay +":" + minute;
                     }
                 }, hour, minute, false);
                 timePickerDialog.show();
@@ -154,18 +162,51 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         btnConfirmCreateGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(gameNameIaValid(etGameName.getText().toString())))
+                boolean allValid = true;
+                if (!(gameNameIaValid(etGameName.getText().toString()))) {
                     etGameName.setError("Empty or Incorrect Length (Between 4 and 20 characters)");
+                    allValid = false;
+                }
 
+
+                if (mainTeam == null){
+
+                    tvMainTeam.requestFocus();
+                    tvMainTeam.setError("Select a team!");
+                    allValid = false;
+                }
+                if (gameDate == null){
+                    tvGameDate.requestFocus();
+                    tvGameDate.setError("Select game date!");
+                    allValid = false;
+                }
+                if (gameTime == null){
+                    tvGameTime.requestFocus();
+                    tvGameTime.setError("Select game time");
+                    allValid = false;
+                }
                 // TODO: Check if location is valid
-                else {
-                    newGame.setGameName(etGameName.getText().toString());
+                else if (allValid) {
 
+                    // everything is valid, start setting the game object
+                    newGame.setGameName(etGameName.getText().toString());
                     Log.i(TAG, "getting current user and setting them as admin");
                     newGame.setGameAdmin(LoginTask.currentAuthUser.getHandle());
                     newGame.setSport(spnGameSport.getSelectedItem().toString());
+                    newGame.setTeam1(mainTeam);
+                    newGame.setStartDate(gameDate);
+                    newGame.setStartTime(gameTime);
 
-                    // TODO: Save game to database
+                    Log.i(TAG,"mainTeam: " + mainTeam + "challengedTeam: " + challengeTeam);
+                    if (challengeTeam != null){
+                        newGame.setTeam2(challengeTeam);
+                    }
+                    else {
+                        // TODO: Show message telling the user that the game will be waiting for challenger
+                    }
+                    // TODO: Add venue
+                    //newGame.setVenueAddress();
+
                     GameTask gameTask = new GameTask(CreateGameActivity.this);
                     gameTask.addGame(newGame);
                 }
@@ -180,7 +221,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 1){ // coming from selecting the main team
             if(resultCode == RESULT_OK){
-                String mainTeam = data.getStringExtra("mainTeam");
+                mainTeam = data.getStringExtra("mainTeam");
                 tvMainTeam.setText("Your Team: "+ mainTeam);
 
             }
@@ -242,7 +283,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         LoginTask loginTask = new LoginTask(this);
         if (!output.contains("null") && !output.contains("error")) {
 
-            // TODO: Show message that game was created
+            Toast.makeText(CreateGameActivity.this, "Game Created ",Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(CreateGameActivity.this, MainActivity.class);
 
@@ -253,6 +294,9 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             startActivity(intent);
         } else if (output.contains("error")) {
             // another game is happening at same place an date_tv/time_btn
+            tvGameDate.requestFocus();
+            tvGameDate.setError("Another game is happening");
+            tvMainTeam.setError("Another game is happening");
             Log.i(TAG, "error: " + output);
 
 

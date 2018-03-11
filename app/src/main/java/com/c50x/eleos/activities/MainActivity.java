@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
     private ActionBarDrawerToggle mToggle;
     private LoginTask loginTask;
     private RecyclerView recyclerView;
+    private Game[] loadedGames;
+
+    private Gson gson;
+    private static final String TAG = "MainActivity";
 
     private SwipeRefreshLayout swipeRefreshRecyclerList;
     private RvGameAdapter mAdapter;
@@ -80,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
         setContentView(R.layout.activity_main);
+
+        gson = new Gson();
 
         // needed to access the auth methods
         loginTask = new LoginTask(this);
@@ -133,7 +139,19 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
                 @Override
                 public void onItemClick(View view, int position, RvGameModel model)
                 {
+                    int selectedGameId = model.getGameid();
+                    Log.i(TAG,"Selected Game id: " + selectedGameId);
                     Intent intent = new Intent(MainActivity.this,GameInfoActivity.class);
+
+                    // get game from loadedGames and send it as json to view activity
+                    String gameJson = null;
+                    for (Game gm: loadedGames){
+                        if (gm.getGameId() == selectedGameId){
+                            gameJson = gson.toJson(gm);
+                            break;
+                        }
+                    }
+                    intent.putExtra("gameId",gameJson);
                     startActivity(intent);
 
                 }
@@ -236,11 +254,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
         }
         if (output.contains("game")){
 
-            Game[] games = gson.fromJson(output,Game[].class);
+            loadedGames = gson.fromJson(output,Game[].class);
 
             modelList = new ArrayList<>();
-            for (int i = 0; i < games.length; i++){
-                modelList.add(new RvGameModel(games[i]));
+            for (int i = 0; i < loadedGames.length; i++){
+                modelList.add(new RvGameModel(loadedGames[i]));
             }
             Log.i("MainActivity","adding to game list");
             mAdapter.updateList(modelList);

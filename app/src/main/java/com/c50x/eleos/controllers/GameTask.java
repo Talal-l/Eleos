@@ -1,10 +1,13 @@
 package com.c50x.eleos.controllers;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.activities.CreateGameActivity;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.Game;
 import com.google.gson.Gson;
@@ -19,6 +22,13 @@ public class GameTask {
     private Gson gson;
     private AsyncResponse activityContext;
 
+         public class Par{
+             public String team2;
+             public int gameId;
+             public Par(){
+
+             }
+         }
 
     public GameTask(Context activityContext) {
         // load the server address from string.xml
@@ -61,6 +71,25 @@ public class GameTask {
 
         new AsyncGet(activityContext).execute(url);
 
+     }
+
+     public void addTeamToGame(final String teamName, int gameId){
+
+         String script = "/addTeamToGame.php";
+
+         String url = urlBase + script;
+         Log.i("GameTask_addTeamToGame", "url: " + url);
+
+
+         Par p = new Par();
+         p.gameId = gameId;
+         p.team2 = teamName;
+
+         String json = gson.toJson(p,Par.class);
+
+         Log.i("GameTask_addTeamToGame", "json: " + json);
+
+         new AsyncPost(activityContext).execute(url,json);
      }
 
 
