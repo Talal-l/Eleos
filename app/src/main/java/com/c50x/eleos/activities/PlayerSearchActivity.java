@@ -158,6 +158,10 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
                             filterList.add(modelList.get(i));
                             mAdapter.updateList(filterList);
                         }
+                        else{
+                            filterList.remove(modelList.get(i));
+                            mAdapter.updateList(filterList);
+                        }
                     }
                 } else {
                     mAdapter.updateList(modelList);
