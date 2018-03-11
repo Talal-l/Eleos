@@ -31,6 +31,7 @@
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp"
                     android:text="Game name: "
+                    android:layout_margin="16dp"
                     android:textColor="#000000"
 
                     />
@@ -63,9 +64,7 @@
                     android:layout_weight="1"
                     android:padding="8dp"
                     android:text="Sport type: "
-                    android:textColor="#000000"
-
-                    android:textSize="18sp" />
+                    android:textColor="#000000" />
 
                 <TextView
                     android:id="@+id/tv_game_date"
@@ -75,8 +74,7 @@
                     android:layout_weight="1"
                     android:padding="8dp"
                     android:text="Date: "
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textColor="#000000" />
 
                 <TextView
                     android:id="@+id/tv_game_time"
@@ -86,8 +84,7 @@
                     android:layout_weight="1"
                     android:padding="8dp"
                     android:text="Time: "
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textColor="#000000" />
 
                 <TextView
                     android:id="@+id/tv_game_location"
@@ -100,22 +97,34 @@
                     android:padding="8dp"
                     android:singleLine="true"
                     android:text="Venue: "
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textColor="#000000" />
 
-                <Button
-                    android:id="@+id/btn_cancel_create_game"
-                    android:layout_width="230"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Cancel" />
-
-                <Button
-                    android:id="@+id/btn_confirm_create_game"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="Confirm" />
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_margin="16dp"
+                    >
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:id="@+id/btn_cancel_game_info"
+                        android:layout_height="wrap_content"
+                        android:text="Cancel"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:id="@+id/btn_confirm_game_info"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:text="Confirm"
+                        />
+
+
+                </LinearLayout>
+
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>
