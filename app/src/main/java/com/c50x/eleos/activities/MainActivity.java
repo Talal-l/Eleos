@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private LoginTask loginTask;
     private RecyclerView recyclerView;
     private Game[] loadedGames;
+    private NavigationView navigationView;
 
     private Gson gson;
     private static final String TAG = "MainActivity";
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         // switch to selected activity when selected from menu
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         View menuHeader = navigationView.getHeaderView(0);
         TextView tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
         tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
@@ -231,6 +232,20 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
         }
+
+    // when user comes back from another screen
+    @Override
+    protected void onResume() {
+        super.onResume();
+        for (int i = 0; i < navigationView.getMenu().size(); i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+
+        // TODO: Find a better solution
+
+        gameTask.loadGames();
+
+    }
 
     // for navigation menu button
    @Override
