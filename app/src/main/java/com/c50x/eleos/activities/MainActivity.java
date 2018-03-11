@@ -34,8 +34,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse
-{
+public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private Button logOutButton;
     private String handle;
     private String email;
@@ -57,8 +56,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
     FragmentTransaction fragmentTransaction;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Load token from shared preferences
@@ -173,6 +171,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
         // switch to selected activity when selected from menu
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View menuHeader = navigationView.getHeaderView(0);
+        TextView tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
+        tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
+        //System.out.println(LoginTask.currentAuthUser.getHandle());
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -214,8 +216,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse
 
     // for navigation menu button
    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item))
             return true;
 
