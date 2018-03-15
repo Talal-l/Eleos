@@ -74,13 +74,13 @@
 
 
     <Button
-        android:id="@+id/PlayerSearch_button"
+        android:id="@+id/btn_register_manager"
         style="@android:style/Widget.Button"
         android:layout_width="263dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@color/colorButtons"
-        android:text="Player Search"
+        android:text="Register as manager"
         android:textStyle="bold" />
 
 </LinearLayout>

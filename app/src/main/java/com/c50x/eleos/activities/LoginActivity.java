@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
     private String userEmail;
     private String userPassword;
     private LoginTask loginTask;
+    private Button btnRegisterManager;
 
 
     public static final int EXPECTED_MIN_RESPONSE_LENGTH = 6;
@@ -49,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
         passwordView = findViewById(R.id.password);
         sign_in_button = findViewById(R.id.signIn_button);
         register_button = findViewById(R.id.Register_button);
+        btnRegisterManager = findViewById(R.id.btn_register_manager);
 
         sign_in_button.setOnClickListener(new View.OnClickListener() // handles sign in button click
         {
@@ -83,19 +85,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
             }
         });
 
-        Button playersearchbutton = findViewById(R.id.PlayerSearch_button);
-
-        playersearchbutton.setOnClickListener(new View.OnClickListener() // handles sign in button click
-        {
-            @Override
-            public void onClick(View view) // checks if user input was correct by verifying email and password
-            {
-                Intent intent = new Intent(view.getContext(), PlayerSearchActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
 
         register_button.setOnClickListener(new View.OnClickListener() // handles register button click
         {
@@ -107,6 +96,15 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse
             }
         });
 
+        btnRegisterManager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ManagerRegistrationActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
     }
 
     protected boolean validateEmail(String strEmail) // grants the user access if the email is matched from the database

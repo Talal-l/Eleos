@@ -43,7 +43,10 @@
             android:name=".activities.GameInfoActivity"
             android:label="Game Info"
             />
-
+        <activity
+            android:name=".activities.ManagerRegistrationActivity"
+            android:label="Game Info"
+            />
     </application>
 
 </manifest>
