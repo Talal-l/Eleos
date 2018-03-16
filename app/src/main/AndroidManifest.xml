@@ -45,7 +45,11 @@
             />
         <activity
             android:name=".activities.ManagerRegistrationActivity"
-            android:label="Game Info"
+            android:label="Manager Registration"
+            />
+        <activity
+            android:name=".activities.VenueInfoActivity"
+            android:label="Your Venue"
             />
     </application>
 

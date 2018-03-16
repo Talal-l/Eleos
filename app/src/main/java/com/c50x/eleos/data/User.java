@@ -14,9 +14,11 @@ public class User {
     private boolean isManager;
     private String venueName;
     private String venueLocation;
+    private boolean isVerified;
 
     public User() {
         isManager = false;
+        isVerified = false;
         venueName = "";
         venueLocation = "";
         name = "";
@@ -106,5 +108,13 @@ public class User {
 
     public void setVenueName(String venueName) {
         this.venueName = venueName;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
     }
 }
