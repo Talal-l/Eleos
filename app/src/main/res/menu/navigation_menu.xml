@@ -3,15 +3,17 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/nav_menu_venue_info"
+            android:title="You Venue info"
+            android:visible="false"/>
+
+        <item
             android:id="@+id/nav_menu_teamCreation"
             android:icon="@drawable/ic_media_play_light"
             android:title="Team Creation" />
         <item
             android:id="@+id/nav_menu_gameCreation"
             android:title="Game Creation" />
-        <item
-            android:id="@+id/nav_menu_playerSearch"
-            android:title="Player Search" />
 
         <item
             android:id="@+id/nav_menu_logout"

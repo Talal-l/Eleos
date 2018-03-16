@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -93,20 +94,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             // set the global current user using the token
             loginTask.authUsingToken(token);
         }
-
         gameTask = new GameTask(MainActivity.this);
 
         gameTask.loadGames();
-
-
 
         // Game list
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         swipeRefreshRecyclerList = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_recycler_list);
-
-
-
 
 
         mAdapter = new RvGameAdapter(MainActivity.this, modelList);
@@ -193,7 +188,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         View menuHeader = navigationView.getHeaderView(0);
         TextView tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
         tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
-        //System.out.println(LoginTask.currentAuthUser.getHandle());
+
+        // show manager option if a manager is logged in
+
+
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -248,6 +247,18 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     // for navigation menu button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
+        if (LoginTask.currentAuthUser != null && LoginTask.currentAuthUser.isManager()) {
+            menu.findItem(R.id.nav_menu_venue_info).setVisible(true);
+            menu.findItem(R.id.nav_menu_gameCreation).setVisible(false);
+            menu.findItem(R.id.nav_menu_teamCreation).setVisible(false);
+        }
+
+        return false;
+    }
+
    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item))
@@ -268,11 +279,18 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             Log.i("mainActivity_taskF", "current user handle: " + LoginTask.currentAuthUser.getHandle());
 
         }
+
         if (output.contains("game")){
 
             loadedGames = gson.fromJson(output,Game[].class);
 
             modelList = new ArrayList<>();
+            if (LoginTask.currentAuthUser.isManager()){
+             for (int i = 0; i < loadedGames.length; i++){
+                 if(loadedGames[i].getVenueAddress() == LoginTask.currentAuthUser.getVenueLocation())
+                modelList.add(new RvGameModel(loadedGames[i]));
+            }
+            }
             for (int i = 0; i < loadedGames.length; i++){
                 modelList.add(new RvGameModel(loadedGames[i]));
             }
