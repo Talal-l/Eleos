@@ -1,19 +1,9 @@
 package com.c50x.eleos.data;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-
-import java.net.PasswordAuthentication;
-
-@Entity
 public class User {
 
 
-    @PrimaryKey
-    @NonNull
     private String handle;
-
     private String name;
     private String email;
     private String password; // TODO: A better way to store passwords
@@ -21,7 +11,14 @@ public class User {
     private String gender;
     private String token;
 
+    private boolean isManager;
+    private String venueName;
+    private String venueLocation;
+
     public User() {
+        isManager = false;
+        venueName = "";
+        venueLocation = "";
         name = "";
         email = "";
         password = "";
@@ -85,5 +82,29 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isManager() {
+        return isManager;
+    }
+
+    public void setManager(boolean manager) {
+        isManager = manager;
+    }
+
+    public String getVenueLocation() {
+        return venueLocation;
+    }
+
+    public void setVenueLocation(String venueLocation) {
+        this.venueLocation = venueLocation;
+    }
+
+    public String getVenueName() {
+        return venueName;
+    }
+
+    public void setVenueName(String venueName) {
+        this.venueName = venueName;
     }
 }
