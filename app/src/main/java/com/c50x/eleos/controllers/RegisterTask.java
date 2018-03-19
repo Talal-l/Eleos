@@ -30,15 +30,30 @@ public class RegisterTask {
 
     public void addUser (User userToAdd){
 
-        String script = "/addUser.php";
-        String url = urlBase + script;
-        Log.i("RegisterTask_addUser","url: " + url);
+        if (userToAdd.isManager()){
+            String script = "/addManager.php";
+            String url = urlBase + script;
+            Log.i("RegisterTask_addUser","url: " + url);
 
-        String json = gson.toJson(userToAdd,User.class);
+            String json = gson.toJson(userToAdd,User.class);
 
-        Log.i("RegisterTask_addUser","jsonToSend: " + json);
+            Log.i("RegisterTask_addUser","jsonToSend: " + json);
 
-        new AsyncPost(activityContext).execute(url,json);
-        // go to registration activity for result
+            new AsyncPost(activityContext).execute(url,json);
+            // go to registration activity for result
+        }
+        else {
+
+            String script = "/addUser.php";
+            String url = urlBase + script;
+            Log.i("RegisterTask_addUser", "url: " + url);
+
+            String json = gson.toJson(userToAdd, User.class);
+
+            Log.i("RegisterTask_addUser", "jsonToSend: " + json);
+
+            new AsyncPost(activityContext).execute(url, json);
+            // go to registration activity for result
+        }
     }
 }

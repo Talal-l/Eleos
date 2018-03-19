@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         if (!output.contains("null") && !output.contains("game")) { // user is valid
             // load data from json to current user
             LoginTask.currentAuthUser = gson.fromJson(output,User.class);
-            Log.i("mainActivity_taskF", "current user handle: " + LoginTask.currentAuthUser.getHandle());
+            Log.i("mainActivity_taskF", "current user name: " + LoginTask.currentAuthUser.getName());
 
         }
 
@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             modelList = new ArrayList<>();
             if (LoginTask.currentAuthUser.isManager()){
              for (int i = 0; i < loadedGames.length; i++){
-                 if(loadedGames[i].getVenueAddress() == LoginTask.currentAuthUser.getVenueLocation())
+                 if(loadedGames[i].getVenueAddress().equals(LoginTask.currentAuthUser.getVenueLocation()))
                 modelList.add(new RvGameModel(loadedGames[i]));
             }
             }

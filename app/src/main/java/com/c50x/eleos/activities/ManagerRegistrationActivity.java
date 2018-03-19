@@ -21,7 +21,6 @@ import java.util.Objects;
 public class ManagerRegistrationActivity extends AppCompatActivity implements AsyncResponse {
 
     private EditText name;
-    private EditText handle;
     private EditText email;
     private EditText password;
     private EditText confirm_password;
@@ -45,7 +44,6 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
         //Assignment statements for fields and buttons
 
         name = findViewById(R.id.name);
-        handle = findViewById(R.id.handle);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         confirm_password = findViewById(R.id.confirm_password);
@@ -66,9 +64,6 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
                     name.setError("Empty or Incorrect Length (Between 2 and 10 characters)");
                 }
 
-                else if (!handleIsValid(handle.getText().toString())) {
-                    handle.setError("Empty or Incorrect Length (Between 4 and 10 characters)");
-                }
 
                 else if (!emailIsValid(email.getText().toString())) {
                     email.setError("Empty");
@@ -92,12 +87,13 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
                     // Save user info in a User object so it can be saved in database
 
                     newUser = new User();
-                    newUser.setHandle(handle.getText().toString());
                     newUser.setName(name.getText().toString());
                     newUser.setEmail(email.getText().toString());
                     newUser.setPassword(password.getText().toString());
                     newUser.setGender("male");
                     newUser.setDateOfBirth("10/2/2019");
+                    newUser.setHandle("manager");
+                    newUser.setManager(true);
 
 
 
@@ -127,14 +123,6 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
     public boolean nameIsValid(String name) {
 
         if(name.isEmpty() || !(name.length() >= 2 && name.length() <= 10)) {
-            return false;
-        } else
-            return true;
-    }
-
-    public boolean handleIsValid(String handle) {
-
-        if(handle.isEmpty() || !(handle.length() >= 4 && handle.length() <= 10)) {
             return false;
         } else
             return true;
@@ -176,11 +164,6 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
         else if (output.contains("error")){
                 // Auth failed because of invalid input
 
-
-                if (output.contains("PRIMARY")){
-
-                    handle.setError("Handle is taken");
-                }
                 if (output.contains("email")){
 
                     email.setError("Email exist");
