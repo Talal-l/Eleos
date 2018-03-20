@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private RvGameAdapter mAdapter;
     private ArrayList<RvGameModel> modelList = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

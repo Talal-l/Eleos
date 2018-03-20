@@ -84,8 +84,8 @@
 
         android:layout_margin="16dp"
         />
-    <TextView
-        android:id="@+id/tv_game_location"
+    <Button
+        android:id="@+id/btn_game_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"

@@ -18,7 +18,6 @@ public class Venue {
     private int numOfGrounds;
 
 
-
     public String getVenueName() {
         return venueName;
     }
@@ -74,4 +73,5 @@ public class Venue {
     public void setNumOfGrounds(int numOfGrounds) {
         this.numOfGrounds = numOfGrounds;
     }
+
 }
