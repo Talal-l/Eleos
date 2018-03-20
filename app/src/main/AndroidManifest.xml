@@ -18,11 +18,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activities.RegistrationActivity" />
         <activity android:name=".activities.LoginActivity" />
@@ -37,20 +33,23 @@
             android:label="@string/title_activity_player_search" />
         <activity
             android:name=".activities.TeamSelectionActivity"
-            android:label="@string/title_activity_my_team"
-            />
+            android:label="@string/title_activity_my_team" />
         <activity
             android:name=".activities.GameInfoActivity"
-            android:label="Game Info"
-            />
+            android:label="Game Info" />
         <activity
             android:name=".activities.ManagerRegistrationActivity"
-            android:label="Manager Registration"
-            />
+            android:label="Manager Registration" />
         <activity
             android:name=".activities.VenueInfoActivity"
-            android:label="Your Venue"
-            />
+            android:label="Your Venue" />
+        <activity android:name=".activities.LoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
