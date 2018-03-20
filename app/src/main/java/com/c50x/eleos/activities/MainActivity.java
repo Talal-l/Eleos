@@ -1,9 +1,7 @@
 package com.c50x.eleos.activities;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -65,35 +63,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Load token from shared preferences
-        SharedPreferences pref = getSharedPreferences("token_file",Context.MODE_PRIVATE);
-        String token = pref.getString("token","null");
-        Log.i("mainActivity","shared: " + token);
 
-        // check if token exist
-        if (token.contains("null")){ // user not logged in
-            // go to login activity
-            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            finish();
-            startActivity(intent);
-            Log.i("mainActivity","BYE: " + token);
-        }
-
-        else{ // token exist
+        if (LoginTask.currentAuthUser != null){ // we have a valid current user
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
         setContentView(R.layout.activity_main);
 
-        gson = new Gson();
-
-        // needed to access the auth methods
-        loginTask = new LoginTask(this);
-
-        if (LoginTask.currentAuthUser != null) { // we have a token but no user is loaded
-            // set the global current user using the token
-            loginTask.authUsingToken(token);
-        }
         gameTask = new GameTask(MainActivity.this);
 
         gameTask.loadGames();
@@ -269,17 +244,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void taskFinished(String output) {
-        // Info associated with token is ready
-        Log.i("mainActivity_taskF", "output: " + output);
-
+        // Load games of player or games in venue
         Gson gson = new Gson();
-        if (!output.contains("null") && !output.contains("game")) { // user is valid
-            // load data from json to current user
-            LoginTask.currentAuthUser = gson.fromJson(output,User.class);
-            Log.i("mainActivity_taskF", "current user name: " + LoginTask.currentAuthUser.getName());
-
-        }
-
         if (output.contains("game")){
 
             loadedGames = gson.fromJson(output,Game[].class);
@@ -289,12 +255,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
              for (int i = 0; i < loadedGames.length; i++){
                  if(loadedGames[i].getVenueAddress().equals(LoginTask.currentAuthUser.getVenueLocation()))
                 modelList.add(new RvGameModel(loadedGames[i]));
-            }
+                }
             }
             for (int i = 0; i < loadedGames.length; i++){
                 modelList.add(new RvGameModel(loadedGames[i]));
             }
-            Log.i("MainActivity","adding to game list");
+            Log.i(TAG,"adding to game list");
             mAdapter.updateList(modelList);
         }
     }
