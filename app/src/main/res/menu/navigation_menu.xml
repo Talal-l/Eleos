@@ -4,7 +4,7 @@
 
         <item
             android:id="@+id/nav_menu_venue_info"
-            android:title="You Venue info"
+            android:title="Venue info"
             android:visible="false"/>
 
         <item

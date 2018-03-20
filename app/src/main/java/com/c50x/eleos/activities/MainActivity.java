@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,185 +26,180 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
-import com.c50x.eleos.data.User;
 import com.c50x.eleos.models.RvGameModel;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
-    private Button logOutButton;
-    private String handle;
-    private String email;
-    private TextView handleView;
-    private TextView nameView;
-    private TextView emailView;
+
+    private static final String TAG = "MainActivity";
     private GameTask gameTask;
-    private User[] l;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private LoginTask loginTask;
     private RecyclerView recyclerView;
     private Game[] loadedGames;
     private NavigationView navigationView;
-
     private Gson gson;
-    private static final String TAG = "MainActivity";
-
     private SwipeRefreshLayout swipeRefreshRecyclerList;
     private RvGameAdapter mAdapter;
-
     private ArrayList<RvGameModel> modelList = new ArrayList<>();
-
-    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        if (LoginTask.currentAuthUser != null){ // we have a valid current user
+        if (LoginTask.currentAuthUser != null) { // we have a valid current user
 
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
-        setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_main);
 
-        gameTask = new GameTask(MainActivity.this);
-
-        gameTask.loadGames();
-
-        // Game list
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        swipeRefreshRecyclerList = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_recycler_list);
+            // hides keyboard upon switching to this Activity
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
-        mAdapter = new RvGameAdapter(MainActivity.this, modelList);
-
-        recyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
-        recyclerView.setLayoutManager(layoutManager);
+            // initialize variables
+            loginTask = new LoginTask(this);
+            gson = new Gson();
+            gameTask = new GameTask(MainActivity.this);
+            mAdapter = new RvGameAdapter(MainActivity.this, modelList);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
 
-        recyclerView.setAdapter(mAdapter);
+            // find views
+            recyclerView = (RecyclerView) findViewById(R.id.game_recycler_view);
+            swipeRefreshRecyclerList = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_recycler_list);
 
 
-        mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, RvGameModel model) {
 
-                //handle item click events here
-                Toast.makeText(MainActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+            // TODO: Load only the games involving the player
+            gameTask.loadGames();
 
-            }
-        });
+            // recycler view setup
+            recyclerView.setHasFixedSize(true);
+            // use a linear layout manager
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(mAdapter);
 
-            mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener()
-            {
+            mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(View view, int position, RvGameModel model)
-                {
+                public void onItemClick(View view, int position, RvGameModel model) {
+
+                    //handle item click events here
+                    Toast.makeText(MainActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position, RvGameModel model) {
                     int selectedGameId = model.getGameid();
-                    Log.i(TAG,"Selected Game id: " + selectedGameId);
-                    Intent intent = new Intent(MainActivity.this,GameInfoActivity.class);
+                    Log.i(TAG, "Selected Game id: " + selectedGameId);
+                    Intent intent = new Intent(MainActivity.this, GameInfoActivity.class);
 
                     // get game from loadedGames and send it as json to view activity
                     String gameJson = null;
-                    for (Game gm: loadedGames){
-                        if (gm.getGameId() == selectedGameId){
+                    for (Game gm : loadedGames) {
+                        if (gm.getGameId() == selectedGameId) {
                             gameJson = gson.toJson(gm);
                             break;
                         }
                     }
-                    intent.putExtra("gameId",gameJson);
+                    intent.putExtra("gameId", gameJson);
                     startActivity(intent);
 
                 }
             });
 
-        swipeRefreshRecyclerList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+            swipeRefreshRecyclerList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
 
-                // Do your stuff on refresh
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                    // Do your stuff on refresh
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        if (swipeRefreshRecyclerList.isRefreshing())
-                            swipeRefreshRecyclerList.setRefreshing(false);
+                            if (swipeRefreshRecyclerList.isRefreshing())
+                                swipeRefreshRecyclerList.setRefreshing(false);
 
-                        gameTask.loadGames();
+                            gameTask.loadGames();
 
-                    }
-                }, 100);
-
-            }
-        });
-
-
-
-        // for navigation menu
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open , R.string.close);
-
-        mDrawerLayout.addDrawerListener(mToggle);
-       // fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mToggle.syncState();
-
-
-        // switch to selected activity when selected from menu
-
-        navigationView = findViewById(R.id.nav_view);
-        View menuHeader = navigationView.getHeaderView(0);
-        TextView tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
-        tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
-
-        // show manager option if a manager is logged in
-
-
-
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                        // create intent to use to switch to other activities
-                        Intent intent;
-                        // set item as selected to persist highlight
-                        item.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-                        switch (item.getItemId()){
-                            case R.id.nav_menu_gameCreation:
-                                intent = new Intent(MainActivity.this, CreateGameActivity.class);
-                                startActivity(intent);
-                                break;
-                            case R.id.nav_menu_teamCreation:
-                                intent = new Intent(MainActivity.this, CreateTeamActivity.class);
-                                startActivity(intent);
-                                break;
-
-                            case R.id.nav_menu_logout:
-                                loginTask.clearToken();
-                                intent = new Intent(MainActivity.this, LoginActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                                finish();
-                                startActivity(intent);
                         }
+                    }, 100);
 
-                        return false;
-                    }
                 }
-        );
+            });
 
-        if(getSupportActionBar() != null)
+
+            // for navigation menu
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+            mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+
+            // show menu button and make it clickable
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
+            mDrawerLayout.addDrawerListener(mToggle);
+            mToggle.syncState();
+
+
+            // find nav drawer layout
+            navigationView = findViewById(R.id.nav_view);
+
+            // set nav header
+            View menuHeader = navigationView.getHeaderView(0);
+            TextView tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
+
+            // display info in nav header
+            tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
+
+
+            // Change menu items if user is a manager
+
+            if (LoginTask.currentAuthUser.isManager()) {
+
+                navigationView.getMenu().findItem(R.id.nav_menu_venue_info).setVisible(true);
+                navigationView.getMenu().findItem(R.id.nav_menu_gameCreation).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_menu_teamCreation).setVisible(false);
+            }
+
+
+            navigationView.setNavigationItemSelectedListener(
+                    new NavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                            // create intent to use to switch to other activities
+                            Intent intent;
+                            // set item as selected to persist highlight
+                            item.setChecked(true);
+                            // close drawer when item is tapped
+                            mDrawerLayout.closeDrawers();
+                            switch (item.getItemId()) {
+                                case R.id.nav_menu_gameCreation:
+                                    intent = new Intent(MainActivity.this, CreateGameActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                case R.id.nav_menu_teamCreation:
+                                    intent = new Intent(MainActivity.this, CreateTeamActivity.class);
+                                    startActivity(intent);
+                                    break;
+
+                                case R.id.nav_menu_logout:
+                                    loginTask.clearToken();
+                                    intent = new Intent(MainActivity.this, LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                                    finish();
+                                    startActivity(intent);
+                            }
+
+                            return false;
+                        }
+                    }
+            );
         }
+    }
 
     // when user comes back from another screen
     @Override
@@ -223,20 +217,21 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     // for navigation menu button
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         if (LoginTask.currentAuthUser != null && LoginTask.currentAuthUser.isManager()) {
-            menu.findItem(R.id.nav_menu_venue_info).setVisible(true);
-            menu.findItem(R.id.nav_menu_gameCreation).setVisible(false);
-            menu.findItem(R.id.nav_menu_teamCreation).setVisible(false);
+//            menu.findItem(R.id.nav_menu_venue_info).setVisible(true);
+            // menu.findItem(R.id.nav_menu_gameCreation).setVisible(false);
+            //menu.findItem(R.id.nav_menu_teamCreation).setVisible(false);
+
         }
 
         return false;
     }
 
-   @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item))
+        if (mToggle.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
@@ -245,22 +240,21 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public void taskFinished(String output) {
         // Load games of player or games in venue
-        Gson gson = new Gson();
-        if (output.contains("game")){
+        if (output.contains("game")) {
 
-            loadedGames = gson.fromJson(output,Game[].class);
+            loadedGames = gson.fromJson(output, Game[].class);
 
             modelList = new ArrayList<>();
-            if (LoginTask.currentAuthUser.isManager()){
-             for (int i = 0; i < loadedGames.length; i++){
-                 if(loadedGames[i].getVenueAddress().equals(LoginTask.currentAuthUser.getVenueLocation()))
-                modelList.add(new RvGameModel(loadedGames[i]));
+            if (LoginTask.currentAuthUser.isManager()) {
+                for (int i = 0; i < loadedGames.length; i++) {
+                    if (loadedGames[i].getVenueAddress().equals(LoginTask.currentAuthUser.getVenueLocation()))
+                        modelList.add(new RvGameModel(loadedGames[i]));
                 }
             }
-            for (int i = 0; i < loadedGames.length; i++){
+            for (int i = 0; i < loadedGames.length; i++) {
                 modelList.add(new RvGameModel(loadedGames[i]));
             }
-            Log.i(TAG,"adding to game list");
+            Log.i(TAG, "adding to game list");
             mAdapter.updateList(modelList);
         }
     }
