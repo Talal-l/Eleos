@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                             break;
                         }
                     }
-                    intent.putExtra("gameId to view: ", gameJson);
+                    intent.putExtra("gameId", gameJson);
                     startActivity(intent);
                 }
             });

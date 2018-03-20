@@ -52,11 +52,10 @@ public class LoadingActivity extends AppCompatActivity implements AsyncResponse 
         if (!output.contains("null") && !output.contains("game")) { // user is valid
             // load data from json to current user
             LoginTask.currentAuthUser = gson.fromJson(output, User.class);
-            Log.i("mainActivity_taskF", "current user is manager: " + LoginTask.currentAuthUser.isManager());
+            Log.i(TAG, "current user is manager: " + LoginTask.currentAuthUser.isManager());
             Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            finish();
             startActivity(intent);
+            finish();
         }
     }
 }

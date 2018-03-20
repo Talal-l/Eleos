@@ -54,7 +54,7 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
         gameTask = new GameTask(GameInfoActivity.this);
 
         String gameJson = getIntent().getStringExtra("gameId");
-        Log.i(TAG,"gameJson: " + gameJson);
+        Log.i(TAG,"selected game Json: " + gameJson);
 
         // get game object from json
         selectedGame = gson.fromJson(gameJson,Game.class);

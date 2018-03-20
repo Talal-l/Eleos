@@ -97,8 +97,12 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         btnCancelCreateTeam.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(intent);
+
+            Intent intent = new Intent(CreateTeamActivity.this, MainActivity.class);
+
+            // prevent back button from coming back to this screen
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            finish();
             }
         });
 
@@ -151,7 +155,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         LoginTask loginTask = new LoginTask(this);
         if(!output.contains("null") && !output.contains("error")) {
 
-            // TODO: SHow message that game was created
+            // TODO: Show message that game was created
 
             Intent intent = new Intent(CreateTeamActivity.this, MainActivity.class);
 
