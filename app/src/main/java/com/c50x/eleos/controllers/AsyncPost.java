@@ -13,9 +13,8 @@ import okhttp3.Response;
 public class AsyncPost extends AsyncTask<String,Void,String> {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
+    private static final String TAG = "AsyncGet";
     public AsyncResponse delegate = null;
-
     public AsyncPost(AsyncResponse delegate){
         this.delegate = delegate;
     }
@@ -26,9 +25,7 @@ public class AsyncPost extends AsyncTask<String,Void,String> {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON,json);
         Request request = new Request.Builder().url(url).post(body).build();
-
         Response response = client.newCall(request).execute();
-
         return response.body().string();
     }
 

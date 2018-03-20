@@ -32,8 +32,7 @@ public class UserTask {
         String key = "handle";
 
         String url = urlBase + script;
-        Log.i(TAG, "using server address: " + urlBase);
-        Log.i(TAG, "url: " + url);
+        Log.i(TAG, " loaduser url: " + url);
 
         new AsyncGet(activityContext).execute(url,key, handle);
 
@@ -45,8 +44,7 @@ public class UserTask {
         String key = "handle";
 
         String url = urlBase + script;
-        Log.i(TAG, "using server address: " + urlBase);
-        Log.i(TAG, "url: " + url);
+        Log.i(TAG, "searchPlayer url: " + url);
 
         new AsyncGet(activityContext).execute(url,key, handle);
      }

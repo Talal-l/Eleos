@@ -1,19 +1,15 @@
 package com.c50x.eleos.controllers;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.data.Team;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.AbstractMap;
-import java.util.Map;
 
 public class TeamTask {
-    private Team teamList[];
+
+    private static final String TAG = "TeamTask";
     private String urlBase;
     private Gson gson;
     private AsyncResponse activityContext;
@@ -22,7 +18,7 @@ public class TeamTask {
     public TeamTask(Context activityContext) {
         // load the server address from string.xml
         gson = new Gson();
-        this.activityContext = (AsyncResponse)activityContext;
+        this.activityContext = (AsyncResponse) activityContext;
         urlBase = activityContext.getString(R.string.server_address);
 
     }
@@ -35,63 +31,57 @@ public class TeamTask {
 
         // convert into a JSON object
         String json = gson.toJson(teamToAdd);
-        Log.i("TeamTask_addTeam", "json to be sent: " + json);
+        Log.i(TAG, "addTeam json request: " + json);
 
         // construct the url
         String url = urlBase + script;
-        Log.i("TeamTask_addTeam", "url: " + url);
+        Log.i(TAG, "addTeam url: " + url);
 
 
-
-        new AsyncPost(activityContext).execute(url,json);
+        new AsyncPost(activityContext).execute(url, json);
     }
 
-     public void loadTeam (String teamName){
+    public void loadTeam(String teamName) {
 
         String script = "/loadTeam.php";
         String key = "teamName";
 
         String url = urlBase + script;
-        Log.i("TeamTask_loadTeam", "url: " + url);
+        Log.i(TAG, "loadTeam url: " + url);
 
 
-        new AsyncGet(activityContext).execute(url,key, teamName);
+        new AsyncGet(activityContext).execute(url, key, teamName);
 
-     }
-
-     public void loadAdminTeams(String teamAdmin){
-
-         String script = "/loadAdminTeams.php";
-         String key = "teamAdmin";
-
-         String url = urlBase + script;
-         Log.i("TeamTask_loadAdminTeams", "url: " + url);
-
-         new AsyncGet(activityContext).execute(url,key,teamAdmin);
-     }
-
-     public void loadAllTeams(){
-         // TODO: Change to post
-
-         String script = "/loadAllTeams.php";
-         String key = "";
-
-         String url = urlBase + script;
-         Log.i("TeamTask_loadAllTeams", "url: " + url);
-
-         new AsyncGet(activityContext).execute(url,key,"");
-
-
-     }
-     // json to Team object
-    public Team getTeamObject(String json){
-
-         return gson.fromJson(json,Team.class);
     }
 
+    public void loadAdminTeams(String teamAdmin) {
+
+        String script = "/loadAdminTeams.php";
+        String key = "teamAdmin";
+
+        String url = urlBase + script;
+        Log.i(TAG, "loadAdminTeams url: " + url);
+
+        new AsyncGet(activityContext).execute(url, key, teamAdmin);
+    }
+
+    public void loadAllTeams() {
+        // TODO: Change to post
+
+        String script = "/loadAllTeams.php";
+        String key = "";
+
+        String url = urlBase + script;
+        Log.i(TAG, "loadAllTeams url: " + url);
+
+        new AsyncGet(activityContext).execute(url, key, "");
 
 
+    }
 
+    // json to Team object
+    public Team getTeamObject(String json) {
 
-
+        return gson.fromJson(json, Team.class);
+    }
 }

@@ -1,6 +1,5 @@
 package com.c50x.eleos.activities;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
 
@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             // find views
             recyclerView = (RecyclerView) findViewById(R.id.game_recycler_view);
             swipeRefreshRecyclerList = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_recycler_list);
-
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+            navigationView = findViewById(R.id.nav_view);
 
 
             // TODO: Load only the games involving the player
@@ -82,19 +83,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(mAdapter);
 
-            mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position, RvGameModel model) {
-
-                    //handle item click events here
-                    Toast.makeText(MainActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
 
             mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position, RvGameModel model) {
+
                     int selectedGameId = model.getGameid();
                     Log.i(TAG, "Selected Game id: " + selectedGameId);
                     Intent intent = new Intent(MainActivity.this, GameInfoActivity.class);
@@ -107,9 +100,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                             break;
                         }
                     }
-                    intent.putExtra("gameId", gameJson);
+                    intent.putExtra("gameId to view: ", gameJson);
                     startActivity(intent);
-
                 }
             });
 
@@ -117,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 @Override
                 public void onRefresh() {
 
-                    // Do your stuff on refresh
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -135,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
             // for navigation menu
-            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
             mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
             // show menu button and make it clickable
@@ -144,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             mToggle.syncState();
 
 
-            // find nav drawer layout
-            navigationView = findViewById(R.id.nav_view);
 
             // set nav header
             View menuHeader = navigationView.getHeaderView(0);
@@ -155,8 +143,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
 
 
-            // Change menu items if user is a manager
-
+            // change menu items if user is a manager
             if (LoginTask.currentAuthUser.isManager()) {
 
                 navigationView.getMenu().findItem(R.id.nav_menu_venue_info).setVisible(true);
@@ -193,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                     finish();
                                     startActivity(intent);
                             }
-
                             return false;
                         }
                     }
@@ -215,20 +201,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     }
 
-    // for navigation menu button
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        if (LoginTask.currentAuthUser != null && LoginTask.currentAuthUser.isManager()) {
-//            menu.findItem(R.id.nav_menu_venue_info).setVisible(true);
-            // menu.findItem(R.id.nav_menu_gameCreation).setVisible(false);
-            //menu.findItem(R.id.nav_menu_teamCreation).setVisible(false);
-
-        }
-
-        return false;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item))
@@ -239,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void taskFinished(String output) {
-        // Load games of player or games in venue
+        // load games of player or games in venue
         if (output.contains("game")) {
 
             loadedGames = gson.fromJson(output, Game[].class);
@@ -254,7 +226,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             for (int i = 0; i < loadedGames.length; i++) {
                 modelList.add(new RvGameModel(loadedGames[i]));
             }
-            Log.i(TAG, "adding to game list");
             mAdapter.updateList(modelList);
         }
     }
