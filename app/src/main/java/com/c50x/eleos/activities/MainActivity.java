@@ -146,21 +146,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
             // display info in nav header for manager
             if (LoginTask.currentAuthUser.isManager()) {
+
+                navigationView.getMenu().findItem(R.id.nav_menu_venue_info).setVisible(true);
+                navigationView.getMenu().findItem(R.id.nav_menu_gameCreation).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_menu_teamCreation).setVisible(false);
                 tvUserName.setText(LoginTask.currentAuthUser.getName());
 
             }
             else{
 
                 tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
-            }
-
-
-            // change menu items if user is a manager
-            if (LoginTask.currentAuthUser.isManager()) {
-
-                navigationView.getMenu().findItem(R.id.nav_menu_venue_info).setVisible(true);
-                navigationView.getMenu().findItem(R.id.nav_menu_gameCreation).setVisible(false);
-                navigationView.getMenu().findItem(R.id.nav_menu_teamCreation).setVisible(false);
             }
 
 
@@ -191,6 +186,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                                     finish();
                                     startActivity(intent);
+                                    break;
+                                case R.id.nav_menu_venue_info:
+                                    loginTask.clearToken();
+                                    intent = new Intent(MainActivity.this, VenueInfoActivity.class);
+                                    startActivity(intent);
+                                    break;
+
                             }
                             return false;
                         }

@@ -148,12 +148,12 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
     @Override
     public void taskFinished(String output) {
 
-        Log.i("RegActivity","output: " + output);
+        Log.i("ManagerRegActivity","output: " + output);
         LoginTask loginTask = new LoginTask(this);
         if(!output.contains("null") && !output.contains("error")) {
             loginTask.setToken(output);
 
-            Intent intent = new Intent(ManagerRegistrationActivity.this, MainActivity.class);
+            Intent intent = new Intent(ManagerRegistrationActivity.this, LoadingActivity.class);
 
             // prevent back button from coming back to this screen
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);

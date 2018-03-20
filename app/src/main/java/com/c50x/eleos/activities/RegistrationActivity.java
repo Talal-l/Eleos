@@ -166,7 +166,7 @@ public class RegistrationActivity extends AppCompatActivity implements AsyncResp
         if(!output.contains("null") && !output.contains("error")) {
             loginTask.setToken(output);
 
-            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+            Intent intent = new Intent(RegistrationActivity.this, LoadingActivity.class);
 
             // prevent back button from coming back to this screen
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);

@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         if (!output.contains("null") && !output.contains("error")) { // user is valid
             loginTask.setToken(output);
 
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, LoadingActivity.class);
 
             // prevent back button from returning to this activity
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
