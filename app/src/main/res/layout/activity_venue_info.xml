@@ -2,35 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
     <TextView
         android:id="@+id/tv_info_venue_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Venue Name" />
-
-    <EditText
-        android:id="@+id/et_info_venue_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:text="Venue Name: "
+        android:padding="8dp"
+        />
 
     <TextView
         android:id="@+id/tv_info_venue_manager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <EditText
-        android:id="@+id/et_info_venue_manager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:text="Venue manager"
+        android:padding="8dp"
+        />
 
     <TextView
         android:id="@+id/tv_info_num_grounds"
