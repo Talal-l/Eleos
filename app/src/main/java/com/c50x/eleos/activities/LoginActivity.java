@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
         Log.i(TAG, "login server response: " + output);
 
         // handle login
-        if (!output.contains("null")) { // user is valid
+        if (!output.contains("null") && !output.contains("error")) { // user is valid
             loginTask.setToken(output);
 
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -146,4 +146,4 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
     }
 }
 
-
+// managers

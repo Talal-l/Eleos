@@ -60,7 +60,7 @@ public class LoginTask {
 
     // used with login and registration
     public void setToken(String json) {
-        Log.i(TAG, "setToken json response: " + json);
+        Log.i(TAG, "setting current user using " + json);
         currentAuthUser = gson.fromJson(json, User.class);
 
         // Save new token in shared preferences

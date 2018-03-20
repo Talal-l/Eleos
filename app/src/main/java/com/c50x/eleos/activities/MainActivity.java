@@ -34,10 +34,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     private static final String TAG = "MainActivity";
     private GameTask gameTask;
+    private View menuHeader;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private LoginTask loginTask;
     private RecyclerView recyclerView;
+    private TextView tvPlayerHandle;
+    private TextView tvUserName;
     private Game[] loadedGames;
     private NavigationView navigationView;
     private Gson gson;
@@ -136,11 +139,20 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
             // set nav header
-            View menuHeader = navigationView.getHeaderView(0);
-            TextView tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
+            menuHeader = navigationView.getHeaderView(0);
+            tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
+            tvUserName = menuHeader.findViewById(R.id.tv_nav_header_name);
 
-            // display info in nav header
-            tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
+
+            // display info in nav header for manager
+            if (LoginTask.currentAuthUser.isManager()) {
+                tvUserName.setText(LoginTask.currentAuthUser.getName());
+
+            }
+            else{
+
+                tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
+            }
 
 
             // change menu items if user is a manager
