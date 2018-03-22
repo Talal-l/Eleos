@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
@@ -159,20 +160,20 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
         Log.i("ManagerRegActivity","output: " + output);
         LoginTask loginTask = new LoginTask(this);
         if(!output.contains("null") && !output.contains("error")) {
-            loginTask.setToken(output);
 
             Intent intent = new Intent(ManagerRegistrationActivity.this, LoadingActivity.class);
 
+            Toast.makeText(this, "Request is being processed", Toast.LENGTH_SHORT).show();
             // prevent back button from coming back to this screen
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             finish();
-
             startActivity(intent);
+
         }
         else if (output.contains("error")){
                 // Auth failed because of invalid input
 
-                if (output.contains("email")){
+                if (output.contains("PRIMARY")){
 
                     email.setError("Email exist");
                 }

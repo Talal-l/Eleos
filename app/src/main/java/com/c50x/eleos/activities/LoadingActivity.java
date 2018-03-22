@@ -53,6 +53,7 @@ public class LoadingActivity extends AppCompatActivity implements AsyncResponse 
             // load data from json to current user
             LoginTask.currentAuthUser = gson.fromJson(output, User.class);
             Log.i(TAG, "current user is manager: " + LoginTask.currentAuthUser.isManager());
+            Log.i(TAG, "current user is verified: " + LoginTask.currentAuthUser.isVerified());
             Log.i(TAG, "authToken response: " +output);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

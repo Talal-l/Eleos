@@ -2,8 +2,12 @@ package com.c50x.eleos.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +22,7 @@ import android.widget.Toast;
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
+import com.c50x.eleos.data.User;
 import com.c50x.eleos.data.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -39,12 +44,12 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
     private EditText etNumberOfGrounds;
     private Menu mnuVenueInfo;
     private MenuItem mnutEdit;
-    private MenuItem mnutSave;
+    private MenuItem mnutDone;
 
     private Gson gson;
     private Venue venue;
     private String managerEmail;
-
+    private User currentAuthUser;
     private final static String TAG = "GameInfoActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
@@ -56,6 +61,10 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         setContentView(R.layout.activity_venue_info);
         if(isServicesOK())
             init();
+
+
+        // init variables
+        currentAuthUser = LoginTask.currentAuthUser;
 
 
         // find views
@@ -72,12 +81,36 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
 
 
         // set to values
-        Log.i(TAG,"Manager name: " + LoginTask.currentAuthUser.getName());
-        etVenueManager.setText(LoginTask.currentAuthUser.getName());
-//        etNumberOfGrounds.setText(currentUser.getNumGrounds());
+        etVenueManager.setText(currentAuthUser.getName());
+        etVenueName.setText(currentAuthUser.getVenueName());
+//        etNumberOfGrounds.setText(currentAuthUser.getNumGrounds());
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // used to check if text has changed by user
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (mnutDone != null)
+                mnutDone.setVisible(true);
+            }
+        };
+
+        etVenueName.addTextChangedListener(watcher);
+        etVenueManager.addTextChangedListener(watcher);
+
+
 
     }
 
@@ -89,7 +122,6 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
             @Override
             public void onClick(View v)
             {
-                Log.i(TAG,"shit");
                 Intent intent = new Intent(VenueInfoActivity.this, MapActivity.class);
                 startActivity(intent);
             }
@@ -103,9 +135,11 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_actionbar, menu);
         mnuVenueInfo = menu;
-        // TODO: Show edit option if manger is verified
+        mnutDone = menu.findItem(R.id.mnut_done);
 
-        // TODO: Hide save if nothing has changed
+            mnutDone.setTitle("save");
+            mnutDone.setVisible(false);
+
 
         return true;
     }
@@ -116,7 +150,6 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         return true;
     }
 
-    // TODO: handle action bar options
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -131,6 +164,20 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
                 return super.onOptionsItemSelected(item);
         }
     }
+    private void enableEditText(EditText ... editTexts ) {
+        for (EditText editText: editTexts ) {
+            editText.setInputType(InputType.TYPE_CLASS_TEXT);
+            mnutDone.setCheckable(true);
+
+        }
+    }
+
+    private void disableEditText(EditText ... editTexts ) {
+        for (EditText editText: editTexts ) {
+            editText.setInputType(InputType.TYPE_NULL);
+            mnutDone.setCheckable(false);
+        }
+    }
 
     public boolean isServicesOK()
     {
@@ -143,7 +190,7 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
 
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available))
         {
-            Log.d(TAG, "isServicesOK: an error accured but we can fix it");
+            Log.d(TAG, "isServicesOK: an error curred but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(VenueInfoActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         }
