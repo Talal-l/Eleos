@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
@@ -24,6 +25,8 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
     private EditText email;
     private EditText password;
     private EditText confirm_password;
+    private EditText venueName;
+    private TextView venueLocation;
     private Button   confirmButton;
     private Button   cancelButton;
     private User newUser;
@@ -47,6 +50,8 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         confirm_password = findViewById(R.id.confirm_password);
+        venueName = findViewById(R.id.et_info_venue_name);
+        venueLocation = findViewById(R.id.tv_manager_reg_venue_location);
         // TODO: Take input from spinners
         // TODO: Take date of birth
 
@@ -94,6 +99,9 @@ public class ManagerRegistrationActivity extends AppCompatActivity implements As
                     newUser.setDateOfBirth("10/2/2019");
                     newUser.setHandle("manager");
                     newUser.setManager(true);
+
+//                    newUser.setVenueName(venueName.getText().toString());
+ //                   newUser.setVenueName("Kuwait");
 
 
 

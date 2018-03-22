@@ -10,6 +10,7 @@ public class User {
     private String dateOfBirth;
     private String gender;
     private String token;
+    private int numGrounds;
 
     private boolean isManager;
     private String venueName;
@@ -27,6 +28,7 @@ public class User {
         dateOfBirth = "";
         gender = "";
         token = "";
+        numGrounds = 1;
     }
 
 
@@ -116,5 +118,13 @@ public class User {
 
     public void setVerified(boolean verified) {
         isVerified = verified;
+    }
+
+    public int getNumGrounds() {
+        return numGrounds;
+    }
+
+    public void setNumGrounds(int numGrounds) {
+        this.numGrounds = numGrounds;
     }
 }

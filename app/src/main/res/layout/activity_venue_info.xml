@@ -12,6 +12,13 @@
         android:text="Venue Name: "
         android:padding="15dp"
         />
+    <EditText
+        android:id="@+id/et_info_venue_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+
+        />
 
     <TextView
         android:id="@+id/tv_info_venue_manager"
@@ -20,6 +27,13 @@
         android:text="Venue manager: "
         android:padding="15dp"
         />
+    <EditText
+        android:id="@+id/et_info_venue_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+
+        />
 
     <TextView
         android:id="@+id/tv_info_num_grounds"
@@ -27,6 +41,12 @@
         android:layout_height="wrap_content"
         android:text="Number of grounds: "
         android:padding="15dp"
+        />
+    <EditText
+        android:id="@+id/et_info_num_grounds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
         />
 
     <TextView
@@ -43,6 +63,7 @@
         android:layout_height="wrap_content"
         android:text="Opening time: "
         android:padding="15dp"
+        android:visibility="gone"
         />
 
     <TextView
@@ -51,5 +72,6 @@
         android:layout_height="wrap_content"
         android:text="Venue type: "
         android:padding="15dp"
+        android:visibility="gone"
         />
 </LinearLayout>

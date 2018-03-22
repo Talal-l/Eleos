@@ -1,11 +1,8 @@
 package com.c50x.eleos.activities;
 
 import android.app.Dialog;
-import android.arch.persistence.room.PrimaryKey;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -20,8 +17,7 @@ import android.widget.Toast;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
-import com.c50x.eleos.controllers.GameTask;
-import com.c50x.eleos.data.Game;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -72,8 +68,13 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         tvVenueType = findViewById(R.id.tv_info_venue_type);
         tvOpeningTime = findViewById(R.id.tv_info_venue_opening_time);
         tvNumberOfGrounds = findViewById(R.id.tv_info_num_grounds);
-        tvNumberOfGrounds = findViewById(R.id.et_info_num_grounds);
+        etNumberOfGrounds = findViewById(R.id.et_info_num_grounds);
 
+
+        // set to values
+        Log.i(TAG,"Manager name: " + LoginTask.currentAuthUser.getName());
+        etVenueManager.setText(LoginTask.currentAuthUser.getName());
+//        etNumberOfGrounds.setText(currentUser.getNumGrounds());
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
