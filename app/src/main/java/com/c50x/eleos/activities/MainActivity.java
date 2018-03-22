@@ -189,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                     startActivity(intent);
                                     break;
                                 case R.id.nav_menu_venue_info:
-                                    loginTask.clearToken();
                                     intent = new Intent(MainActivity.this, VenueInfoActivity.class);
                                     startActivity(intent);
                                     break;
