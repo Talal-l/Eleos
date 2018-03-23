@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
+import com.c50x.eleos.controllers.UserTask;
+import com.c50x.eleos.utilities.InputValidation;
 import com.c50x.eleos.utilities.Utilities;
 import com.c50x.eleos.data.User;
 import com.c50x.eleos.data.Venue;
@@ -98,12 +101,36 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
 
                 mnutDone.setTitle("Save");
                 // enable the EditViews
-                    Utilities.enableEditText(etVenueName,etVenueManager,etNumberOfGrounds);
+                    Utilities.enableEditText(etVenueName,etVenueManager);
+                    etNumberOfGrounds.setInputType(InputType.TYPE_CLASS_PHONE);
 
 
                 }
                 else{
                     // validate new info
+                    if (!InputValidation.venueName(etVenueName.getText().toString())){
+                        etVenueName.setError("Invalid venue Name");
+
+                    }
+                    else if (!InputValidation.name(etVenueManager.getText().toString())){
+                        etVenueManager.setError("Invalid name");
+
+                    }
+                    else if (!(etNumberOfGrounds.getText().toString().compareTo("0") > 0)){
+                        etNumberOfGrounds.setError("can't be 0");
+
+                    }
+                    else{
+                        currentAuthUser.setName(etVenueManager.getText().toString());
+                        currentAuthUser.setVenueName(etVenueName.getText().toString());
+                        currentAuthUser.setNumGrounds(Integer.parseInt(etNumberOfGrounds.getText().toString()));
+
+                        UserTask userTask = new UserTask(this);
+                        userTask.updateUser(currentAuthUser);
+
+                        mnutDone.setTitle("Edit");
+                        Toast.makeText(this,"Info updated",Toast.LENGTH_LONG).show();
+                    }
 
                 }
                 break;
@@ -178,6 +205,31 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
 
     @Override
     public void taskFinished(String output) {
+        Log.i(TAG,"output: " + output);
+        if(!output.contains("null") && !output.contains("error")) {
+
+            // go back to viewing mode
+
+
+        }
+        else if (output.contains("error")){
+                // Auth failed because of invalid input
+
+
+                if (output.contains("name")){
+
+                    etVenueManager.setError("invalid name");
+                }
+                if (output.contains("venueName")){
+
+                    etVenueName.setError("invalid venue name");
+                }
+        }
+        else{
+              // something is wrong
+                    Log.i("RegActivity","Something is wrong with server response "+ "\n" +
+                            "response from server: " + output);
+        }
 
     }
 }

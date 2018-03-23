@@ -48,4 +48,17 @@ public class UserTask {
 
         new AsyncGet(activityContext).execute(url,key, handle);
      }
+     public void updateUser (User userToAdd){
+
+        String script = "/updateUser.php";
+
+        String url = urlBase + script;
+
+        String json = gson.toJson(userToAdd, User.class);
+
+        Log.i(TAG, "addUser as manager json request: " + json);
+
+        new AsyncPost(activityContext).execute(url, json);
+
+     }
 }
