@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
+import com.c50x.eleos.controllers.Utilities;
 import com.c50x.eleos.data.User;
 import com.c50x.eleos.data.Venue;
 import com.google.android.gms.common.ConnectionResult;
@@ -83,35 +84,43 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         // set to values
         etVenueManager.setText(currentAuthUser.getName());
         etVenueName.setText(currentAuthUser.getVenueName());
-//        etNumberOfGrounds.setText(currentAuthUser.getNumGrounds());
+        etNumberOfGrounds.setText(String.valueOf(currentAuthUser.getNumGrounds()));
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // used to check if text has changed by user
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (mnutDone != null)
-                mnutDone.setVisible(true);
-            }
-        };
-
-        etVenueName.addTextChangedListener(watcher);
-        etVenueManager.addTextChangedListener(watcher);
+    }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mnut_done: // button pressed
 
+                if (mnutDone.getTitle().equals("Edit")){
+
+                mnutDone.setTitle("Save");
+                // enable the EditViews
+                    Utilities.enableEditText(etVenueName,etVenueManager,etNumberOfGrounds);
+
+
+                }
+                else{
+                    // validate new info
+
+                }
+                break;
+
+
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     private void init()
@@ -137,9 +146,8 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         mnuVenueInfo = menu;
         mnutDone = menu.findItem(R.id.mnut_done);
 
-            mnutDone.setTitle("save");
-            mnutDone.setVisible(false);
-
+            mnutDone.setTitle("Edit");
+            Utilities.disableEditText(etVenueManager,etVenueName,etNumberOfGrounds);
 
         return true;
     }
@@ -150,34 +158,6 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.mnut_done:
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    private void enableEditText(EditText ... editTexts ) {
-        for (EditText editText: editTexts ) {
-            editText.setInputType(InputType.TYPE_CLASS_TEXT);
-            mnutDone.setCheckable(true);
-
-        }
-    }
-
-    private void disableEditText(EditText ... editTexts ) {
-        for (EditText editText: editTexts ) {
-            editText.setInputType(InputType.TYPE_NULL);
-            mnutDone.setCheckable(false);
-        }
-    }
 
     public boolean isServicesOK()
     {
