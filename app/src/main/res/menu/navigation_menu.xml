@@ -8,6 +8,10 @@
             android:visible="false"/>
 
         <item
+            android:id="@+id/nav_menu_my_teams"
+            android:title="My Teams"
+            />
+        <item
             android:id="@+id/nav_menu_teamCreation"
             android:icon="@drawable/ic_media_play_light"
             android:title="Team Creation" />

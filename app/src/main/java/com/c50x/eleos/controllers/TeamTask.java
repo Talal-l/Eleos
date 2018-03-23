@@ -78,6 +78,17 @@ public class TeamTask {
 
 
     }
+    public void updateTeam (Team teamToAdd){
+
+        String script = "/updateUser.php";
+
+        String url = urlBase + script;
+        String json = gson.toJson(teamToAdd, Team.class);
+        Log.i(TAG, "Updated team info: " + json);
+
+        new AsyncPost(activityContext).execute(url, json);
+
+     }
 
     // json to Team object
     public Team getTeamObject(String json) {

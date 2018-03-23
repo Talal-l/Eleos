@@ -49,9 +49,17 @@
         <activity
             android:name=".activities.GameInfoActivity"
             android:label="Game Info" />
+
         <activity
             android:name=".activities.ManagerRegistrationActivity"
             android:label="Manager Registration" />
+         <activity
+            android:name=".activities.AdminTeams"
+            android:label="My Teams" />
+          <activity
+            android:name=".activities.TeamInfoActivity"
+            android:label="Team info" />
+
         <activity
             android:name=".activities.VenueInfoActivity"
             android:label="Your Venue" />

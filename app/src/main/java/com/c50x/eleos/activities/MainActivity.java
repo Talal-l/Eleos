@@ -172,6 +172,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                             // close drawer when item is tapped
                             mDrawerLayout.closeDrawers();
                             switch (item.getItemId()) {
+                                case R.id.nav_menu_my_teams:
+                                    intent = new Intent(MainActivity.this, AdminTeams.class);
+                                    startActivity(intent);
+                                    break;
                                 case R.id.nav_menu_gameCreation:
                                     intent = new Intent(MainActivity.this, CreateGameActivity.class);
                                     startActivity(intent);
