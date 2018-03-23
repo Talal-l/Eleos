@@ -1,4 +1,4 @@
-package com.c50x.eleos.controllers;
+package com.c50x.eleos.utilities;
 
 
 import android.text.InputType;
