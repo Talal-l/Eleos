@@ -69,7 +69,7 @@
 
             </LinearLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_game_admin_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,6 +77,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="GameAdmin"
+                android:textSize="14dp"
                 android:textColor="#000000" />
 
 
@@ -99,7 +100,7 @@
 
             </LinearLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_game_team1_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,6 +108,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="Team1"
+                android:textSize="14dp"
                 android:textColor="#000000" />
 
             <LinearLayout
@@ -128,7 +130,7 @@
 
             </LinearLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_game_team2_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,6 +138,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="Team2"
+                android:textSize="14dp"
                 android:textColor="#000000" />
 
             <LinearLayout
@@ -156,7 +159,7 @@
                     />
             </LinearLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_game_game_sport_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,6 +167,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="Sport"
+                android:textSize="14dp"
                 android:textColor="#000000" />
 
             <LinearLayout
@@ -185,7 +189,7 @@
 
             </LinearLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_game_date_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -193,6 +197,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="gameDate"
+                android:textSize="14dp"
                 android:textColor="#000000" />
 
             <LinearLayout
@@ -214,7 +219,7 @@
 
             </LinearLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_game_time_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -222,6 +227,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="gameTime"
+                android:textSize="14dp"
                 android:textColor="#000000" />
 
             <LinearLayout
@@ -244,7 +250,7 @@
 
             </LinearLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_game_location_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -254,6 +260,7 @@
                 android:padding="8dp"
                 android:singleLine="true"
                 android:text="GameVenue "
+                android:textSize="14dp"
                 android:textColor="#000000" />
 
         </LinearLayout>
