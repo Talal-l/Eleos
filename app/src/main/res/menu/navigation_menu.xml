@@ -11,17 +11,26 @@
             android:id="@+id/nav_menu_my_teams"
             android:title="My Teams"
             />
+
+        <item
+            android:id="@+id/nav_menu_my_games"
+            android:title="My Games"
+            />
+
         <item
             android:id="@+id/nav_menu_teamCreation"
             android:icon="@drawable/ic_media_play_light"
-            android:title="Team Creation" />
+            android:title="Create Team" />
+
         <item
             android:id="@+id/nav_menu_gameCreation"
-            android:title="Game Creation" />
+            android:title="Create Game" />
 
         <item
             android:id="@+id/nav_menu_logout"
             android:title="Logout"/>
+
+
 
     </group>
 </menu>
