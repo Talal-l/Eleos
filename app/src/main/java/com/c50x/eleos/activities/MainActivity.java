@@ -12,12 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvGameAdapter;
@@ -138,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             mToggle.syncState();
 
 
-
             // set nav header
             menuHeader = navigationView.getHeaderView(0);
             tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
@@ -153,8 +150,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 navigationView.getMenu().findItem(R.id.nav_menu_teamCreation).setVisible(false);
                 tvUserName.setText(LoginTask.currentAuthUser.getName());
 
-            }
-            else{
+            } else {
 
                 tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
             }
@@ -176,6 +172,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                     intent = new Intent(MainActivity.this, AdminTeams.class);
                                     startActivity(intent);
                                     break;
+                                case R.id.nav_menu_my_games:
+                                    intent = new Intent(MainActivity.this, AdminTeams.class);
+                                    startActivity(intent);
+                                    break;
+
                                 case R.id.nav_menu_gameCreation:
                                     intent = new Intent(MainActivity.this, CreateGameActivity.class);
                                     startActivity(intent);

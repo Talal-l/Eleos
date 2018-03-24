@@ -60,6 +60,10 @@
             android:name=".activities.TeamInfoActivity"
             android:label="Team info" />
 
+          <activity
+            android:name=".activities.AdminGamesActivity"
+            android:label="Your Games" />
+
         <activity
             android:name=".activities.VenueInfoActivity"
             android:label="Your Venue" />
