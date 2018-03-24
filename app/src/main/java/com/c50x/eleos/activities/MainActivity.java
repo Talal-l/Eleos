@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             } else {
 
                 tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
+                tvUserName.setText(LoginTask.currentAuthUser.getName());
             }
 
 
