@@ -17,7 +17,9 @@ import android.widget.Toast;
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
+import com.c50x.eleos.utilities.Utilities;
 import com.google.gson.Gson;
 
 public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
@@ -37,6 +39,8 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
     private Game selectedGame;
     private Menu mnuGameInfo;
     private MenuItem mnutJoin;
+    private MenuItem mnutEdit;
+    private MenuItem mnutDone;
     private String selectedTeam;
     private GameTask gameTask;
 
@@ -96,18 +100,17 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_actionbar, menu);
         mnuGameInfo = menu;
-        mnutJoin = mnuGameInfo.findItem(R.id.mnut_done);
-        mnutJoin.setTitle("Join");
 
-        // hide done when nothing is selected
+        mnutDone = mnuGameInfo.findItem(R.id.mnut_done);
 
-        if (selectedGame.getTeam2() == null || selectedGame.getTeam2().equals("")) { // coming from select main team
-            // show option to join if there is no team2
-            mnutJoin.setVisible(true);
+        if (LoginTask.currentAuthUser.getHandle().equals(selectedGame.getGameAdmin())){
+            mnutDone.setTitle("Edit");
+
         }
-            else
-                mnutJoin.setVisible(false);
+        else{
 
+            mnutDone.setTitle("Join");
+        }
         return true;
     }
 
@@ -121,10 +124,18 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
         switch (item.getItemId()) {
             case R.id.mnut_done:
                 // select done option
+
+                if (item.getTitle().equals("Join")){
+
                 // go to team selection and get selected team if any
                 Intent intent = new Intent(GameInfoActivity.this,TeamSelectionActivity.class);
                 intent.putExtra("source",0);
                 startActivityForResult(intent,1);
+                }
+                else if (item.getTitle().equals("Edit")){
+
+
+                }
 
                 return true;
 

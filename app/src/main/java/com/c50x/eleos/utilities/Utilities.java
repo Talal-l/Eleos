@@ -2,7 +2,10 @@ package com.c50x.eleos.utilities;
 
 
 import android.text.InputType;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -13,17 +16,34 @@ public final class Utilities {
 
     }
 
-    public static void enableEditText(EditText... editTexts) {
+    public static void enableViews(View... views) {
 
-        for (EditText editText : editTexts) {
-            editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        for (View view : views) {
+            if (view instanceof EditText) {
+                ((EditText) view).setInputType(InputType.TYPE_CLASS_TEXT);
+
+            } else if (view instanceof Spinner) {
+
+
+            } else if (view instanceof TextView) {
+                view.setClickable(true);
+
+            }
 
         }
     }
 
-    public static void disableEditText(EditText... editTexts) {
-        for (EditText editText : editTexts) {
-            editText.setInputType(InputType.TYPE_NULL);
+    public static void disableViews(View... views) {
+
+        for (View view : views) {
+            if (view instanceof EditText) {
+                ((EditText) view).setInputType(InputType.TYPE_CLASS_TEXT);
+            } else if (view instanceof Spinner) {
+
+            } else if (view instanceof TextView) {
+                view.setClickable(false);
+            }
+
         }
     }
 }

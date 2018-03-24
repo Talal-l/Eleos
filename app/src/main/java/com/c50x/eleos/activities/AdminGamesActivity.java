@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -55,6 +54,7 @@ public class AdminGamesActivity extends AppCompatActivity implements AsyncRespon
         // hides keyboard upon switching to this Activity
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // initialize variables
         loginTask = new LoginTask(this);
@@ -124,11 +124,9 @@ public class AdminGamesActivity extends AppCompatActivity implements AsyncRespon
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item))
-            return true;
-
-        return super.onOptionsItemSelected(item);
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     @Override
@@ -139,18 +137,13 @@ public class AdminGamesActivity extends AppCompatActivity implements AsyncRespon
             loadedGames = gson.fromJson(output, Game[].class);
 
             modelList = new ArrayList<>();
-            if (LoginTask.currentAuthUser.isManager()) {
-                for (int i = 0; i < loadedGames.length; i++) {
-                    // only show games where the admin is the current user
-                    if (loadedGames[i].getGameAdmin().equals(LoginTask.currentAuthUser.getHandle()))
-                        modelList.add(new RvGameModel(loadedGames[i]));
-                }
-            }
             for (int i = 0; i < loadedGames.length; i++) {
-                modelList.add(new RvGameModel(loadedGames[i]));
+                // only show games where the admin is the current user
+                if (loadedGames[i].getGameAdmin().equals(LoginTask.currentAuthUser.getHandle()))
+                    modelList.add(new RvGameModel(loadedGames[i]));
             }
-            mAdapter.updateList(modelList);
         }
+        mAdapter.updateList(modelList);
     }
 }
 

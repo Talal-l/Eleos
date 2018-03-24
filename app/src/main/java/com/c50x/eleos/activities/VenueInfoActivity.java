@@ -101,7 +101,7 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
 
                 mnutDone.setTitle("Save");
                 // enable the EditViews
-                    Utilities.enableEditText(etVenueName,etVenueManager);
+                    Utilities.enableViews(etVenueName,etVenueManager);
                     etNumberOfGrounds.setInputType(InputType.TYPE_CLASS_PHONE);
 
 
@@ -170,7 +170,7 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         mnutDone = menu.findItem(R.id.mnut_done);
 
             mnutDone.setTitle("Edit");
-            Utilities.disableEditText(etVenueManager,etVenueName,etNumberOfGrounds);
+            Utilities.disableViews(etVenueManager,etVenueName,etNumberOfGrounds);
 
         return true;
     }

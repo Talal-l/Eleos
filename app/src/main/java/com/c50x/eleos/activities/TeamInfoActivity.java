@@ -1,17 +1,13 @@
 package com.c50x.eleos.activities;
 
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,8 +21,6 @@ import com.c50x.eleos.data.User;
 import com.c50x.eleos.data.Venue;
 import com.c50x.eleos.utilities.InputValidation;
 import com.c50x.eleos.utilities.Utilities;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.Gson;
 
 public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse {
@@ -98,7 +92,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
                     mnutDone.setTitle("Save");
                     // enable the EditViews
-                    Utilities.enableEditText(etTeamName);
+                    Utilities.enableViews(etTeamName);
                     // disable spinner
                     spnSport.setClickable(true);
 
@@ -140,7 +134,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         mnutDone = menu.findItem(R.id.mnut_done);
 
         mnutDone.setTitle("Edit");
-        Utilities.disableEditText(etTeamName);
+        Utilities.disableViews(etTeamName);
         spnSport.setClickable(false);
 
         return true;
