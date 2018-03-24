@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                     startActivity(intent);
                                     break;
                                 case R.id.nav_menu_my_games:
-                                    intent = new Intent(MainActivity.this, AdminTeams.class);
+                                    intent = new Intent(MainActivity.this, AdminGamesActivity.class);
                                     startActivity(intent);
                                     break;
 
