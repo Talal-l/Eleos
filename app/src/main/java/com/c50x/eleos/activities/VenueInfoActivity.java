@@ -51,7 +51,6 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
     private String managerEmail;
     private User currentAuthUser;
     private final static String TAG = "GameInfoActivity";
-    private static final int ERROR_DIALOG_REQUEST = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,8 +58,6 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         super.onCreate(savedInstanceState);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
         setContentView(R.layout.activity_venue_info);
-        if(isServicesOK())
-            init();
 
 
         // init variables
@@ -146,19 +143,7 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
         return true;
     }
 
-    private void init()
-    {
-        Button btnmap = (Button) findViewById(R.id.btn_game_location);
-        btnmap.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(VenueInfoActivity.this, MapActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+
 
     // add menu actions to toolbar
     @Override
@@ -182,26 +167,7 @@ public class VenueInfoActivity extends AppCompatActivity implements AsyncRespons
     }
 
 
-    public boolean isServicesOK()
-    {
-        Log.d(TAG, "isServicesOK: checking google services version");
 
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(VenueInfoActivity.this);
-
-        if(available == ConnectionResult.SUCCESS) // check if user can make app requests
-            Log.d(TAG, "isServicesOK: Google Play Services is working");
-
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available))
-        {
-            Log.d(TAG, "isServicesOK: an error curred but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(VenueInfoActivity.this, available, ERROR_DIALOG_REQUEST);
-            dialog.show();
-        }
-
-        else
-            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
-        return false;
-    }
 
     @Override
     public void taskFinished(String output) {

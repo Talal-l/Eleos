@@ -1,20 +1,24 @@
 package com.c50x.eleos.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
@@ -45,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private SwipeRefreshLayout swipeRefreshRecyclerList;
     private RvGameAdapter mAdapter;
     private ArrayList<RvGameModel> modelList = new ArrayList<>();
+    private CardView user_card_img;
+    private ImageView user_img;
+    private static final int PICK_IMAGE = 100;
+    Uri imageUri;
 
 
     @Override
@@ -138,9 +146,19 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
             // set nav header
             menuHeader = navigationView.getHeaderView(0);
+            user_card_img = menuHeader.findViewById(R.id.card_view_user_image);
+            user_img = menuHeader.findViewById(R.id.img_user);
             tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
             tvUserName = menuHeader.findViewById(R.id.tv_nav_header_name);
 
+            user_card_img.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    openGallery();
+                }
+            });
 
             // display info in nav header for manager
             if (LoginTask.currentAuthUser.isManager()) {
@@ -204,6 +222,23 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                         }
                     }
             );
+        }
+    }
+
+    public void openGallery() // for changing user image
+    {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE)
+        {
+            imageUri = data.getData();
+            user_img.setImageURI(imageUri);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.c50x.eleos.activities;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,6 +28,8 @@ import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 import com.google.gson.Gson;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.Calendar;
 
@@ -59,6 +62,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     private Menu mnuGameCreation;
     private MenuItem mnutSave;
     private Gson gson;
+    private static final int ERROR_DIALOG_REQUEST = 9001;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +71,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
         setTitle("Create Game");
 
+        if(isServicesOK())
+            init();
 
         newGame = new Game();
         mainTeam = null;
@@ -284,6 +290,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     if (selectedGameJson != null) {
                         gameTask.updateGame(newGame);
 
+
+
                     } else {
                         gameTask.addGame(newGame);
                     }
@@ -298,7 +306,40 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         }
     }
 
+    private void init()
+    {
+        Button btnmap = (Button) findViewById(R.id.btn_game_location);
+        btnmap.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(CreateGameActivity.this, MapActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
+    public boolean isServicesOK()
+    {
+        Log.d(TAG, "isServicesOK: checking google services version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(CreateGameActivity.this);
+
+        if(available == ConnectionResult.SUCCESS) // check if user can make app requests
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
+
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available))
+        {
+            Log.d(TAG, "isServicesOK: an error curred but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(CreateGameActivity.this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }
+
+        else
+            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+        return false;
+    }
     // validation methods
 
     public boolean gameNameIaValid(String gn) {
@@ -375,4 +416,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     "response from server: " + output);
         }
     }
+
+
 }
