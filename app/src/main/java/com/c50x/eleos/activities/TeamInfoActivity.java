@@ -36,6 +36,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
     private Gson gson;
     private Venue venue;
     private User currentAuthUser;
+    private String oldTeamName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         // get game object from json
         selectedTeam = gson.fromJson(TeamJson, Team.class);
+
+        oldTeamName = selectedTeam.getTeamName();
 
 
         // find views
@@ -107,7 +110,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
                         selectedTeam.setSport(spnSport.getSelectedItem().toString());
 
                         TeamTask teamTask = new TeamTask(this);
-                        teamTask.updateTeam(selectedTeam);
+                        teamTask.updateTeam(selectedTeam,oldTeamName);
 
                         mnutDone.setTitle("Edit");
                         Toast.makeText(this, "Info updated", Toast.LENGTH_LONG).show();
