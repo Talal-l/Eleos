@@ -43,6 +43,8 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
     private MenuItem mnutDone;
     private String selectedTeam;
     private GameTask gameTask;
+    private String gameJson;
+    private int SelectedGameId;
 
     private final static String TAG = "GameInfoActivity";
 
@@ -57,11 +59,18 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
         gson = new Gson();
         gameTask = new GameTask(GameInfoActivity.this);
 
-        String gameJson = getIntent().getStringExtra("gameId");
+        gameJson = getIntent().getStringExtra("gameId");
         Log.i(TAG,"selected game Json: " + gameJson);
+
 
         // get game object from json
         selectedGame = gson.fromJson(gameJson,Game.class);
+
+        // set correct id
+        selectedGame.setGameId(getIntent().getIntExtra("id",-1));
+
+        // pass the gameId
+        getIntent().putExtra("gameId",selectedGame.getGameId());
 
 
         // find views
@@ -133,7 +142,11 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
                 startActivityForResult(intent,1);
                 }
                 else if (item.getTitle().equals("Edit")){
-
+                    Intent intent = new Intent(this,CreateGameActivity.class);
+                    intent.putExtra("selectedGame", gameJson);
+                    Log.i(TAG,"Json to send to activity: " + gameJson);
+                    startActivity(intent);
+                    finish();
 
                 }
 

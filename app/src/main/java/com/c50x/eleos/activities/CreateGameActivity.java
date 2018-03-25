@@ -2,15 +2,18 @@ package com.c50x.eleos.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
-import android.content.Intent;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -23,6 +26,7 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
+import com.google.gson.Gson;
 
 import java.util.Calendar;
 
@@ -50,33 +54,67 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     private String challengeTeam;
     private String gameTime;
     private String gameDate;
+    private String selectedGameJson;
+    private Game selectedGame;
+    private Menu mnuGameCreation;
+    private MenuItem mnutSave;
+    private Gson gson;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
 
-        newGame = new Game();
+        setTitle("Create Game");
 
+
+        newGame = new Game();
         mainTeam = null;
         challengeTeam = null;
         gameDate = null;
         gameTime = null;
+        gson = new Gson();
+
 
         // initializing the views
         etGameName = findViewById(R.id.et_game_name);
         spnGameSport = findViewById(R.id.spn_game_sport);
         tvGameDate = findViewById(R.id.tv_game_date);
         tvGameTime = findViewById(R.id.tv_game_time);
-        etGameName = findViewById(R.id.et_game_name);
-        spnGameSport = findViewById(R.id.spn_game_sport);
         tvMainTeam = findViewById(R.id.tv_main_team);
         tvGameLocation = findViewById(R.id.tv_game_location);
         tvGameChallengeTeam = findViewById(R.id.tv_game_challenged_team);
-        btnCancelCreateGame = findViewById(R.id.btn_cancel_create_game);
-        btnConfirmCreateGame = findViewById(R.id.btn_confirm_create_game);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+        // get game if any
+        selectedGameJson = getIntent().getStringExtra("selectedGame");
+
+
+        if (selectedGameJson != null) { // we have a game to edit
+            // parse json
+            selectedGame = gson.fromJson(selectedGameJson, Game.class);
+
+
+            // set text with info in game
+
+            etGameName.setText(selectedGame.getGameName());
+            tvGameDate.setText(selectedGame.getStartDate());
+            gameDate = selectedGame.getStartDate();
+            tvGameTime.setText(selectedGame.getStartTime());
+            gameTime = selectedGame.getStartTime();
+            if (!selectedGame.getTeam1().isEmpty()) {
+                tvMainTeam.setText(selectedGame.getTeam1());
+                mainTeam = selectedGame.getTeam1();
+            }
+            if (!selectedGame.getTeam2().isEmpty()) {
+                tvGameChallengeTeam.setText(selectedGame.getTeam2());
+                challengeTeam = selectedGame.getTeam2();
+            }
+
+            setTitle("Edit Game");
+        }
 
 
         // get the date from user
@@ -122,7 +160,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         tvGameTime.setText(hourOfDay + ":" + minute);
 
-                        gameTime = hourOfDay +":" + minute;
+                        gameTime = hourOfDay + ":" + minute;
                     }
                 }, hour, minute, false);
                 timePickerDialog.show();
@@ -134,9 +172,9 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         tvMainTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CreateGameActivity.this,TeamSelectionActivity.class);
-                intent.putExtra("source",0);
-                startActivityForResult(intent,1);
+                Intent intent = new Intent(CreateGameActivity.this, TeamSelectionActivity.class);
+                intent.putExtra("source", 0);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -144,24 +182,58 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         tvGameChallengeTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CreateGameActivity.this,TeamSelectionActivity.class);
-                intent.putExtra("source",1);
-                startActivityForResult(intent,2);
+                Intent intent = new Intent(CreateGameActivity.this, TeamSelectionActivity.class);
+                intent.putExtra("source", 1);
+                startActivityForResult(intent, 2);
             }
         });
+    }
 
 
-        btnCancelCreateGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+    // receive and handle result from team selection activity
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) { // coming from selecting the main team
+            if (resultCode == RESULT_OK) {
+                mainTeam = data.getStringExtra("mainTeam");
+                tvMainTeam.setText("Your Team: " + mainTeam);
+
             }
-        });
+        } else if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                challengeTeam = data.getStringExtra("challengeTeam");
+                tvGameChallengeTeam.setText("Challenged Team: " + challengeTeam);
+
+            }
+        }
+    }
 
 
-        btnConfirmCreateGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    // add menu actions to toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_actionbar, menu);
+        mnuGameCreation = menu;
+        mnutSave = mnuGameCreation.findItem(R.id.mnut_done);
+        mnutSave.setTitle("Save");
+
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mnut_done:
+                // save option
+
                 boolean allValid = true;
                 if (!(gameNameIaValid(etGameName.getText().toString()))) {
                     etGameName.setError("Empty or Incorrect Length (Between 4 and 20 characters)");
@@ -169,18 +241,18 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 }
 
 
-                if (mainTeam == null){
+                if (mainTeam == null) {
 
                     tvMainTeam.requestFocus();
                     tvMainTeam.setError("Select a team!");
                     allValid = false;
                 }
-                if (gameDate == null){
+                if (gameDate == null) {
                     tvGameDate.requestFocus();
                     tvGameDate.setError("Select game date!");
                     allValid = false;
                 }
-                if (gameTime == null){
+                if (gameTime == null) {
                     tvGameTime.requestFocus();
                     tvGameTime.setError("Select game time");
                     allValid = false;
@@ -196,46 +268,39 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     newGame.setTeam1(mainTeam);
                     newGame.setStartDate(gameDate);
                     newGame.setStartTime(gameTime);
+                    newGame.setGameId(selectedGame.getGameId());
 
-                    Log.i(TAG,"mainTeam: " + mainTeam + "challengedTeam: " + challengeTeam);
-                    if (challengeTeam != null){
+                    Log.i(TAG, "mainTeam: " + mainTeam + "challengedTeam: " + challengeTeam);
+                    if (challengeTeam != null) {
                         newGame.setTeam2(challengeTeam);
-                    }
-                    else {
+                    } else {
                         // TODO: Show message telling the user that the game will be waiting for challenger
                     }
                     // TODO: Add venue
                     //newGame.setVenueAddress();
 
                     GameTask gameTask = new GameTask(CreateGameActivity.this);
-                    gameTask.addGame(newGame);
+
+                    if (selectedGameJson != null) {
+                        gameTask.updateGame(newGame);
+
+                    } else {
+                        gameTask.addGame(newGame);
+                    }
                 }
-            }
-        });
-    }
 
+                return true;
 
-    // receive and handle result from team selection activity
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode == 1){ // coming from selecting the main team
-            if(resultCode == RESULT_OK){
-                mainTeam = data.getStringExtra("mainTeam");
-                tvMainTeam.setText("Your Team: "+ mainTeam);
-
-            }
-        }
-        else if(requestCode == 2){
-            if (resultCode == RESULT_OK){
-                challengeTeam = data.getStringExtra("challengeTeam");
-                tvGameChallengeTeam.setText("Challenged Team: " + challengeTeam);
-
-            }
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
         }
     }
+
 
     // validation methods
+
     public boolean gameNameIaValid(String gn) {
         if (gn.isEmpty() || !(gn.length() >= 4 && gn.length() <= 20))
             return false;
@@ -255,9 +320,9 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
 
     public boolean numberOfPlayersIsValid(String np) {
-        String []players = np.split(" ");
+        String[] players = np.split(" ");
 
-        if ( players.length == 0 ||players.length %2 != 0)
+        if (players.length == 0 || players.length % 2 != 0)
             return false;
 
         else
@@ -283,7 +348,11 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         LoginTask loginTask = new LoginTask(this);
         if (!output.contains("null") && !output.contains("error")) {
 
-            Toast.makeText(CreateGameActivity.this, "Game Created ",Toast.LENGTH_SHORT).show();
+            if (selectedGameJson == null)
+                Toast.makeText(CreateGameActivity.this, "Game Created ", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(CreateGameActivity.this, "Game Updated", Toast.LENGTH_SHORT).show();
+
 
             Intent intent = new Intent(CreateGameActivity.this, MainActivity.class);
 
@@ -293,10 +362,9 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
             startActivity(intent);
         } else if (output.contains("error")) {
-            // another game is happening at same place an date_tv/time_btn
+            // another game is happening at same place and time
             tvGameDate.requestFocus();
-            tvGameDate.setError("Another game is happening");
-            tvMainTeam.setError("Another game is happening");
+            tvGameDate.setError("Another game is taking place");
             Log.i(TAG, "error: " + output);
 
 

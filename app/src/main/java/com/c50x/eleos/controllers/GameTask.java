@@ -38,6 +38,21 @@ public class GameTask {
         new AsyncPost(activityContext).execute(url, json);
     }
 
+    public void updateGame(Game game) {
+
+        String script = "/updateGame.php";
+
+        String url = urlBase + script;
+        String json = gson.toJson(game, Game.class);
+
+        Log.i(TAG, "Json request : " + json);
+
+        Log.i(TAG, "updateGame url: " + url);
+        new AsyncPost(activityContext).execute(url, json);
+
+    }
+
+
     // TODO: Load games based on parameters
     public void loadGames() {
 
