@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -31,12 +32,15 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
     private TextView tvTeamName;
     private EditText etTeamName;
     private Spinner spnSport;
+    private TextView tvSport;
+    private TextView tvRating;
     private Team selectedTeam;
     private MenuItem mnutDone;
     private Gson gson;
     private Venue venue;
     private User currentAuthUser;
     private String oldTeamName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +63,22 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         // find views
 
-        tvTeamName = findViewById(R.id.info_team_name);
+        tvTeamName = findViewById(R.id.tv_info_view_team_name);
         etTeamName = findViewById(R.id.et_info_team_name);
         spnSport = findViewById(R.id.spn_info_team_sport);
+        tvSport = findViewById(R.id.tv_info_view_team_sport);
+        tvRating = findViewById(R.id.tv_win_loss_ratio);
+
+
 
 
         // set to values
+
+        tvTeamName.setText(selectedTeam.getTeamName());
+        tvSport.setText(selectedTeam.getSport());
+        tvRating.setText(selectedTeam.getTeamRating());
+
+
 
         etTeamName.setText(selectedTeam.getTeamName());
 
@@ -94,10 +108,11 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
                 if (mnutDone.getTitle().equals("Edit")) {
 
                     mnutDone.setTitle("Save");
-                    // enable the EditViews
-                    Utilities.enableViews(etTeamName);
-                    // disable spinner
-                    spnSport.setClickable(true);
+                    etTeamName.setVisibility(TextView.VISIBLE);
+                    tvTeamName.setVisibility(TextView.GONE);
+
+                    spnSport.setVisibility(View.VISIBLE);
+                    tvSport.setVisibility(View.GONE);
 
 
                 } else {
@@ -114,6 +129,8 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
                         mnutDone.setTitle("Edit");
                         Toast.makeText(this, "Info updated", Toast.LENGTH_LONG).show();
+                        finish();
+
                     }
 
                 }

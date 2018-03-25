@@ -12,6 +12,7 @@ public class Team {
     private String teamName;
     private String sport;
     private String teamAdmin;
+    private int teamRating;
     private String[] teamPlayers;
 
     @NonNull
@@ -45,5 +46,13 @@ public class Team {
 
     public void setTeamPlayers(String[] teamPlayers) {
         this.teamPlayers = teamPlayers;
+    }
+
+    public int getTeamRating() {
+        return teamRating;
+    }
+
+    public void setTeamRating(int teamRating) {
+        this.teamRating = teamRating;
     }
 }

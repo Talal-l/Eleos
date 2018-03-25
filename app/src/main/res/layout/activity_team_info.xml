@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/info_team_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Team Name: "
         android:padding="15dp"
-        />
+        android:text="Team Name: " />
+
     <EditText
         android:id="@+id/et_info_team_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
+        android:visibility="gone"
 
         />
+
+    <TextView
+        android:id="@+id/tv_info_view_team_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+
+        />
+
 
     <TextView
         android:id="@+id/tv_info_team_sport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Team sport: "
         android:padding="15dp"
-        />
+        android:text="Team sport: " />
+
     <Spinner
         android:id="@+id/spn_info_team_sport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
+        android:visibility="gone"
         />
 
-    <LinearLayout
-        android:id="@+id/ll_info_team_players"
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/tv_info_view_team_sport"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+
+
+        />
+
+    <TextView
+        android:id="@+id/tv_info_team_players"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Players"
+
+        />
 
         <TextView
             android:id="@+id/tv_win_loss_ratio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Win/Loss Ratio:"/>
+            android:padding="15dp"
+            android:text="Win/Loss Ratio:" />
 
-        <EditText
-            android:id="@+id/et_win_loss_ratio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+    <LinearLayout
+        android:id="@+id/ll_info_team_players"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
     </LinearLayout>
