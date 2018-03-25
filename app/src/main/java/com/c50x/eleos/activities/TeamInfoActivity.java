@@ -2,6 +2,8 @@ package com.c50x.eleos.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,14 +17,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.adapters.RvPlayerAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
 import com.c50x.eleos.data.User;
 import com.c50x.eleos.data.Venue;
+import com.c50x.eleos.models.RvPlayerModel;
 import com.c50x.eleos.utilities.InputValidation;
 import com.c50x.eleos.utilities.Utilities;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -40,6 +49,12 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
     private Venue venue;
     private User currentAuthUser;
     private String oldTeamName;
+    private TextView tvRemovePlayers;
+
+    private RvPlayerAdapter mAdapter;
+    private ArrayList<RvPlayerModel> modelList = new ArrayList<>();
+    private ArrayList<String> playersToAdd;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -60,6 +75,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         oldTeamName = selectedTeam.getTeamName();
 
+        playersToAdd = new ArrayList<>();
 
         // find views
 
@@ -67,8 +83,10 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         etTeamName = findViewById(R.id.et_info_team_name);
         spnSport = findViewById(R.id.spn_info_team_sport);
         tvSport = findViewById(R.id.tv_info_view_team_sport);
-        tvRating = findViewById(R.id.tv_win_loss_ratio);
+        tvRating = findViewById(R.id.tv_info_team_rating);
+        tvRemovePlayers = findViewById(R.id.tv_info_team_remove_players);
 
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_team_info);
 
 
 
@@ -76,7 +94,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         tvTeamName.setText(selectedTeam.getTeamName());
         tvSport.setText(selectedTeam.getSport());
-        tvRating.setText(selectedTeam.getTeamRating());
+//        tvRating.setText(selectedTeam.getTeamRating());
 
 
 
@@ -97,6 +115,39 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+        setAdapter();
+
+
+        // load players
+
+            String matchingUsers[] = selectedTeam.getTeamPlayers();
+
+
+            User tempUser = new User();
+            modelList = new ArrayList<>();
+            for (int i = 0; i < matchingUsers.length; i++){
+                Log.i(TAG, "Match: " + matchingUsers[i]);
+                tempUser.setHandle(matchingUsers[i]);
+                modelList.add(new RvPlayerModel(tempUser));
+            }
+            mAdapter.updateList(modelList);
+
+
+
+
+        tvRemovePlayers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ArrayList<String> newPlayerList = new ArrayList<>();
+                for (String player: selectedTeam.getTeamPlayers()){
+                    if (!playersToAdd.contains(player)){
+                        newPlayerList.add(player);
+                    }
+                }
+                selectedTeam.setTeamPlayers(newPlayerList.toArray(new String[0]));
+            }
+        });
     }
 
 
@@ -113,6 +164,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
                     spnSport.setVisibility(View.VISIBLE);
                     tvSport.setVisibility(View.GONE);
+                    tvRemovePlayers.setVisibility(View.VISIBLE);
 
 
                 } else {
@@ -123,6 +175,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
                     } else {
                         selectedTeam.setTeamName(etTeamName.getText().toString());
                         selectedTeam.setSport(spnSport.getSelectedItem().toString());
+
 
                         TeamTask teamTask = new TeamTask(this);
                         teamTask.updateTeam(selectedTeam,oldTeamName);
@@ -166,6 +219,61 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         return true;
     }
 
+   private void setAdapter() {
+
+
+
+        mAdapter = new RvPlayerAdapter(TeamInfoActivity.this, modelList);
+
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        recyclerView.setAdapter(mAdapter);
+
+
+        mAdapter.SetOnItemClickListener(new RvPlayerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, RvPlayerModel model) {
+
+                //handle item click events here
+                Toast.makeText(TeamInfoActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+
+        mAdapter.SetOnCheckedListener(new RvPlayerAdapter.OnCheckedListener() {
+            @Override
+            public void onChecked(View view, boolean isChecked, int position, RvPlayerModel model) {
+
+                Toast.makeText(TeamInfoActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
+
+                if (isChecked) {
+                    playersToAdd.add(model.getTitle());
+                    Log.i(TAG,"add to array: " + Arrays.toString(playersToAdd.toArray()));
+
+                }
+
+                else{
+
+                    playersToAdd.remove(model.getTitle());
+                    Log.i(TAG,"remove from array: " + Arrays.toString(playersToAdd.toArray()));
+
+                    // if no players are selected remove the done option
+                }
+
+            }
+        });
+
+
+    }
 
 
     @Override
