@@ -225,7 +225,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         mAdapter = new RvPlayerAdapter(TeamInfoActivity.this, modelList);
 
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
         // use a linear layout manager
 
