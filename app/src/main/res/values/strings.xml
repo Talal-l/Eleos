@@ -22,6 +22,17 @@
         <item>Female</item>
     </string-array>
 
+    <string-array name="player_options">
+        <item>View profile</item>
+    </string-array>
+
+    <string-array name="admin_player_options">
+        <item>View profile</item>
+        <item>Remove</item>
+    </string-array>
+
+
+
     <string-array name="languages_list">
         <item>English</item>
         <item>Arabic</item>

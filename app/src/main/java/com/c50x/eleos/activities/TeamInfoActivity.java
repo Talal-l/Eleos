@@ -1,15 +1,19 @@
 package com.c50x.eleos.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -66,6 +70,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         // init variables
 
+        currentAuthUser = LoginTask.currentAuthUser;
         gson = new Gson();
         String TeamJson = getIntent().getStringExtra("selectedTeam");
         Log.i(TAG, "selected Team Json: " + TeamJson);
@@ -242,8 +247,30 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
             public void onItemClick(View view, int position, RvPlayerModel model) {
 
                 //handle item click events here
-                Toast.makeText(TeamInfoActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
 
+                if (currentAuthUser.getHandle().equals(selectedTeam.getTeamAdmin())){
+
+                AlertDialog alertDialog = new AlertDialog.Builder(TeamInfoActivity.this).
+                        setItems(R.array.admin_player_options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                if (i == 0) {
+                                }
+                                else if (i == 1){
+                                    Toast.makeText(TeamInfoActivity.this, "Removing player", Toast.LENGTH_SHORT).show();
+                                    // remove player from team
+
+                                }
+
+                            }
+                        })
+                        .create();
+
+
+                    alertDialog.show();
+
+                }
 
             }
         });
@@ -254,6 +281,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
             public void onChecked(View view, boolean isChecked, int position, RvPlayerModel model) {
 
                 Toast.makeText(TeamInfoActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
+
 
                 if (isChecked) {
                     playersToAdd.add(model.getTitle());
@@ -275,6 +303,30 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
     }
 
+    // player context menu with option to delete
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.player_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.player_menu_view_profile:
+
+                return true;
+            case R.id.player_menu_remove:
+
+                Toast.makeText(TeamInfoActivity.this, "removing player ",Toast.LENGTH_LONG ).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
     @Override
     public void taskFinished(String output) {

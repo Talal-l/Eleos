@@ -4,24 +4,20 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.models.RvPlayerModel;
 
-import android.widget.CheckBox;
-
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import android.widget.CompoundButton;
 
 
 /**
@@ -77,7 +73,7 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //in some cases, it will prevent unwanted situations
             playerViewHolder.itemCheckList.setOnCheckedChangeListener(null);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            ((ViewHolder) holder).itemCheckList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -158,8 +154,6 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         // CheckBox itemCheckList;
         public ViewHolder(final View itemView) {
             super(itemView);
-
-            // ButterKnife.bind(this, itemView);
 
 
             this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
