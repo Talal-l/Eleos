@@ -7,13 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -32,16 +30,13 @@ import com.c50x.eleos.models.RvPlayerModel;
 import com.c50x.eleos.utilities.InputValidation;
 import com.c50x.eleos.utilities.Utilities;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse {
 
 
     private final static String TAG = "TeamInfoActivity";
-    private static final int ERROR_DIALOG_REQUEST = 9001;
     private TextView tvTeamName;
     private EditText etTeamName;
     private Spinner spnSport;
@@ -54,6 +49,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
     private User currentAuthUser;
     private String oldTeamName;
     private TextView tvRemovePlayers;
+    private String playerToRemove;
 
     private RvPlayerAdapter mAdapter;
     private ArrayList<RvPlayerModel> modelList = new ArrayList<>();
@@ -94,13 +90,11 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_team_info);
 
 
-
         // set to values
 
         tvTeamName.setText(selectedTeam.getTeamName());
         tvSport.setText(selectedTeam.getSport());
 //        tvRating.setText(selectedTeam.getTeamRating());
-
 
 
         etTeamName.setText(selectedTeam.getTeamName());
@@ -125,19 +119,19 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         // load players
 
-            String matchingUsers[] = selectedTeam.getTeamPlayers();
+        String matchingUsers[] = selectedTeam.getTeamPlayers();
 
 
-            User tempUser = new User();
-            modelList = new ArrayList<>();
-            for (int i = 0; i < matchingUsers.length; i++){
-                Log.i(TAG, "Match: " + matchingUsers[i]);
-                tempUser.setHandle(matchingUsers[i]);
-                modelList.add(new RvPlayerModel(tempUser));
-            }
-            mAdapter.updateList(modelList);
+        User tempUser = new User();
+        modelList = new ArrayList<>();
 
 
+        for (int i = 0; i < matchingUsers.length; i++) {
+            Log.i(TAG, "Match: " + matchingUsers[i]);
+            tempUser.setHandle(matchingUsers[i]);
+            modelList.add(new RvPlayerModel(tempUser));
+        }
+        mAdapter.updateList(modelList);
 
 
         tvRemovePlayers.setOnClickListener(new View.OnClickListener() {
@@ -145,8 +139,8 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
             public void onClick(View view) {
 
                 ArrayList<String> newPlayerList = new ArrayList<>();
-                for (String player: selectedTeam.getTeamPlayers()){
-                    if (!playersToAdd.contains(player)){
+                for (String player : selectedTeam.getTeamPlayers()) {
+                    if (!playersToAdd.contains(player)) {
                         newPlayerList.add(player);
                     }
                 }
@@ -183,7 +177,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
 
                         TeamTask teamTask = new TeamTask(this);
-                        teamTask.updateTeam(selectedTeam,oldTeamName);
+                        teamTask.updateTeam(selectedTeam, oldTeamName);
 
                         mnutDone.setTitle("Edit");
                         Toast.makeText(this, "Info updated", Toast.LENGTH_LONG).show();
@@ -224,8 +218,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         return true;
     }
 
-   private void setAdapter() {
-
+    private void setAdapter() {
 
 
         mAdapter = new RvPlayerAdapter(TeamInfoActivity.this, modelList);
@@ -244,28 +237,39 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         mAdapter.SetOnItemClickListener(new RvPlayerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, RvPlayerModel model) {
+            public void onItemClick(View view, int position, final RvPlayerModel model) {
 
                 //handle item click events here
 
-                if (currentAuthUser.getHandle().equals(selectedTeam.getTeamAdmin())){
+                if (currentAuthUser.getHandle().equals(selectedTeam.getTeamAdmin())) {
 
-                AlertDialog alertDialog = new AlertDialog.Builder(TeamInfoActivity.this).
-                        setItems(R.array.admin_player_options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(TeamInfoActivity.this).
+                            setItems(R.array.admin_player_options, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                                if (i == 0) {
+                                    if (i == 0) {
+                                    } else if (i == 1) {
+                                        Toast.makeText(TeamInfoActivity.this, "Removing " + model.getTitle(), Toast.LENGTH_SHORT).show();
+                                        // remove player from team
+                                        TeamTask teamTask = new TeamTask(TeamInfoActivity.this);
+                                        playerToRemove = model.getTitle();
+                                        teamTask.removePlayerFromTeam(playerToRemove, selectedTeam.getTeamName());
+
+                                        RvPlayerModel modelToRemove = null;
+                                        for (RvPlayerModel model : modelList) {
+                                            if (model.getTitle().equals(playerToRemove)) {
+                                                modelToRemove = model;
+                                                break;
+                                            }
+                                        }
+
+                                        modelList.remove(modelToRemove);
+                                        mAdapter.updateList(modelList);
+                                    }
                                 }
-                                else if (i == 1){
-                                    Toast.makeText(TeamInfoActivity.this, "Removing player", Toast.LENGTH_SHORT).show();
-                                    // remove player from team
-
-                                }
-
-                            }
-                        })
-                        .create();
+                            })
+                            .create();
 
 
                     alertDialog.show();
@@ -276,63 +280,20 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         });
 
 
-        mAdapter.SetOnCheckedListener(new RvPlayerAdapter.OnCheckedListener() {
-            @Override
-            public void onChecked(View view, boolean isChecked, int position, RvPlayerModel model) {
-
-                Toast.makeText(TeamInfoActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
-
-
-                if (isChecked) {
-                    playersToAdd.add(model.getTitle());
-                    Log.i(TAG,"add to array: " + Arrays.toString(playersToAdd.toArray()));
-
-                }
-
-                else{
-
-                    playersToAdd.remove(model.getTitle());
-                    Log.i(TAG,"remove from array: " + Arrays.toString(playersToAdd.toArray()));
-
-                    // if no players are selected remove the done option
-                }
-
-            }
-        });
-
-
     }
 
-    // player context menu with option to delete
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.player_context_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId()) {
-            case R.id.player_menu_view_profile:
-
-                return true;
-            case R.id.player_menu_remove:
-
-                Toast.makeText(TeamInfoActivity.this, "removing player ",Toast.LENGTH_LONG ).show();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
 
     @Override
     public void taskFinished(String output) {
         Log.i(TAG, "output: " + output);
         if (!output.contains("null") && !output.contains("error")) {
 
+            if (output.contains("removed")) {
+                // update players list
+                playersToAdd.remove(playerToRemove);
+
+
+            }
             // go back to viewing mode
 
 

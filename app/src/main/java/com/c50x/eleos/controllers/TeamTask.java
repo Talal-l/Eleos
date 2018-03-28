@@ -7,6 +7,8 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.data.Team;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+
 public class TeamTask {
 
     private static final String TAG = "TeamTask";
@@ -94,6 +96,26 @@ public class TeamTask {
         Log.i(TAG, "Json request: " + json);
 
         new AsyncPost(activityContext).execute(url, json);
+
+     }
+
+     public void removePlayerFromTeam (String player, String team){
+
+        String script = "/removePlayerFromTeam.php";
+
+        String url = urlBase + script;
+
+         Log.i(TAG, "removePlayerFromTeam url: " + url);
+
+         HashMap<String,String> map = new HashMap<>();
+         map.put("playerHandle",player);
+         map.put("teamName", team);
+
+        String json = gson.toJson(map);
+
+        Log.i(TAG,"remove player json request: " + json);
+
+        new AsyncPost(activityContext).execute(url,json);
 
      }
 
