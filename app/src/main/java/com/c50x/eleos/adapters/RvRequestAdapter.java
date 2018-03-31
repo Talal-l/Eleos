@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
@@ -20,6 +20,7 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ArrayList<RvRequestModel> modelList;
 
     private OnItemClickListener mItemClickListener;
+    private OnRequestResponseListener requestResponseListener;
 
 
     public RvRequestAdapter(Context context, ArrayList<RvRequestModel> modelList) {
@@ -65,6 +66,9 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
+    public void setOnRequestResponseListener(final OnRequestResponseListener requestResponseListener){
+        this.requestResponseListener = requestResponseListener;
+    }
 
     private RvRequestModel getItem(int position) {
         return modelList.get(position);
@@ -75,9 +79,16 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         void onItemClick(View view, int position, RvRequestModel model);
     }
 
+    public interface OnRequestResponseListener {
+        void onRequestAcceptListener(View view, int position, RvRequestModel model);
+        void onRequestDeclineListener(View view, int position, RvRequestModel model);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView itemTxtMessage;
+        private Button btnRequestAccept;
+        private Button btnRequestDecline;
 
 
         public ViewHolder(final View itemView) {
@@ -86,6 +97,8 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             // ButterKnife.bind(this, itemView);
 
             this.itemTxtMessage = (TextView) itemView.findViewById(R.id.tv_request_message);
+            this.btnRequestAccept = itemView.findViewById(R.id.btn_request_accept);
+            this.btnRequestDecline = itemView.findViewById(R.id.btn_request_decline);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +110,24 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
 
+            btnRequestAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestResponseListener.onRequestAcceptListener(itemView,getAdapterPosition(),
+                            modelList.get(getAdapterPosition()));
+
+                }
+            });
+
+            btnRequestDecline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestResponseListener.onRequestDeclineListener(itemView,getAdapterPosition(),
+                            modelList.get(getAdapterPosition()));
+                }
+            });
         }
+
     }
 
 }

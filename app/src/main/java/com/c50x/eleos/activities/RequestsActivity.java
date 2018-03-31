@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvRequestAdapter;
@@ -55,6 +56,37 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         modelList.add(new RvRequestModel(testTeam));
         mAdapter.updateList(modelList);
 
+
+
+        // handle accept and decline button clicks
+
+        mAdapter.setOnRequestResponseListener(new RvRequestAdapter.OnRequestResponseListener() {
+            @Override
+            public void onRequestAcceptListener(View view, int position, RvRequestModel model) {
+
+                // TODO: send response to sender
+                // TODO: Update request state in db
+
+                // remove model from list
+                modelList.remove(model);
+                Toast.makeText(RequestsActivity.this,"Accepted request",Toast.LENGTH_SHORT).show();
+                mAdapter.updateList(modelList);
+
+            }
+
+            @Override
+            public void onRequestDeclineListener(View view, int position, RvRequestModel model) {
+                // TODO: send response to sender
+
+                // TODO: Update request state in db
+                // remove model from list
+                modelList.remove(model);
+                Toast.makeText(RequestsActivity.this,"Declined request",Toast.LENGTH_SHORT).show();
+                mAdapter.updateList(modelList);
+
+
+            }
+        });
     }
 
 
