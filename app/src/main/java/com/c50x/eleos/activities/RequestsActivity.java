@@ -34,6 +34,11 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requests);
 
+        modelList = new ArrayList<>();
+
+        // show back button in action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         // setup the views and adapters
         findViews();
@@ -42,15 +47,6 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
     }
 
-
-    // add menu actions to toolbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_actionbar, menu);
-
-        return true;
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -204,6 +204,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                     intent = new Intent(MainActivity.this, CreateTeamActivity.class);
                                     startActivity(intent);
                                     break;
+                                case R.id.nav_menu_requests:
+                                    intent = new Intent(MainActivity.this, RequestsActivity.class);
+                                    startActivity(intent);
+                                    break;
 
                                 case R.id.nav_menu_logout:
                                     loginTask.clearToken();
