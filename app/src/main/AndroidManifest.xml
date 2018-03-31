@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -18,20 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB0Qj6jA5t0RxDA4RWBWc_GWyesV1eNnLU"/>
-
+            android:value="AIzaSyB0Qj6jA5t0RxDA4RWBWc_GWyesV1eNnLU" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/app_name">
-
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity android:name=".activities.RegistrationActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity
@@ -49,21 +45,18 @@
         <activity
             android:name=".activities.GameInfoActivity"
             android:label="Game Info" />
-
         <activity
             android:name=".activities.ManagerRegistrationActivity"
             android:label="Manager Registration" />
-         <activity
+        <activity
             android:name=".activities.AdminTeams"
             android:label="My Teams" />
-          <activity
+        <activity
             android:name=".activities.TeamInfoActivity"
             android:label="Team info" />
-
-          <activity
+        <activity
             android:name=".activities.AdminGamesActivity"
             android:label="Your Games" />
-
         <activity
             android:name=".activities.VenueInfoActivity"
             android:label="Your Venue" />
@@ -74,7 +67,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MapActivity"></activity>
+        <activity android:name=".activities.MapActivity" />
+        <activity android:name=".activities.RequestsActivity"></activity>
     </application>
 
 </manifest>
