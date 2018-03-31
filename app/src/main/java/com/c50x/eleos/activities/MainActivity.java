@@ -156,7 +156,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 @Override
                 public void onClick(View v)
                 {
-                    openGallery();
+                    startActivity(new Intent(MainActivity.this, EditPlayerInfoActivity.class));
+                    //openGallery();
                 }
             });
 
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)// for changing user image
     {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE)
