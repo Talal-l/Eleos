@@ -14,6 +14,7 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvRequestAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.data.Request;
+import com.c50x.eleos.data.Team;
 import com.c50x.eleos.models.RvRequestModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,6 +45,15 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         findViews();
         setAdapter();
 
+        // test for request display
+
+        Team testTeam = new Team();
+        testTeam.setTeamName("testTeam");
+        testTeam.setSport("football");
+        testTeam.setTeamAdmin("testTeamAdmin");
+
+        modelList.add(new RvRequestModel(testTeam));
+        mAdapter.updateList(modelList);
 
     }
 
