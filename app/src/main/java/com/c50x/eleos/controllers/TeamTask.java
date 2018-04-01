@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.data.Request;
 import com.c50x.eleos.data.Team;
 import com.google.gson.Gson;
 
@@ -80,7 +81,8 @@ public class TeamTask {
 
 
     }
-    public void updateTeam (Team teamToAdd, String oldTeamName){
+
+    public void updateTeam(Team teamToAdd, String oldTeamName) {
 
         String script = "/updateTeam.php";
 
@@ -88,7 +90,7 @@ public class TeamTask {
         String json = gson.toJson(teamToAdd, Team.class);
 
         StringBuilder sb = new StringBuilder(json);
-        sb.insert(sb.length()-1,  ",\"oldTeamName\":" + "\"" + oldTeamName + "\"");
+        sb.insert(sb.length() - 1, ",\"oldTeamName\":" + "\"" + oldTeamName + "\"");
 
         json = sb.toString();
 
@@ -97,27 +99,50 @@ public class TeamTask {
 
         new AsyncPost(activityContext).execute(url, json);
 
-     }
+    }
 
-     public void removePlayerFromTeam (String player, String team){
+    public void removePlayerFromTeam(String player, String team) {
 
         String script = "/removePlayerFromTeam.php";
 
         String url = urlBase + script;
 
-         Log.i(TAG, "removePlayerFromTeam url: " + url);
+        Log.i(TAG, "removePlayerFromTeam url: " + url);
 
-         HashMap<String,String> map = new HashMap<>();
-         map.put("playerHandle",player);
-         map.put("teamName", team);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("playerHandle", player);
+        map.put("teamName", team);
 
         String json = gson.toJson(map);
 
-        Log.i(TAG,"remove player json request: " + json);
+        Log.i(TAG, "remove player json request: " + json);
 
-        new AsyncPost(activityContext).execute(url,json);
+        new AsyncPost(activityContext).execute(url, json);
 
-     }
+    }
+
+    public void sendTeamInvite(Team team, String receiver) {
+
+        String script = "/newRequest.php";
+
+        String url = urlBase + script;
+
+        Log.i(TAG, "sendTeamInvite url: " + url);
+
+        String sender = team.getTeamAdmin();
+        String teamName = team.getTeamName();
+        int state = Request.PENDING;
+
+        Request teamInvite = new Request(teamName, sender, receiver, state);
+
+        String json = gson.toJson(teamInvite, Request.class);
+
+        Log.i(TAG, "Invite request to be sent : " + json);
+
+        new AsyncPost(activityContext).execute(url, json);
+
+
+    }
 
     // json to Team object
     public Team getTeamObject(String json) {

@@ -5,24 +5,26 @@ public class Request {
     public static final int ACCEPTED = 1;
     public static final int DECLINED = 2;
 
-    private Object type;
+    private int gameId;
+    private String teamName;
     private String sender;
     private String receiver;
     private int state;
 
-    public Request(Object type, String sender, String receiver, int state) {
-        this.type = type;
+    public Request(String teamName, String sender, String receiver, int state) {
+        this.gameId = -1;
+        this.teamName = teamName;
         this.sender = sender;
         this.receiver = receiver;
         this.state = state;
     }
 
-    public Object getType() {
-        return type;
-    }
-
-    public void setType(Object type) {
-        this.type = type;
+    public Request(int gameId, String sender, String receiver, int state) {
+        this.gameId = gameId;
+        this.teamName = teamName;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.state = state;
     }
 
     public String getSender() {
@@ -47,5 +49,21 @@ public class Request {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }
