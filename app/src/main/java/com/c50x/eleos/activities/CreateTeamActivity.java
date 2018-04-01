@@ -15,13 +15,13 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
-import com.c50x.eleos.data.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CreateTeamActivity extends AppCompatActivity implements AsyncResponse {
 
+    private static final String TAG = "CreateTeamActivity";
     private Button btnConfirmCreateTeam;
     private Button btnCancelCreateTeam;
     private EditText etTeamSport;
@@ -30,12 +30,8 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
     private Team newTeam;
     private ArrayList<String> playersToAdd;
 
-
-    private static final String TAG = "CreateTeamActivity";
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //hides keyboard upon switching to this Activity
@@ -56,8 +52,8 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
         tvPlayers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CreateTeamActivity.this,PlayerSearchActivity.class);
-                startActivityForResult(intent,1);
+                Intent intent = new Intent(CreateTeamActivity.this, PlayerSearchActivity.class);
+                startActivityForResult(intent, 1);
 
             }
         });
@@ -98,46 +94,46 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
             public void onClick(View view) {
 
-            Intent intent = new Intent(CreateTeamActivity.this, MainActivity.class);
+                Intent intent = new Intent(CreateTeamActivity.this, MainActivity.class);
 
-            // prevent back button from coming back to this screen
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            finish();
+                // prevent back button from coming back to this screen
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                finish();
             }
         });
 
     }
 
 
-
-    public boolean teamNameValid(String name){
-        if(name.length()>0 && name.length()<=20)
+    public boolean teamNameValid(String name) {
+        if (name.length() > 0 && name.length() <= 20)
             return true;
         else
             return false;
     }
 
-    public boolean teamSportValid(String sport){
-        if(sport.equals("Football") || sport.equals("football") || sport.equals("Basketball") || sport.equals("basketball"))
+    public boolean teamSportValid(String sport) {
+        if (sport.equals("Football") || sport.equals("football") || sport.equals("Basketball") || sport.equals("basketball"))
             return true;
         else
             return false;
     }
 
-    public boolean teamAdminValid(String admin){
-        if(admin.length()>0 && admin.length()<=20)
+    public boolean teamAdminValid(String admin) {
+        if (admin.length() > 0 && admin.length() <= 20)
             return true;
         else
             return false;
     }
+
     // get player search result
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode == 1){
-            if(resultCode == RESULT_OK){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 playersToAdd = data.getStringArrayListExtra("players");
-                Log.i(TAG,"players from search: " + Arrays.toString(playersToAdd.toArray()));
+                Log.i(TAG, "players from search: " + Arrays.toString(playersToAdd.toArray()));
                 tvPlayers.setText(Arrays.toString(playersToAdd.toArray()));
 
             }
@@ -147,15 +143,24 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
     // code to handle received response from server
     @Override
-    public void taskFinished(String output){
+    public void taskFinished(String output) {
         Log.i(TAG, "json response: " + output);
         // save/check if input valid
 
-        Log.i(TAG,"output: " + output);
+        Log.i(TAG, "output: " + output);
         LoginTask loginTask = new LoginTask(this);
-        if(!output.contains("null") && !output.contains("error")) {
+        if (!output.contains("null") && !output.contains("error") && !output.contains("newRequest")) {
 
-            // TODO: Show message that game was created
+            // TODO: Show message that team was created
+
+            // send invitation to added players and update
+
+            TeamTask teamTask = new TeamTask(CreateTeamActivity.this);
+            for (String player : playersToAdd) {
+
+                teamTask.sendTeamInvite(newTeam, player);
+            }
+
 
             Intent intent = new Intent(CreateTeamActivity.this, MainActivity.class);
 
@@ -164,18 +169,16 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
             finish();
 
             startActivity(intent);
-        }
-        else if (output.contains("error")){
+        } else if (output.contains("error")) {
             etTeamName.setError("Team name taken!");
-            Log.i(TAG,"error: " + output);
+            Log.i(TAG, "error: " + output);
 
 
-        }
-        else{
+        } else {
 
             // something is wrong
-            Log.i(TAG,"Something is wrong with server response "+ "\n" +
-                            "response from server: " + output);
+            Log.i(TAG, "Something is wrong with server response " + "\n" +
+                    "response from server: " + output);
         }
 
     }
