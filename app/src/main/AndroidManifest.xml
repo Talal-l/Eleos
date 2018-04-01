@@ -75,6 +75,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MapActivity"></activity>
+        <activity android:name=".activities.EditPlayerInfoActivity"></activity>
     </application>
 
 </manifest>

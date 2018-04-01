@@ -157,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 public void onClick(View v)
                 {
                     startActivity(new Intent(MainActivity.this, EditPlayerInfoActivity.class));
-                    //openGallery();
                 }
             });
 
@@ -223,23 +222,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                         }
                     }
             );
-        }
-    }
-
-    public void openGallery() // for changing user image
-    {
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)// for changing user image
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE)
-        {
-            imageUri = data.getData();
-            user_img.setImageURI(imageUri);
         }
     }
 
