@@ -14,22 +14,15 @@ public class RvRequestModel {
     }
 
     // if the request is for a game
-    public RvRequestModel(Game game) {
-
-        String mainTeam = game.getTeam1();
-        String challangedTeam = game.getTeam2();
-        String gameAdmin = game.getGameAdmin();
-
+    public RvRequestModel(String gameAdmin, String mainTeam, String challengedTeam) {
 
         this.message = gameAdmin + "is asking for a challenge between " + mainTeam + " and "
-                + challangedTeam;
+                + challengedTeam;
 
     }
 
     // if the request is for a team
-    public RvRequestModel(Team team) {
-        String teamName = team.getTeamName();
-        String teamAdmin = team.getTeamAdmin();
+    public RvRequestModel(String teamName, String teamAdmin) {
 
         this.message = teamAdmin + " has invited you to join the " + teamName + " team.";
     }

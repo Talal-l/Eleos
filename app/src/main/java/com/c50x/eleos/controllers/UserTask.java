@@ -56,9 +56,22 @@ public class UserTask {
 
         String json = gson.toJson(userToAdd, User.class);
 
-        Log.i(TAG, "addUser as manager json request: " + json);
+        Log.i(TAG, "UpdateUser json request: " + json);
 
         new AsyncPost(activityContext).execute(url, json);
+
+     }
+
+     public void loadUserRequests(String userHandle){
+
+        String script = "/loadUserRequests.php";
+
+        String key = "handle";
+
+        String url = urlBase + script;
+        Log.i(TAG, "searchPlayer url: " + url);
+
+        new AsyncGet(activityContext).execute(url,key,userHandle);
 
      }
 }

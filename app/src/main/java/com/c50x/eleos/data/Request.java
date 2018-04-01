@@ -6,6 +6,8 @@ public class Request {
     public static final int DECLINED = 2;
 
     private int gameId;
+    private String gameTeam1;
+    private String gameTeam2;
     private String teamName;
     private String sender;
     private String receiver;
@@ -19,9 +21,10 @@ public class Request {
         this.state = state;
     }
 
-    public Request(int gameId, String sender, String receiver, int state) {
+    public Request(int gameId,String gameTeam1,String gameTeam2, String sender, String receiver, int state) {
         this.gameId = gameId;
-        this.teamName = teamName;
+        this.gameTeam1 = gameTeam1;
+        this.gameTeam2 = gameTeam2;
         this.sender = sender;
         this.receiver = receiver;
         this.state = state;
@@ -65,5 +68,21 @@ public class Request {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public String getGameTeam2() {
+        return gameTeam2;
+    }
+
+    public void setGameTeam2(String gameTeam2) {
+        this.gameTeam2 = gameTeam2;
+    }
+
+    public String getGameTeam1() {
+        return gameTeam1;
+    }
+
+    public void setGameTeam1(String gameTeam1) {
+        this.gameTeam1 = gameTeam1;
     }
 }

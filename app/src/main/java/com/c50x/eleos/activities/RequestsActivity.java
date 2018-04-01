@@ -6,16 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvRequestAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.LoginTask;
+import com.c50x.eleos.controllers.UserTask;
 import com.c50x.eleos.data.Request;
-import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.User;
 import com.c50x.eleos.models.RvRequestModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,7 +31,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
     private RvRequestAdapter mAdapter;
     private RecyclerView recyclerView;
     private ArrayList<RvRequestModel> modelList;
-
+    private User currentUser = LoginTask.currentAuthUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,15 +47,11 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         findViews();
         setAdapter();
 
-        // test for request display
 
-        Team testTeam = new Team();
-        testTeam.setTeamName("testTeam");
-        testTeam.setSport("football");
-        testTeam.setTeamAdmin("testTeamAdmin");
+        // load requests
+        UserTask userTask = new UserTask(RequestsActivity.this);
+        userTask.loadUserRequests(currentUser.getHandle());
 
-        modelList.add(new RvRequestModel(testTeam));
-        mAdapter.updateList(modelList);
 
 
 
@@ -69,7 +66,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
                 // remove model from list
                 modelList.remove(model);
-                Toast.makeText(RequestsActivity.this,"Accepted request",Toast.LENGTH_SHORT).show();
+                Toast.makeText(RequestsActivity.this, "Accepted request", Toast.LENGTH_SHORT).show();
                 mAdapter.updateList(modelList);
 
             }
@@ -81,7 +78,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
                 // TODO: Update request state in db
                 // remove model from list
                 modelList.remove(model);
-                Toast.makeText(RequestsActivity.this,"Declined request",Toast.LENGTH_SHORT).show();
+                Toast.makeText(RequestsActivity.this, "Declined request", Toast.LENGTH_SHORT).show();
                 mAdapter.updateList(modelList);
 
 
@@ -135,19 +132,41 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
     @Override
     public void taskFinished(String output) {
-        Gson gson = new Gson();
 
-        // convert
-        ArrayList<Request> requests = gson.fromJson(output, new TypeToken<ArrayList<Request>>() {
-        }.getType());
 
-        // convert Team to TeamModel so it can be displayed
-        for (Request team : requests) {
+        Log.i(TAG,"json response: " + output);
+        if (output.contains("loadUserRequests")) {
+            Gson gson = new Gson();
 
+            // convert
+           // ArrayList<Request> requests = gson.fromJson(output, new TypeToken<ArrayList<Request>>() {
+            //}.getType());
+
+            Request requests[] = gson.fromJson(output,Request[].class);
+
+
+            // assuming the receiver is the current player
+            RvRequestModel model;
+            for (Request request : requests) {
+                if (request.getGameId() != -1){ // valid request to join game
+                    // sender has to be the game admin
+                    model = new RvRequestModel(request.getSender(),
+                            request.getGameTeam1(),request.getGameTeam2());
+                }
+                else if (request.getTeamName() != null){ // valid team invite
+                    model = new RvRequestModel(request.getTeamName(),request.getSender());
+
+
+                    Log.i(TAG,"Adding to the list: " + model.getMessage());
+
+                modelList.add(model);
+
+                }
+            }
+
+            //update list in adapter
+            mAdapter.updateList(modelList);
         }
-
-        //update list in adapter
-        mAdapter.updateList(modelList);
 
     }
 
