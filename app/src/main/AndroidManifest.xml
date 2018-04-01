@@ -69,6 +69,7 @@
         </activity>
         <activity android:name=".activities.MapActivity" />
         <activity android:name=".activities.RequestsActivity"></activity>
+        <activity android:name=".activities.EditPlayerInfoActivity"></activity>
     </application>
 
 </manifest>
