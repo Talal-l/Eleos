@@ -286,16 +286,11 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
     @Override
     public void taskFinished(String output) {
         Log.i(TAG, "output: " + output);
-        if (!output.contains("null") && !output.contains("error")) {
 
-            if (output.contains("removed")) {
-                // update players list
-                playersToAdd.remove(playerToRemove);
-
-
-            }
-            // go back to viewing mode
-
+        if (output.contains("newRequest")){
+            //
+        }
+        else if (!output.contains("null") && !output.contains("error")) {
 
         } else if (output.contains("error")) {
             // Auth failed because of invalid input

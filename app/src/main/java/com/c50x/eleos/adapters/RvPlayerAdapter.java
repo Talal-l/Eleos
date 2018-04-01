@@ -83,8 +83,11 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         checkSet.remove(position);
                     }
 
-                    mOnCheckedListener.onChecked(playerViewHolder.itemCheckList, checkSet.contains(position), position, model);
-                    notifyDataSetChanged();
+                    if (mOnCheckedListener != null){
+
+                        mOnCheckedListener.onChecked(playerViewHolder.itemCheckList, checkSet.contains(position), position, model);
+                        notifyDataSetChanged();
+                    }
 
                 }
             });
