@@ -14,14 +14,17 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvRequestAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
+import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.controllers.UserTask;
 import com.c50x.eleos.data.Request;
 import com.c50x.eleos.data.User;
 import com.c50x.eleos.models.RvRequestModel;
+import com.c50x.eleos.utilities.Utilities;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RequestsActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -30,6 +33,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
     private RvRequestAdapter mAdapter;
     private RecyclerView recyclerView;
+    private HashMap<RvRequestModel,Request> modelToObjectMap;
     private ArrayList<RvRequestModel> modelList;
     private User currentUser = LoginTask.currentAuthUser;
     @Override
@@ -58,11 +62,16 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         // handle accept and decline button clicks
 
         mAdapter.setOnRequestResponseListener(new RvRequestAdapter.OnRequestResponseListener() {
+
+            TeamTask teamTask = new TeamTask(RequestsActivity.this);
             @Override
             public void onRequestAcceptListener(View view, int position, RvRequestModel model) {
 
                 // TODO: send response to sender
                 // TODO: Update request state in db
+                int requestId = modelToObjectMap.get(model).getRequestId();
+                teamTask.updateTeamInviteState(requestId,Request.ACCEPTED);
+
 
                 // remove model from list
                 modelList.remove(model);
@@ -73,9 +82,11 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
             @Override
             public void onRequestDeclineListener(View view, int position, RvRequestModel model) {
-                // TODO: send response to sender
 
-                // TODO: Update request state in db
+                int requestId = modelToObjectMap.get(model).getRequestId();
+                teamTask.updateTeamInviteState(requestId,Request.DECLINED);
+
+
                 // remove model from list
                 modelList.remove(model);
                 Toast.makeText(RequestsActivity.this, "Declined request", Toast.LENGTH_SHORT).show();
@@ -135,7 +146,10 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
 
         Log.i(TAG,"json response: " + output);
-        if (output.contains("loadUserRequests")) {
+        if (output.contains("update")){
+
+        }
+        else if (output.contains("request")) {
             Gson gson = new Gson();
 
             // convert
@@ -146,25 +160,24 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
 
             // assuming the receiver is the current player
-            RvRequestModel model;
+            RvRequestModel model = null;
             for (Request request : requests) {
                 if (request.getGameId() != -1){ // valid request to join game
                     // sender has to be the game admin
                     model = new RvRequestModel(request.getSender(),
                             request.getGameTeam1(),request.getGameTeam2());
+
                 }
                 else if (request.getTeamName() != null){ // valid team invite
                     model = new RvRequestModel(request.getTeamName(),request.getSender());
 
 
                     Log.i(TAG,"Adding to the list: " + model.getMessage());
-
-                modelList.add(model);
-
                 }
+                modelToObjectMap.put(model,request);
+                modelList.add(model);
             }
 
-            //update list in adapter
             mAdapter.updateList(modelList);
         }
 

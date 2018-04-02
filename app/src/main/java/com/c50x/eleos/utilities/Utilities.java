@@ -7,7 +7,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.c50x.eleos.data.Request;
+import com.c50x.eleos.models.RvRequestModel;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public final class Utilities {
     private static HashMap<Integer, EditText> originalViews = new HashMap<>();

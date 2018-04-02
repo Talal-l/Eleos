@@ -144,6 +144,26 @@ public class TeamTask {
 
     }
 
+    public void updateTeamInviteState(int id, int state) {
+
+        String script = "/updateTeamRequest.php";
+
+        String url = urlBase + script;
+
+        Log.i(TAG, "update team invite url: " + url);
+
+        Request teamInviteResponse = new Request();
+        teamInviteResponse.setState(state);
+        teamInviteResponse.setRequestId(id);
+
+
+        String json = gson.toJson(teamInviteResponse, Request.class);
+
+        Log.i(TAG, "Team invite update response json:  " + json);
+
+        new AsyncPost(activityContext).execute(url, json);
+    }
+
     // json to Team object
     public Team getTeamObject(String json) {
 

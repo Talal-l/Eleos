@@ -4,7 +4,9 @@ public class Request {
     public static final int PENDING = 0;
     public static final int ACCEPTED = 1;
     public static final int DECLINED = 2;
+    public static final int CANCELED= 3;
 
+    private int requestId;
     private int gameId;
     private String gameTeam1;
     private String gameTeam2;
@@ -28,6 +30,14 @@ public class Request {
         this.sender = sender;
         this.receiver = receiver;
         this.state = state;
+    }
+    public Request(){
+        this.gameId = -1;
+        this.gameTeam1 = null;
+        this.gameTeam2 = null;
+        this.sender = null;
+        this.receiver = null;
+        this.state = -1;
     }
 
     public String getSender() {
@@ -84,5 +94,13 @@ public class Request {
 
     public void setGameTeam1(String gameTeam1) {
         this.gameTeam1 = gameTeam1;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 }
