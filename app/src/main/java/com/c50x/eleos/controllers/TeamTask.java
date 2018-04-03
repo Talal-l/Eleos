@@ -146,7 +146,7 @@ public class TeamTask {
 
     public void updateTeamInviteState(int id, int state) {
 
-        String script = "/updateTeamRequest.php";
+        String script = "/updateRequest.php";
 
         String url = urlBase + script;
 

@@ -41,6 +41,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requests);
 
+        modelToObjectMap = new HashMap<>();
         modelList = new ArrayList<>();
 
         // show back button in action bar
