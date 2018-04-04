@@ -1,26 +1,18 @@
 package com.c50x.eleos.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import android.support.v7.widget.LinearLayoutManager;
-
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import android.widget.Toast;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvTeamAdapter;
@@ -32,7 +24,9 @@ import com.c50x.eleos.models.RvTeamModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class TeamSelectionActivity extends AppCompatActivity implements AsyncResponse{
@@ -45,10 +39,13 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
     private static final String TAG = "TeamSelectionActivity";
 
     private RvTeamAdapter mAdapter;
+    private Gson gson;
     private ArrayList<RvTeamModel> modelList = new ArrayList<>();
+    private HashMap<RvTeamModel,Team> modelObjectMap;
     private TeamTask teamTask;
     private LoginTask loginTask;
-    private String selectedTeam;
+    private Team selectedTeam;
+    String selectedTeamJson;
     private int sourceOfRequest; // main team or challenged team option
 
     private Menu mnu_team_select;
@@ -59,6 +56,8 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_team);
+
+        gson = new Gson();
 
         // setup the views and adapters
         findViews();
@@ -107,15 +106,22 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
             case R.id.mnut_done:
                 // select done option
 
+                selectedTeamJson = gson.toJson(selectedTeam);
                 if (sourceOfRequest == 0) { // coming from select main team
                     Intent intent = new Intent();
-                    intent.putExtra("mainTeam", selectedTeam);
+
+
+                    // send object to calling activity
+
+
+                    intent.putExtra("mainTeam", selectedTeamJson);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
                 else if (sourceOfRequest == 1){
                     Intent intent = new Intent();
-                    intent.putExtra("challengeTeam", selectedTeam);
+                    // send object to calling activity
+                    intent.putExtra("challengeTeam", selectedTeamJson);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
@@ -172,14 +178,16 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
                     mnut_done.setVisible(true);
                     // set the selected team
                     RvTeamModel selectedModel = modelList.get(mAdapter.getCurrentSelectionPosition());
-                    // get the team name from title
-                    selectedTeam = selectedModel.getTitle().split(" ")[1];
-                    Log.i(TAG,"selected team: " + selectedTeam);
+
+                    // get related object from map
+                    selectedTeam = modelObjectMap.get(model);
+
+                    Log.i(TAG,"selected team: " + selectedTeam.getTeamName());
                 }
                 else {
                     mnut_done.setVisible(false);
                     // unset the selected team
-                    selectedTeam = "";
+                    selectedTeam = null;
                 }
 
                 //Log.i("teamActivity","selected team: " + selectedTeam);
@@ -205,6 +213,8 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
             RvTeamModel model = new RvTeamModel( "TeamName: " + team.getTeamName(),
                     "players: " +Arrays.toString(team.getTeamPlayers()));
 
+            // map model with object
+            modelObjectMap.put(model,team);
             modelList.add(model);
 
         }
