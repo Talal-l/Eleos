@@ -158,7 +158,9 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
             TeamTask teamTask = new TeamTask(CreateTeamActivity.this);
             for (String player : playersToAdd) {
 
-                teamTask.sendTeamInvite(newTeam, player);
+                if (!player.equals(LoginTask.currentAuthUser.getHandle())) {
+                    teamTask.sendTeamInvite(newTeam, player);
+                }
             }
 
 

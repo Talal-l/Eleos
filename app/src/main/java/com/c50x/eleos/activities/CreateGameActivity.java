@@ -97,7 +97,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         selectedGameJson = getIntent().getStringExtra("selectedGame");
 
 
-        if (selectedGameJson != null) { // we have a game to edit
+        if (selectedGameJson != null) { // we have a game to edit, get info from it
             // parse json
             selectedGame = gson.fromJson(selectedGameJson, Game.class);
 
@@ -106,7 +106,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             challengeTeam = selectedGame.getTeam2();
 
 
-            // set text with info in game
+            // set text with info from game object
 
             etGameName.setText(selectedGame.getGameName());
             tvGameDate.setText(selectedGame.getStartDate());
@@ -124,7 +124,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
             setTitle("Edit Game");
         }
-
 
         // get the date from user
         tvGameDate.setOnClickListener(new View.OnClickListener() {
@@ -284,7 +283,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     newGame.setTeam1(mainTeam);
                     newGame.setStartDate(gameDate);
                     newGame.setStartTime(gameTime);
-                    newGame.setGameId(selectedGame.getGameId());
+                    if (selectedGame != null) // id can't be set here if it is a new game
+                        newGame.setGameId(selectedGame.getGameId());
 
                     Log.i(TAG, "mainTeam: " + mainTeam + "challengedTeam: " + challengeTeam);
                     if (challengeTeam != null) {
