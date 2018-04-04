@@ -28,30 +28,25 @@ import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.Team;
-import com.google.gson.Gson;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.gson.Gson;
 
 import java.util.Calendar;
 
 public class CreateGameActivity extends AppCompatActivity implements AsyncResponse {
     private static final String TAG = "CreateGameActivity";
-
+    private static final int ERROR_DIALOG_REQUEST = 9001;
     private Spinner spnGameSport;
-
     private EditText etGameName;
-
     private TextView tvMainTeam;
     private TextView tvGameChallengeTeam;
     private TextView tvGameLocation;
     private TextView tvGameDate;
     private TextView tvGameTime;
-
     private Button btnCancelCreateGame;
     private Button btnConfirmCreateGame;
-
     private Game newGame;
-
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
     private String mainTeam;
@@ -67,7 +62,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     private Menu mnuGameCreation;
     private MenuItem mnutSave;
     private Gson gson;
-    private static final int ERROR_DIALOG_REQUEST = 9001;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +70,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
         setTitle("Create Game");
 
-        if(isServicesOK())
+        if (isServicesOK())
             init();
 
         newGame = new Game();
@@ -106,6 +100,10 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         if (selectedGameJson != null) { // we have a game to edit
             // parse json
             selectedGame = gson.fromJson(selectedGameJson, Game.class);
+
+
+            // save team2, this will be replaced if a new team is selected
+            challengeTeam = selectedGame.getTeam2();
 
 
             // set text with info in game
@@ -209,7 +207,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             if (resultCode == RESULT_OK) {
 
                 mainTeamJson = data.getStringExtra("mainTeam");
-                mainTeamObject = gson.fromJson(mainTeamJson,Team.class);
+                mainTeamObject = gson.fromJson(mainTeamJson, Team.class);
                 mainTeam = mainTeamObject.getTeamName();
 
                 tvMainTeam.setText("Your Team: " + mainTeam);
@@ -303,15 +301,14 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                         gameTask.updateGame(newGame);
 
 
-
                     } else {
 
-                        // send game request to challenged team
-                        (new GameTask(CreateGameActivity.this)).sendGameInvite(newGame,challengeTeamObject.getTeamAdmin());
 
                         // save new game to db
                         gameTask.addGame(newGame);
                     }
+                    // send game request to challenged team
+                    (new GameTask(CreateGameActivity.this)).sendGameInvite(newGame);
                 }
 
                 return true;
@@ -323,37 +320,30 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         }
     }
 
-    private void init()
-    {
+    private void init() {
         Button btnmap = (Button) findViewById(R.id.btn_game_location);
-        btnmap.setOnClickListener(new View.OnClickListener()
-        {
+        btnmap.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(CreateGameActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    public boolean isServicesOK()
-    {
+    public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(CreateGameActivity.this);
 
-        if(available == ConnectionResult.SUCCESS) // check if user can make app requests
+        if (available == ConnectionResult.SUCCESS) // check if user can make app requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
 
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available))
-        {
+        else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             Log.d(TAG, "isServicesOK: an error curred but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(CreateGameActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        }
-
-        else
+        } else
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         return false;
     }

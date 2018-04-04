@@ -24,6 +24,7 @@ public class Request {
 
     public Request(int gameId, String gameTeam1, String gameTeam2, String sender, String receiver, int state) {
         this.gameId = gameId;
+        this.teamName = gameTeam1;
         this.challengedTeam = gameTeam2;
         this.sender = sender;
         this.receiver = receiver;

@@ -87,7 +87,7 @@ public class GameTask {
         new AsyncPost(activityContext).execute(url, json);
     }
 
-    public void sendGameInvite(Game game, String receiver) {
+    public void sendGameInvite(Game game) {
 
         String script = "/newGameRequest.php";
 
@@ -100,6 +100,9 @@ public class GameTask {
         String teamName2 = game.getTeam2();
         int gameId = game.getGameId();
         int state = Request.PENDING;
+
+        // will be added in the server side
+        String receiver = null;
 
         Request gameInvite = new Request(gameId,teamName1,teamName2,sender, receiver, state);
 
