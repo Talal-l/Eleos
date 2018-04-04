@@ -58,6 +58,7 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
         setContentView(R.layout.activity_my_team);
 
         gson = new Gson();
+        modelObjectMap = new HashMap<>();
 
         // setup the views and adapters
         findViews();
