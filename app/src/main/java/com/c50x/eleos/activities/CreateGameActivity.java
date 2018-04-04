@@ -27,6 +27,7 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
+import com.c50x.eleos.data.Team;
 import com.google.gson.Gson;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -54,7 +55,11 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
     private String mainTeam;
+    private String mainTeamJson;
+    private Team mainTeamObject;
+    private String challengeTeamJson;
     private String challengeTeam;
+    private Team challengeTeamObject;
     private String gameTime;
     private String gameDate;
     private String selectedGameJson;
@@ -202,14 +207,21 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) { // coming from selecting the main team
             if (resultCode == RESULT_OK) {
-                mainTeam = data.getStringExtra("mainTeam");
+
+                mainTeamJson = data.getStringExtra("mainTeam");
+                mainTeamObject = gson.fromJson(mainTeamJson,Team.class);
+                mainTeam = mainTeamObject.getTeamName();
+
                 tvMainTeam.setText("Your Team: " + mainTeam);
 
             }
         } else if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
-                challengeTeam = data.getStringExtra("challengeTeam");
-                tvGameChallengeTeam.setText("Challenged Team: " + challengeTeam);
+                challengeTeamJson = data.getStringExtra("challengeTeam");
+                challengeTeamObject = gson.fromJson(challengeTeamJson, Team.class);
+                challengeTeam = challengeTeamObject.getTeamName();
+
+                tvGameChallengeTeam.setText("Challenged Team: " + challengeTeam + " - PENDING");
 
             }
         }
@@ -293,6 +305,11 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
 
                     } else {
+
+                        // send game request to challenged team
+                        (new GameTask(CreateGameActivity.this)).sendGameInvite(newGame,challengeTeamObject.getTeamAdmin());
+
+                        // save new game to db
                         gameTask.addGame(newGame);
                     }
                 }

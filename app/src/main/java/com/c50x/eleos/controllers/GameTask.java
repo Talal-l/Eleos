@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.data.Game;
+import com.c50x.eleos.data.Request;
 import com.google.gson.Gson;
 
 public class GameTask {
@@ -86,6 +87,50 @@ public class GameTask {
         new AsyncPost(activityContext).execute(url, json);
     }
 
+    public void sendGameInvite(Game game, String receiver) {
+
+        String script = "/newGameRequest.php";
+
+        String url = urlBase + script;
+
+        Log.i(TAG, "game invite url: " + url);
+
+        String sender = game.getGameAdmin();
+        String teamName1 = game.getTeam1();
+        String teamName2 = game.getTeam2();
+        int gameId = game.getGameId();
+        int state = Request.PENDING;
+
+        Request gameInvite = new Request(gameId,teamName1,teamName2,sender, receiver, state);
+
+        String json = gson.toJson(gameInvite, Request.class);
+
+        Log.i(TAG, "Game invite request to be sent : " + json);
+
+        new AsyncPost(activityContext).execute(url, json);
+
+
+    }
+
+    public void updateTeamInviteState(int id, int state) {
+
+        String script = "/updateRequest.php";
+
+        String url = urlBase + script;
+
+        Log.i(TAG, "update team invite url: " + url);
+
+        Request teamInviteResponse = new Request();
+        teamInviteResponse.setState(state);
+        teamInviteResponse.setRequestId(id);
+
+
+        String json = gson.toJson(teamInviteResponse, Request.class);
+
+        Log.i(TAG, "Team invite update response json:  " + json);
+
+        new AsyncPost(activityContext).execute(url, json);
+    }
     public class Par {
         public String team2;
         public int gameId;

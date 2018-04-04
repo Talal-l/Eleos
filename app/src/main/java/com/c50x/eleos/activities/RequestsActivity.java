@@ -19,9 +19,7 @@ import com.c50x.eleos.controllers.UserTask;
 import com.c50x.eleos.data.Request;
 import com.c50x.eleos.data.User;
 import com.c50x.eleos.models.RvRequestModel;
-import com.c50x.eleos.utilities.Utilities;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -166,7 +164,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
                 if (request.getGameId() != -1){ // valid request to join game
                     // sender has to be the game admin
                     model = new RvRequestModel(request.getSender(),
-                            request.getGameTeam1(),request.getGameTeam2());
+                            request.getTeamName(),request.getChallengedTeam());
 
                 }
                 else if (request.getTeamName() != null){ // valid team invite
