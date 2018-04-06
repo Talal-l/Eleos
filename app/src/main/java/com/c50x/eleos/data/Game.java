@@ -1,9 +1,15 @@
 package com.c50x.eleos.data;
 
+import static com.c50x.eleos.data.Request.PENDING;
+
 public class Game {
 
+    public static final int CASUAL = 0;
+    public static final int COMPETITIVE = 1;
     private int gameId;
-
+    private int state;
+    private String refereeHandle;
+    private int type;
     private String gameName;
     private int team1Score;
     private int team2Score;
@@ -21,8 +27,8 @@ public class Game {
     private String team1;
     private String team2;
 
-    public Game(){
-        gameId= 0;
+    public Game() {
+        gameId = 0;
         gameAdmin = "";
         team1 = "";
         team2 = "";
@@ -33,6 +39,10 @@ public class Game {
         venueAddress = "";
         startDate = "";
         startTime = "";
+        state = PENDING;
+        refereeHandle = null;
+        type = CASUAL;
+
 
     }
 
@@ -146,5 +156,29 @@ public class Game {
 
     public void setGamePlayers(String[] gamePlayers) {
         this.gamePlayers = gamePlayers;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public String getRefereeHandle() {
+        return refereeHandle;
+    }
+
+    public void setRefereeHandle(String refereeHandle) {
+        this.refereeHandle = refereeHandle;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
