@@ -21,7 +21,6 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
-import com.c50x.eleos.models.RvGameModel;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -37,12 +36,12 @@ public class AdminGamesActivity extends AppCompatActivity implements AsyncRespon
     private RecyclerView recyclerView;
     private TextView tvPlayerHandle;
     private TextView tvUserName;
-    private Game[] loadedGames;
+    private com.c50x.eleos.data.Game[] loadedGames;
     private NavigationView navigationView;
     private Gson gson;
     private SwipeRefreshLayout swipeRefreshRecyclerList;
     private RvGameAdapter mAdapter;
-    private ArrayList<RvGameModel> modelList = new ArrayList<>();
+    private ArrayList<Game> modelList = new ArrayList<>();
 
 
     @Override
@@ -82,15 +81,15 @@ public class AdminGamesActivity extends AppCompatActivity implements AsyncRespon
 
         mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, RvGameModel model) {
+            public void onItemClick(View view, int position, Game model) {
 
-                int selectedGameId = model.getGameid();
+                int selectedGameId = model.getGameId();
                 Log.i(TAG, "Selected Game id: " + selectedGameId);
                 Intent intent = new Intent(AdminGamesActivity.this, GameInfoActivity.class);
 
                 // get game from loadedGames and send it as json to view activity
                 String gameJson = null;
-                for (Game gm : loadedGames) {
+                for (com.c50x.eleos.data.Game gm : loadedGames) {
                     if (gm.getGameId() == selectedGameId) {
                         gameJson = gson.toJson(gm);
                         break;
@@ -134,13 +133,13 @@ public class AdminGamesActivity extends AppCompatActivity implements AsyncRespon
         // load games of player or games in venue
         if (output.contains("game")) {
 
-            loadedGames = gson.fromJson(output, Game[].class);
+            loadedGames = gson.fromJson(output, com.c50x.eleos.data.Game[].class);
 
             modelList = new ArrayList<>();
             for (int i = 0; i < loadedGames.length; i++) {
                 // only show games where the admin is the current user
                 if (loadedGames[i].getGameAdmin().equals(LoginTask.currentAuthUser.getHandle()))
-                    modelList.add(new RvGameModel(loadedGames[i]));
+                    modelList.add(loadedGames[i]);
             }
         }
         mAdapter.updateList(modelList);

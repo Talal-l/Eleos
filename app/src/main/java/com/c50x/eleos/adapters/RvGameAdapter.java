@@ -9,9 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
-import com.c50x.eleos.models.RvGameModel;
+import com.c50x.eleos.data.Game;
 
 import java.util.ArrayList;
+
+import static com.c50x.eleos.data.Request.ACCEPTED;
+import static com.c50x.eleos.data.Request.PENDING;
 
 
 /**
@@ -20,17 +23,17 @@ import java.util.ArrayList;
 public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<RvGameModel> modelList;
+    private ArrayList<Game> modelList;
 
     private OnItemClickListener mItemClickListener;
 
 
-    public RvGameAdapter(Context context, ArrayList<RvGameModel> modelList) {
+    public RvGameAdapter(Context context, ArrayList<Game> modelList) {
         this.mContext = context;
         this.modelList = modelList;
     }
 
-    public void updateList(ArrayList<RvGameModel> modelList) {
+    public void updateList(ArrayList<Game> modelList) {
         this.modelList = modelList;
         notifyDataSetChanged();
 
@@ -39,7 +42,7 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_recycler_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.game_card, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -49,12 +52,21 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         //Here you can fill your row view
         if (holder instanceof ViewHolder) {
-            final RvGameModel model = getItem(position);
-            ViewHolder genericViewHolder = (ViewHolder) holder;
+            final Game model = getItem(position);
+            ViewHolder gameViewHolder = (ViewHolder) holder;
 
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
+            if (model.getState() == PENDING)
+                gameViewHolder.tv_game_card_state.setText("Pending");
+            else if (model.getState() == ACCEPTED)
+                gameViewHolder.tv_game_card_state.setText("ACCEPTED");
+            else
+                gameViewHolder.tv_game_card_state.setText("Canceled");
 
+
+            gameViewHolder.tv_game_card_dateTime.setText(model.getDateTime());
+            gameViewHolder.tv_game_card_venue.setText(model.getVenueAddress());
+            gameViewHolder.tv_game_card_team1.setText(model.getTeam1());
+            gameViewHolder.tv_game_card_team2.setText(model.getTeam2());
 
         }
     }
@@ -70,40 +82,32 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mItemClickListener = mItemClickListener;
     }
 
-    private RvGameModel getItem(int position) {
+    private Game getItem(int position) {
         return modelList.get(position);
     }
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, RvGameModel model);
+        void onItemClick(View view, int position, Game model);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgUser;
-        private TextView itemTxtTitle;
-        private TextView itemTxtMessage;
+        private TextView tv_game_card_dateTime;
+        private TextView tv_game_card_venue;
+        private TextView tv_game_card_team1;
+        private TextView tv_game_card_team2;
+        private TextView tv_game_card_state;
 
 
-        // @BindView(R.id.img_user)
-        // ImageView imgUser;
-        // @BindView(R.id.item_txt_title)
-        // TextView itemTxtTitle;
-        // @BindView(R.id.item_txt_message)
-        // TextView itemTxtMessage;
-        // @BindView(R.id.radio_list)
-        // RadioButton itemTxtMessage;
-        // @BindView(R.id.check_list)
-        // CheckBox itemCheckList;
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            // ButterKnife.bind(this, itemView);
-
-            this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
-            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
-            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
+            this.tv_game_card_dateTime = itemView.findViewById(R.id.tv_game_card_dateTime);
+            this.tv_game_card_venue = itemView.findViewById(R.id.tv_game_card_venue);
+            this.tv_game_card_team1 = itemView.findViewById(R.id.tv_game_card_team1);
+            this.tv_game_card_team2 = itemView.findViewById(R.id.tv_game_card_team2);
+            this.tv_game_card_state = itemView.findViewById(R.id.tv_game_card_state);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

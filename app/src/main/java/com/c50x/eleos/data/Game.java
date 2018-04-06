@@ -181,4 +181,9 @@ public class Game {
     public void setType(int type) {
         this.type = type;
     }
+    public String getDateTime(){
+        // TODO: parse into a better format
+        String formatedDateTime = startDate + " " + startTime;
+        return formatedDateTime;
+    }
 }

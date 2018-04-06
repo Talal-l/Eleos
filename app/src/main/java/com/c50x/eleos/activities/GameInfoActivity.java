@@ -17,7 +17,6 @@ import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.Team;
-import com.c50x.eleos.models.RvGameModel;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -35,9 +34,9 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
     private TextView tvGameVenue;
     private TextView tvGameAdmin;
     private Gson gson;
-    private Game selectedGame;
+    private com.c50x.eleos.data.Game selectedGame;
     private Menu mnuGameInfo;
-    private HashMap<RvGameModel, Game> modelObjectMap;
+    private HashMap<Game, com.c50x.eleos.data.Game> modelObjectMap;
     private MenuItem menuButton;
     private Team selectedTeam;
     private GameTask gameTask;
@@ -59,7 +58,7 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
 
 
         // get game object from json
-        selectedGame = gson.fromJson(gameJson, Game.class);
+        selectedGame = gson.fromJson(gameJson, com.c50x.eleos.data.Game.class);
 
 
         // find views
