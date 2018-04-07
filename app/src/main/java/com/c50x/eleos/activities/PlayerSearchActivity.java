@@ -21,10 +21,8 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.UserTask;
 import com.c50x.eleos.data.User;
-import com.c50x.eleos.models.RvPlayerModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import android.widget.Button;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -54,7 +52,7 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
     private static final String TAG = "PlayerSearchActivity";
     private RvPlayerAdapter mAdapter;
 
-    private ArrayList<RvPlayerModel> modelList = new ArrayList<>();
+    private ArrayList<User> modelList = new ArrayList<>();
     private UserTask userTask;
     private ArrayList<String> playersToAdd;
 
@@ -154,10 +152,10 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
 
             @Override
             public boolean onQueryTextChange(String s) {
-                ArrayList<RvPlayerModel> filterList = new ArrayList<>();
+                ArrayList<User> filterList = new ArrayList<>();
                 if (s.length() > 0) {
                     for (int i = 0; i < modelList.size(); i++) {
-                        if (modelList.get(i).getTitle().toLowerCase().contains(s.toString().toLowerCase())) {
+                        if (modelList.get(i).getHandle().toLowerCase().contains(s.toString().toLowerCase())) {
                             filterList.add(modelList.get(i));
                             mAdapter.updateList(filterList);
                         }
@@ -229,10 +227,10 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
 
         mAdapter.SetOnItemClickListener(new RvPlayerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, RvPlayerModel model) {
+            public void onItemClick(View view, int position, User model) {
 
                 //handle item click events here
-                Toast.makeText(PlayerSearchActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PlayerSearchActivity.this, "Hey " + model.getHandle(), Toast.LENGTH_SHORT).show();
 
 
             }
@@ -241,12 +239,12 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
 
         mAdapter.SetOnCheckedListener(new RvPlayerAdapter.OnCheckedListener() {
             @Override
-            public void onChecked(View view, boolean isChecked, int position, RvPlayerModel model) {
+            public void onChecked(View view, boolean isChecked, int position, User model) {
 
-                Toast.makeText(PlayerSearchActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PlayerSearchActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getHandle(), Toast.LENGTH_SHORT).show();
 
                 if (isChecked) {
-                    playersToAdd.add(model.getTitle());
+                    playersToAdd.add(model.getHandle());
                     Log.i(TAG,"add to array: " + Arrays.toString(playersToAdd.toArray()));
 
                     // at least one player is selected so show the done option
@@ -255,7 +253,7 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
 
                 else{
 
-                    playersToAdd.remove(model.getTitle());
+                    playersToAdd.remove(model.getHandle());
                     Log.i(TAG,"remove from array: " + Arrays.toString(playersToAdd.toArray()));
 
                     // if no players are selected remove the done option
@@ -292,7 +290,7 @@ public class PlayerSearchActivity extends AppCompatActivity implements AsyncResp
             modelList = new ArrayList<>();
             for (int i = 0; i < matchingUsers.size(); i++){
                 Log.i(TAG, "Match: " + matchingUsers.get(i).getHandle());
-                modelList.add(new RvPlayerModel(matchingUsers.get(i)));
+                modelList.add(matchingUsers.get(i));
             }
             mAdapter.updateList(modelList);
         }

@@ -26,7 +26,6 @@ import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
 import com.c50x.eleos.data.User;
 import com.c50x.eleos.data.Venue;
-import com.c50x.eleos.models.RvPlayerModel;
 import com.c50x.eleos.utilities.InputValidation;
 import com.c50x.eleos.utilities.Utilities;
 import com.google.gson.Gson;
@@ -52,7 +51,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
     private String playerToRemove;
 
     private RvPlayerAdapter mAdapter;
-    private ArrayList<RvPlayerModel> modelList = new ArrayList<>();
+    private ArrayList<User> modelList = new ArrayList<>();
     private ArrayList<String> playersToAdd;
     private RecyclerView recyclerView;
 
@@ -129,7 +128,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         for (int i = 0; i < matchingUsers.length; i++) {
             Log.i(TAG, "Match: " + matchingUsers[i]);
             tempUser.setHandle(matchingUsers[i]);
-            modelList.add(new RvPlayerModel(tempUser));
+            modelList.add(tempUser);
         }
         mAdapter.updateList(modelList);
 
@@ -237,7 +236,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         mAdapter.SetOnItemClickListener(new RvPlayerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, final RvPlayerModel model) {
+            public void onItemClick(View view, int position, final User model) {
 
                 //handle item click events here
 
@@ -250,15 +249,15 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
                                     if (i == 0) {
                                     } else if (i == 1) {
-                                        Toast.makeText(TeamInfoActivity.this, "Removing " + model.getTitle(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(TeamInfoActivity.this, "Removing " + model.getHandle(), Toast.LENGTH_SHORT).show();
                                         // remove player from team
                                         TeamTask teamTask = new TeamTask(TeamInfoActivity.this);
-                                        playerToRemove = model.getTitle();
+                                        playerToRemove = model.getHandle();
                                         teamTask.removePlayerFromTeam(playerToRemove, selectedTeam.getTeamName());
 
-                                        RvPlayerModel modelToRemove = null;
-                                        for (RvPlayerModel model : modelList) {
-                                            if (model.getTitle().equals(playerToRemove)) {
+                                        User modelToRemove = null;
+                                        for (User model : modelList) {
+                                            if (model.getHandle().equals(playerToRemove)) {
                                                 modelToRemove = model;
                                                 break;
                                             }

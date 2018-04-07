@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
-import com.c50x.eleos.models.RvPlayerModel;
+import com.c50x.eleos.data.User;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,7 +26,7 @@ import java.util.Set;
 public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<RvPlayerModel> modelList;
+    private ArrayList<User> modelList;
 
     private OnItemClickListener mItemClickListener;
 
@@ -38,12 +38,12 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Set<Integer> checkSet = new HashSet<>();
 
 
-    public RvPlayerAdapter(Context context, ArrayList<RvPlayerModel> modelList) {
+    public RvPlayerAdapter(Context context, ArrayList<User> modelList) {
         this.mContext = context;
         this.modelList = modelList;
     }
 
-    public void updateList(ArrayList<RvPlayerModel> modelList) {
+    public void updateList(ArrayList<User> modelList) {
         this.modelList = modelList;
         notifyDataSetChanged();
 
@@ -61,19 +61,20 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof ViewHolder) {
-            final RvPlayerModel model = getItem(position);
+            final User model = getItem(position);
             playerViewHolder = (ViewHolder) holder;
 
-            playerViewHolder.itemTxtTitle.setText(model.getTitle());
-            playerViewHolder.itemTxtMessage.setText(model.getMessage());
+            playerViewHolder.tv_player_card_name.setText(model.getName());
+            playerViewHolder.tv_player_card_handel.setText(model.getHandle());
+            playerViewHolder.tv_player_card_team.setText(model.getTeam());
 
-            if (getItem(position).isChecked())
+            if (getItem(position).isSelected())
                 playerViewHolder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.DARKEN);
 
             //in some cases, it will prevent unwanted situations
-            playerViewHolder.itemCheckList.setOnCheckedChangeListener(null);
+            playerViewHolder.chk_player_card_selection.setOnCheckedChangeListener(null);
 
-            ((ViewHolder) holder).itemCheckList.setOnClickListener(new View.OnClickListener() {
+            ((ViewHolder) holder).chk_player_card_selection.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -85,7 +86,7 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                     if (mOnCheckedListener != null){
 
-                        mOnCheckedListener.onChecked(playerViewHolder.itemCheckList, checkSet.contains(position), position, model);
+                        mOnCheckedListener.onChecked(playerViewHolder.chk_player_card_selection, checkSet.contains(position), position, model);
                         notifyDataSetChanged();
                     }
 
@@ -93,10 +94,10 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
 
             //if true, your checkbox will be selected, else unselected
-            playerViewHolder.itemCheckList.setChecked(checkSet.contains(position));
+            playerViewHolder.chk_player_card_selection.setChecked(checkSet.contains(position));
 
 
-            playerViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            playerViewHolder.chk_player_card_selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -123,46 +124,36 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    private RvPlayerModel getItem(int position) {
+    private User getItem(int position) {
         return modelList.get(position);
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, RvPlayerModel model);
+        void onItemClick(View view, int position, User model);
     }
 
 
     public interface OnCheckedListener {
-        void onChecked(View view, boolean isChecked, int position, RvPlayerModel model);
+        void onChecked(View view, boolean isChecked, int position, User model);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgUser;
-        private TextView itemTxtTitle;
-        private TextView itemTxtMessage;
+        private ImageView img_player_card_profile_image;
+        private TextView tv_player_card_name;
+        private TextView tv_player_card_handel;
+        private TextView tv_player_card_team;
+        private CheckBox chk_player_card_selection;
 
-
-        private CheckBox itemCheckList;
-
-        // @BindView(R.id.img_user)
-        // ImageView imgUser;
-        // @BindView(R.id.item_txt_title)
-        // TextView itemTxtTitle;
-        // @BindView(R.id.item_txt_message)
-        // TextView itemTxtMessage;
-        // @BindView(R.id.radio_list)
-        // RadioButton itemTxtMessage;
-        // @BindView(R.id.check_list)
-        // CheckBox itemCheckList;
         public ViewHolder(final View itemView) {
             super(itemView);
 
 
-            this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
-            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
-            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
-            this.itemCheckList = (CheckBox) itemView.findViewById(R.id.check_list);
+            this.img_player_card_profile_image = itemView.findViewById(R.id.img_player_card_profile_image);
+            this.tv_player_card_name = itemView.findViewById(R.id.tv_player_card_name);
+            this.tv_player_card_handel = itemView.findViewById(R.id.tv_player_card_handel);
+            this.tv_player_card_team = itemView.findViewById(R.id.tv_player_card_team);
+            this.chk_player_card_selection = (CheckBox) itemView.findViewById(R.id.chk_player_card_selection);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

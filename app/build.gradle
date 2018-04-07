@@ -61,10 +61,12 @@ dependencies {
 
     compile 'com.google.code.gson:gson:2.8.2'
 
-    //google map
+    // google map
     compile 'com.google.android.gms:play-services-maps:11.8.0'
 
     // for cardView support
     compile 'com.android.support:cardview-v7:26.1.0'
 
+    // to have a circular image for user profile
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }

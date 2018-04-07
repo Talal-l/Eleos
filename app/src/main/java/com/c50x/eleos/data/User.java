@@ -10,6 +10,8 @@ public class User {
     private String dateOfBirth;
     private String gender;
     private String token;
+    private boolean isSelected;
+    private String team;
     private int numGrounds;
 
     private boolean isManager;
@@ -126,5 +128,21 @@ public class User {
 
     public void setNumGrounds(int numGrounds) {
         this.numGrounds = numGrounds;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
     }
 }
