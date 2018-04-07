@@ -81,7 +81,6 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 GameRequestVH gameRequestVH = (GameRequestVH) holder;
 
-                gameRequestVH.tvRequestGameCardTitle.setText(gameModel.getTitle());
                 gameRequestVH.tvRequestGameCardTeam.setText(gameModel.getTeamName());
                 gameRequestVH.tvRequestGameCardAdmin.setText(gameModel.getSender());
                 gameRequestVH.tvRequestGameCardChallenged.setText(gameModel.getReceiver());
@@ -94,7 +93,6 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 TeamRequestVH teamRequestVH = (TeamRequestVH) holder;
 
-                teamRequestVH.tvRequestTeamCardTitle.setText(teamModel.getTitle());
                 teamRequestVH.tvRequestTeamCardTeam.setText(teamModel.getTeamName());
                 teamRequestVH.tvRequestTeamCardAdmin.setText(teamModel.getTeamAdmin());
 
