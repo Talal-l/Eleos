@@ -8,10 +8,13 @@ public class TeamRequest extends Request {
 
 
     public TeamRequest(Team team, String receiver, int state) {
-        setReceiver(receiver);
-        setSender(team.getTeamAdmin());
-        setState(state);
-        this.teamName = teamName;
+        this.setReceiver(receiver);
+        this.setSender(team.getTeamAdmin());
+        this.setState(state);
+        this.teamName = team.getTeamName();
+        this.teamAdmin = team.getTeamAdmin();
+        this.setTitle("Team Invitation");
+        this.setType("TeamRequest");
     }
 
     public String getTeamName() {

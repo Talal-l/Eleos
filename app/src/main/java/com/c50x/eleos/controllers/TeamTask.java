@@ -134,9 +134,9 @@ public class TeamTask {
         String teamName = team.getTeamName();
         int state = Request.PENDING;
 
-        Request teamInvite = new TeamRequest(team,receiver,state);
+        TeamRequest teamInvite = new TeamRequest(team,receiver,state);
 
-        String json = gson.toJson(teamInvite, Request.class);
+        String json = gson.toJson(teamInvite, TeamRequest.class);
 
         Log.i(TAG, "Invite request to be sent : " + json);
 
