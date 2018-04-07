@@ -8,40 +8,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.c50x.eleos.R;
+import com.c50x.eleos.data.Team;
 
 import java.util.ArrayList;
 
-import com.c50x.eleos.R;
-import com.c50x.eleos.models.RvTeamModel;
 
-
-/**
- * A custom adapter to use with the RecyclerView widget.
- */
 public class RvTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<RvTeamModel> modelList;
-    private RvTeamModel selectedModel;
-    private  int currentSelection = -1;
-    private  int prevSelection = -1;
-
-
-
+    private ArrayList<Team> modelList;
+    private Team selectedModel;
+    private int currentSelection = -1;
+    private int prevSelection = -1;
 
 
     private OnItemClickListener mItemClickListener;
 
 
-    public RvTeamAdapter(Context context, ArrayList<RvTeamModel> modelList) {
+    public RvTeamAdapter(Context context, ArrayList<Team> modelList) {
         this.mContext = context;
         this.modelList = modelList;
 
     }
 
-    public void updateList(ArrayList<RvTeamModel> modelList) {
+    public void updateList(ArrayList<Team> modelList) {
         this.modelList = modelList;
         notifyDataSetChanged();
 
@@ -50,7 +43,7 @@ public class RvTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.team_recycler_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.team_card, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -60,25 +53,20 @@ public class RvTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         //Here you can fill your row view
         if (holder instanceof ViewHolder) {
-            final RvTeamModel model = getItem(position);
-            ViewHolder genericViewHolder = (ViewHolder) holder;
+            final Team model = getItem(position);
+            ViewHolder teamViewHolder = (ViewHolder) holder;
 
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
+            teamViewHolder.tv_team_card_name.setText(model.getTeamName());
+            teamViewHolder.tv_team_card_admin.setText(model.getTeamAdmin());
 
 
-            if (currentSelection == position){
+            if (currentSelection == position) {
                 holder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.DARKEN);
                 selectedModel = model;
                 Log.i("TeamAdapter", "current selection: " + currentSelection);
-            }
-            else if (currentSelection != position){
+            } else if (currentSelection != position) {
                 holder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.LIGHTEN);
             }
-
-
-
-
 
 
         }
@@ -90,14 +78,17 @@ public class RvTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         return modelList.size();
     }
-    public void resetSelection(){
+
+    public void resetSelection() {
         currentSelection = -1;
         selectedModel = null;
     }
-    public int getCurrentSelectionPosition(){
+
+    public int getCurrentSelectionPosition() {
         return currentSelection;
     }
-    public RvTeamModel getSelection(){
+
+    public Team getSelection() {
 
         return selectedModel;
     }
@@ -106,51 +97,36 @@ public class RvTeamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mItemClickListener = mItemClickListener;
     }
 
-    private RvTeamModel getItem(int position) {
+    private Team getItem(int position) {
         return modelList.get(position);
     }
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, RvTeamModel model);
+        void onItemClick(View view, int position, Team model);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgUser;
-        private TextView itemTxtTitle;
-        private TextView itemTxtMessage;
-        private RvTeamModel lastChecked;
+        private TextView tv_team_card_name;
+        private TextView tv_team_card_admin;
 
-
-        // @BindView(R.id.img_user)
-        // ImageView imgUser;
-        // @BindView(R.id.item_txt_title)
-        // TextView itemTxtTitle;
-        // @BindView(R.id.item_txt_message)
-        // TextView itemTxtMessage;
-        // @BindView(R.id.radio_list)
-        // RadioButton itemTxtMessage;
-        // @BindView(R.id.check_list)
-        // CheckBox itemCheckList;
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            // ButterKnife.bind(this, itemView);
 
-            this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
-            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
-            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
+            this.tv_team_card_name = itemView.findViewById(R.id.tv_team_card_name);
+            this.tv_team_card_admin = itemView.findViewById(R.id.tv_team_card_admin);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                        currentSelection = getAdapterPosition();
-                        if (currentSelection == prevSelection)
-                            resetSelection();
-                        prevSelection = currentSelection;
+                    currentSelection = getAdapterPosition();
+                    if (currentSelection == prevSelection)
+                        resetSelection();
+                    prevSelection = currentSelection;
 
                     mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
                     notifyDataSetChanged();

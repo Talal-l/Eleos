@@ -29,7 +29,6 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
-import com.c50x.eleos.models.RvTeamModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,7 +46,7 @@ public class AdminTeams extends AppCompatActivity implements AsyncResponse{
 
     private RvTeamAdapter mAdapter;
     private ArrayList<Team> adminTeams;
-    private ArrayList<RvTeamModel> modelList = new ArrayList<>();
+    private ArrayList<Team> modelList = new ArrayList<>();
     private TeamTask teamTask;
     private LoginTask loginTask;
     private String selectedTeam;
@@ -104,16 +103,12 @@ public class AdminTeams extends AppCompatActivity implements AsyncResponse{
         recyclerView.setLayoutManager(layoutManager);
 
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_recyclerview));
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
         recyclerView.setAdapter(mAdapter);
 
 
         mAdapter.SetOnItemClickListener(new RvTeamAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, RvTeamModel model) {
+            public void onItemClick(View view, int position, Team model) {
 
                 //handle item click events here
 
@@ -131,17 +126,11 @@ public class AdminTeams extends AppCompatActivity implements AsyncResponse{
     @Override
     public void taskFinished(String output) {
 
-        // convert
+        // convert from json string
         adminTeams = gson.fromJson(output, new TypeToken<ArrayList<Team>>(){}.getType());
 
-        // convert Team to TeamModel so it can be displayed
         for (Team team: adminTeams){
-
-            RvTeamModel model = new RvTeamModel( "TeamName: " + team.getTeamName(),
-                    "players: " +Arrays.toString(team.getTeamPlayers()));
-
-            modelList.add(model);
-
+            modelList.add(team);
         }
 
         //update list in adapter

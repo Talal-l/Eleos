@@ -20,32 +20,26 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
-import com.c50x.eleos.models.RvTeamModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 
-public class TeamSelectionActivity extends AppCompatActivity implements AsyncResponse{
-
-    private RecyclerView recyclerView;
-
-    // @BindView(R.id.recycler_view)
-    // RecyclerView recyclerView;
+public class TeamSelectionActivity extends AppCompatActivity implements AsyncResponse {
 
     private static final String TAG = "TeamSelectionActivity";
 
+    // @BindView(R.id.recycler_view)
+    // RecyclerView recyclerView;
+    String selectedTeamJson;
+    private RecyclerView recyclerView;
     private RvTeamAdapter mAdapter;
     private Gson gson;
-    private ArrayList<RvTeamModel> modelList = new ArrayList<>();
-    private HashMap<RvTeamModel,Team> modelObjectMap;
+    private ArrayList<Team> modelList = new ArrayList<>();
     private TeamTask teamTask;
     private LoginTask loginTask;
     private Team selectedTeam;
-    String selectedTeamJson;
     private int sourceOfRequest; // main team or challenged team option
 
     private Menu mnu_team_select;
@@ -58,7 +52,6 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
         setContentView(R.layout.activity_my_team);
 
         gson = new Gson();
-        modelObjectMap = new HashMap<>();
 
         // setup the views and adapters
         findViews();
@@ -66,12 +59,12 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
         teamTask = new TeamTask(TeamSelectionActivity.this);
 
         // were did search request come from
-        sourceOfRequest = getIntent().getIntExtra("source",0);
+        sourceOfRequest = getIntent().getIntExtra("source", 0);
 
         // load current players teams
         if (sourceOfRequest == 0)
             teamTask.loadAdminTeams(LoginTask.currentAuthUser.getHandle());
-        // load all teams
+            // load all teams
         else if (sourceOfRequest == 1)
             teamTask.loadAllTeams();
 
@@ -96,11 +89,12 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         mAdapter.resetSelection();
         finish();
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -118,8 +112,7 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
                     intent.putExtra("mainTeam", selectedTeamJson);
                     setResult(RESULT_OK, intent);
                     finish();
-                }
-                else if (sourceOfRequest == 1){
+                } else if (sourceOfRequest == 1) {
                     Intent intent = new Intent();
                     // send object to calling activity
                     intent.putExtra("challengeTeam", selectedTeamJson);
@@ -136,11 +129,6 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
-
-
 
 
     private void findViews() {
@@ -170,22 +158,18 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
 
         mAdapter.SetOnItemClickListener(new RvTeamAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, RvTeamModel model) {
+            public void onItemClick(View view, int position, Team model) {
 
                 //handle item click events here
 
                 // show done action when an item is selected
-                if (mAdapter.getCurrentSelectionPosition() > -1){
+                if (mAdapter.getCurrentSelectionPosition() > -1) {
                     mnut_done.setVisible(true);
                     // set the selected team
-                    RvTeamModel selectedModel = modelList.get(mAdapter.getCurrentSelectionPosition());
+                    selectedTeam = modelList.get(mAdapter.getCurrentSelectionPosition());
 
-                    // get related object from map
-                    selectedTeam = modelObjectMap.get(model);
-
-                    Log.i(TAG,"selected team: " + selectedTeam.getTeamName());
-                }
-                else {
+                    Log.i(TAG, "selected team: " + selectedTeam.getTeamName());
+                } else {
                     mnut_done.setVisible(false);
                     // unset the selected team
                     selectedTeam = null;
@@ -193,8 +177,8 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
 
                 //Log.i("teamActivity","selected team: " + selectedTeam);
 
-                Toast.makeText(TeamSelectionActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
-          }
+                Toast.makeText(TeamSelectionActivity.this, "Hey " + model.getTeamName(), Toast.LENGTH_SHORT).show();
+            }
         });
 
 
@@ -205,20 +189,11 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
     public void taskFinished(String output) {
         Gson gson = new Gson();
 
-        // convert
-        ArrayList<Team> adminTeams = gson.fromJson(output, new TypeToken<ArrayList<Team>>(){}.getType());
+        // convert from json string
+        ArrayList<Team> adminTeams = gson.fromJson(output, new TypeToken<ArrayList<Team>>() {
+        }.getType());
 
-        // convert Team to TeamModel so it can be displayed
-        for (Team team: adminTeams){
-
-            RvTeamModel model = new RvTeamModel( "TeamName: " + team.getTeamName(),
-                    "players: " +Arrays.toString(team.getTeamPlayers()));
-
-            // map model with object
-            modelObjectMap.put(model,team);
-            modelList.add(model);
-
-        }
+        modelList.addAll(adminTeams);
 
         //update list in adapter
         mAdapter.updateList(modelList);
