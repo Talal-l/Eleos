@@ -6,6 +6,7 @@ import android.util.Log;
 import com.c50x.eleos.R;
 import com.c50x.eleos.data.Request;
 import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.TeamRequest;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -133,7 +134,7 @@ public class TeamTask {
         String teamName = team.getTeamName();
         int state = Request.PENDING;
 
-        Request teamInvite = new Request(teamName, sender, receiver, state);
+        Request teamInvite = new TeamRequest(team,receiver,state);
 
         String json = gson.toJson(teamInvite, Request.class);
 

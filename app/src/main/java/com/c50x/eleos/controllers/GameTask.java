@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.data.Game;
+import com.c50x.eleos.data.GameRequest;
 import com.c50x.eleos.data.Request;
 import com.google.gson.Gson;
 
@@ -104,7 +105,7 @@ public class GameTask {
         // will be added in the server side
         String receiver = null;
 
-        Request gameInvite = new Request(gameId,teamName1,teamName2,sender, receiver, state);
+        Request gameInvite = new GameRequest(game,receiver,state);
 
         String json = gson.toJson(gameInvite, Request.class);
 

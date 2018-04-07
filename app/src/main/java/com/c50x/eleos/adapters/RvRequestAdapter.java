@@ -2,6 +2,7 @@ package com.c50x.eleos.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,50 +10,95 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
-import com.c50x.eleos.models.RvRequestModel;
+import com.c50x.eleos.data.GameRequest;
+import com.c50x.eleos.data.Request;
+import com.c50x.eleos.data.TeamRequest;
 
 import java.util.ArrayList;
 
 
 public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int GAME_REQUEST = 1;
+    private static final int TEAM_REQUEST = 2;
+
     private Context mContext;
-    private ArrayList<RvRequestModel> modelList;
+    private ArrayList<Request> modelList;
 
     private OnItemClickListener mItemClickListener;
     private OnRequestResponseListener requestResponseListener;
 
 
-    public RvRequestAdapter(Context context, ArrayList<RvRequestModel> modelList) {
+    public RvRequestAdapter(Context context, ArrayList<Request> modelList) {
         this.mContext = context;
         this.modelList = modelList;
     }
 
-    public void updateList(ArrayList<RvRequestModel> modelList) {
+    public void updateList(ArrayList<Request> modelList) {
         this.modelList = modelList;
         notifyDataSetChanged();
 
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public int getItemViewType(int position) {
+        if (getItem(position) instanceof TeamRequest)
+            return TEAM_REQUEST;
+        else if (getItem(position) instanceof GameRequest)
+            return GAME_REQUEST;
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.request_card, viewGroup, false);
+        return 0;
+    }
 
-        return new ViewHolder(view);
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
+        View view = null;
+        switch (viewType) {
+
+            case GAME_REQUEST:
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.request_game_card, viewGroup, false);
+                return new GameRequestVH(view);
+
+            case TEAM_REQUEST:
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.request_team_card, viewGroup, false);
+                return new TeamRequestVH(view);
+            case 0:
+                Log.i("viewHolderCreate", "type invalid");
+        }
+
+        return null;
+
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        //Here you can fill your row view
-        if (holder instanceof ViewHolder) {
-            final RvRequestModel model = getItem(position);
-            ViewHolder genericViewHolder = (ViewHolder) holder;
 
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
+        switch (holder.getItemViewType()) {
+            case GAME_REQUEST:
+                final GameRequest gameModel = (GameRequest) getItem(position);
 
+                GameRequestVH gameRequestVH = (GameRequestVH) holder;
 
+                gameRequestVH.tvRequestGameCardTitle.setText(gameModel.getTitle());
+                gameRequestVH.tvRequestGameCardTeam.setText(gameModel.getTeamName());
+                gameRequestVH.tvRequestGameCardAdmin.setText(gameModel.getSender());
+                gameRequestVH.tvRequestGameCardChallenged.setText(gameModel.getReceiver());
+                gameRequestVH.tvRequestGameCardDateTime.setText(gameModel.getDateTime());
+                gameRequestVH.tvRequestGameCardVenue.setText(gameModel.getVenue());
+
+                break;
+            case TEAM_REQUEST:
+                final TeamRequest teamModel = (TeamRequest) getItem(position);
+
+                TeamRequestVH teamRequestVH = (TeamRequestVH) holder;
+
+                teamRequestVH.tvRequestTeamCardTitle.setText(teamModel.getTitle());
+                teamRequestVH.tvRequestTeamCardTeam.setText(teamModel.getTeamName());
+                teamRequestVH.tvRequestTeamCardAdmin.setText(teamModel.getTeamAdmin());
+
+                break;
         }
     }
 
@@ -66,54 +112,56 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
-    public void setOnRequestResponseListener(final OnRequestResponseListener requestResponseListener){
+
+    public void setOnRequestResponseListener(final OnRequestResponseListener requestResponseListener) {
         this.requestResponseListener = requestResponseListener;
     }
 
-    private RvRequestModel getItem(int position) {
+    private Request getItem(int position) {
         return modelList.get(position);
     }
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, RvRequestModel model);
+        void onItemClick(View view, int position, Request model);
     }
 
     public interface OnRequestResponseListener {
-        void onRequestAcceptListener(View view, int position, RvRequestModel model);
-        void onRequestDeclineListener(View view, int position, RvRequestModel model);
+        void onRequestAcceptListener(View view, int position, Request model);
+
+        void onRequestDeclineListener(View view, int position, Request model);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class GameRequestVH extends RecyclerView.ViewHolder {
 
-        private TextView itemTxtMessage;
         private Button btnRequestAccept;
         private Button btnRequestDecline;
+        private TextView tvRequestGameCardTitle;
+        private TextView tvRequestGameCardTeam;
+        private TextView tvRequestGameCardAdmin;
+        private TextView tvRequestGameCardChallenged;
+        private TextView tvRequestGameCardDateTime;
+        private TextView tvRequestGameCardVenue;
 
-
-        public ViewHolder(final View itemView) {
+        public GameRequestVH(final View itemView) {
             super(itemView);
 
-            // ButterKnife.bind(this, itemView);
+            this.btnRequestAccept = itemView.findViewById(R.id.btn_request_game_card_accept);
+            this.btnRequestDecline = itemView.findViewById(R.id.btn_request_game_card_decline);
 
-            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.tv_request_message);
-            this.btnRequestAccept = itemView.findViewById(R.id.btn_request_accept);
-            this.btnRequestDecline = itemView.findViewById(R.id.btn_request_decline);
+            this.tvRequestGameCardTitle = itemView.findViewById(R.id.tv_request_game_card_title);
+            this.tvRequestGameCardAdmin = itemView.findViewById(R.id.tv_request_game_card_admin);
+            this.tvRequestGameCardTeam = itemView.findViewById(R.id.tv_request_game_card_team);
+            this.tvRequestGameCardChallenged = itemView.findViewById(R.id.tv_request_game_card_challenged);
+            this.tvRequestGameCardDateTime = itemView.findViewById(R.id.tv_game_card_dateTime);
+            this.tvRequestGameCardVenue = itemView.findViewById(R.id.tv_request_game_card_venue);
 
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
-
-
-                }
-            });
+            // setup the listeners
 
             btnRequestAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    requestResponseListener.onRequestAcceptListener(itemView,getAdapterPosition(),
+                    requestResponseListener.onRequestAcceptListener(itemView, getAdapterPosition(),
                             modelList.get(getAdapterPosition()));
 
                 }
@@ -122,13 +170,53 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             btnRequestDecline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    requestResponseListener.onRequestDeclineListener(itemView,getAdapterPosition(),
+                    requestResponseListener.onRequestDeclineListener(itemView, getAdapterPosition(),
                             modelList.get(getAdapterPosition()));
                 }
             });
         }
-
     }
 
+public class TeamRequestVH extends RecyclerView.ViewHolder {
+
+    private Button btnRequestAccept;
+    private Button btnRequestDecline;
+
+    private TextView tvRequestTeamCardTitle;
+    private TextView tvRequestTeamCardTeam;
+    private TextView tvRequestTeamCardAdmin;
+
+    public TeamRequestVH(final View itemView) {
+        super(itemView);
+
+        this.btnRequestAccept = itemView.findViewById(R.id.btn_request_team_card_accept);
+        this.btnRequestDecline = itemView.findViewById(R.id.btn_request_team_card_decline);
+
+        this.tvRequestTeamCardTitle = itemView.findViewById(R.id.tv_request_team_card_title);
+        this.tvRequestTeamCardTeam = itemView.findViewById(R.id.tv_request_team_card_team);
+        this.tvRequestTeamCardAdmin = itemView.findViewById(R.id.tv_request_team_card_admin);
+
+
+        // setup the listeners
+
+        btnRequestAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestResponseListener.onRequestAcceptListener(itemView, getAdapterPosition(),
+                        modelList.get(getAdapterPosition()));
+
+            }
+        });
+
+        btnRequestDecline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestResponseListener.onRequestDeclineListener(itemView, getAdapterPosition(),
+                        modelList.get(getAdapterPosition()));
+            }
+        });
+    }
+
+}
 }
 

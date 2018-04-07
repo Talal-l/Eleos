@@ -7,33 +7,14 @@ public class Request {
     public static final int CANCELED = 3;
 
     private int requestId;
-    private int gameId;
-    private String challengedTeam;
-    private String teamName;
     private String sender;
     private String receiver;
     private int state;
+    private String title;
 
-    public Request(String teamName, String sender, String receiver, int state) {
-        this.gameId = -1;
-        this.teamName = teamName;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.state = state;
-    }
-
-    public Request(int gameId, String gameTeam1, String gameTeam2, String sender, String receiver, int state) {
-        this.gameId = gameId;
-        this.teamName = gameTeam1;
-        this.challengedTeam = gameTeam2;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.state = state;
-    }
+    private String type;
 
     public Request() {
-        this.gameId = -1;
-        this.challengedTeam = null;
         this.sender = null;
         this.receiver = null;
         this.state = -1;
@@ -63,35 +44,19 @@ public class Request {
         this.state = state;
     }
 
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public int getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
-    }
-
-    public String getChallengedTeam() {
-        return challengedTeam;
-    }
-
-    public void setChallengedTeam(String challengedTeam) {
-        this.challengedTeam = challengedTeam;
-    }
-
     public int getRequestId() {
         return requestId;
     }
 
     public void setRequestId(int requestId) {
         this.requestId = requestId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

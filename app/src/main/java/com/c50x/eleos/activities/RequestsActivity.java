@@ -16,13 +16,17 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.controllers.UserTask;
+import com.c50x.eleos.data.GameRequest;
 import com.c50x.eleos.data.Request;
+import com.c50x.eleos.data.TeamRequest;
 import com.c50x.eleos.data.User;
-import com.c50x.eleos.models.RvRequestModel;
 import com.google.gson.Gson;
-
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.c50x.eleos.adapters.RuntimeTypeAdapterFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class RequestsActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -31,15 +35,14 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
     private RvRequestAdapter mAdapter;
     private RecyclerView recyclerView;
-    private HashMap<RvRequestModel,Request> modelObjectMap;
-    private ArrayList<RvRequestModel> modelList;
+    private ArrayList<Request> modelList;
     private User currentUser = LoginTask.currentAuthUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requests);
 
-        modelObjectMap = new HashMap<>();
         modelList = new ArrayList<>();
 
         // show back button in action bar
@@ -56,20 +59,18 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         userTask.loadUserRequests(currentUser.getHandle());
 
 
-
-
         // handle accept and decline button clicks
 
         mAdapter.setOnRequestResponseListener(new RvRequestAdapter.OnRequestResponseListener() {
 
             TeamTask teamTask = new TeamTask(RequestsActivity.this);
+
             @Override
-            public void onRequestAcceptListener(View view, int position, RvRequestModel model) {
+            public void onRequestAcceptListener(View view, int position, Request model) {
 
                 // TODO: send response to sender
                 // TODO: Update request state in db
-                int requestId = modelObjectMap.get(model).getRequestId();
-                teamTask.updateTeamInviteState(requestId,Request.ACCEPTED);
+                teamTask.updateTeamInviteState(model.getRequestId(), Request.ACCEPTED);
 
 
                 // remove model from list
@@ -80,10 +81,9 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
             }
 
             @Override
-            public void onRequestDeclineListener(View view, int position, RvRequestModel model) {
+            public void onRequestDeclineListener(View view, int position, Request model) {
 
-                int requestId = modelObjectMap.get(model).getRequestId();
-                teamTask.updateTeamInviteState(requestId,Request.DECLINED);
+                teamTask.updateTeamInviteState(model.getRequestId(), Request.DECLINED);
 
 
                 // remove model from list
@@ -131,7 +131,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
         mAdapter.SetOnItemClickListener(new RvRequestAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, RvRequestModel model) {
+            public void onItemClick(View view, int position, Request model) {
 
             }
         });
@@ -144,40 +144,43 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
     public void taskFinished(String output) {
 
 
-        Log.i(TAG,"json response: " + output);
-        if (output.contains("update")){
+        HashMap<String, String> jsonResponse;
+       // jsonResponse = gson.fromJson(output, new TypeToken<Map<String, String>>() {
+        //}.getType());
 
-        }
-        else if (output.contains("request")) {
-            Gson gson = new Gson();
 
-            Request requests[] = gson.fromJson(output,Request[].class);
+
+        RuntimeTypeAdapterFactory<Request> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory
+                .of(Request.class)
+                .registerSubtype(GameRequest.class)
+                .registerSubtype(TeamRequest.class);
+
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(runtimeTypeAdapterFactory).create();
+
+        Log.i(TAG, "json response: " + output);
+
+        if (output.contains("update")) {
+
+        } else {
+
+
+            Request requests[] = gson.fromJson(output, Request[].class);
 
             // assuming the receiver is the current player
-            RvRequestModel model = null;
             for (Request request : requests) {
                 if (request.getState() == Request.PENDING) { // still needs a response
 
-                    if (request.getGameId() != -1) { // valid request to join game
-                        // sender has to be the game admin
-                        model = new RvRequestModel(request.getSender(),
-                                request.getTeamName(), request.getChallengedTeam());
+                        modelList.add(request);
+                        Log.i(TAG, "Adding to the list: " + request.getRequestId());
 
-                    } else if (request.getTeamName() != null) { // valid team invite
-                        model = new RvRequestModel(request.getTeamName(), request.getSender());
-
-
-                        Log.i(TAG, "Adding to the list: " + model.getMessage());
+                        if (request instanceof TeamRequest)
+                            Log.i(TAG,"IT is instance of teamRequest");
                     }
-                    modelObjectMap.put(model, request);
-                    modelList.add(model);
+                    modelList.add(request);
                 }
             }
 
             mAdapter.updateList(modelList);
-        }
 
     }
-
-
 }
