@@ -113,11 +113,11 @@
 
                 <Button
                     android:id="@+id/button_confirm"
-                    android:text="Confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/colorButtons"/>
+                    android:background="#424949"
+                    android:text="Confirm" />
 
                 <Button
                     android:id="@+id/button_cancel"
@@ -125,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/colorButtons"/>
+                    android:background="#424949"/>
                     />
             </LinearLayout>
 

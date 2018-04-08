@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.Menu;
@@ -33,14 +34,16 @@ public class EditPlayerInfoActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_player_info);
 
-        Button cancel = (Button) findViewById(R.id.btn_cancel_edit_info);
         Button edit = (Button) findViewById(R.id.btn_edit_info);
+        FloatingActionButton fabCancel= (FloatingActionButton) findViewById(R.id.fab_cancel);
+        FloatingActionButton fabConfirm= (FloatingActionButton) findViewById(R.id.fab_confirm);
+
         pn = findViewById(R.id.et_player_name);
         ph = findViewById(R.id.et_player_handle);
         pe = findViewById(R.id.et_player_email);
         pdob = findViewById(R.id.et_player_dob);
         pg = findViewById(R.id.et_player_gender);
-        user_img = findViewById(R.id.img_user_edit);
+        user_img = findViewById(R.id.img_player_card_profile_image_edit);
 
         pn.setEnabled(false);
         ph.setEnabled(false);
@@ -48,7 +51,7 @@ public class EditPlayerInfoActivity extends AppCompatActivity
         pdob.setEnabled(false);
         pg.setEnabled(false);
 
-        cancel.setOnClickListener(new View.OnClickListener()
+        fabCancel.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -96,4 +99,5 @@ public class EditPlayerInfoActivity extends AppCompatActivity
             user_img.setImageURI(imageUri);
         }
     }
+
 }

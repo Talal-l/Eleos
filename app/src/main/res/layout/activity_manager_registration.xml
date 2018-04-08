@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/colorButtonText"
-                    android:background="@color/colorButtons"/>
+                    android:background="#424949"/>
 
                 <Button
                     android:id="@+id/button_cancel"
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/colorButtonText"
-                    android:background="@color/colorButtons"/>
+                    android:background="#424949"/>
                     />
             </LinearLayout>
 
