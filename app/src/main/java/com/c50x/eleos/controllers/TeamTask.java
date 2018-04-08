@@ -165,6 +165,18 @@ public class TeamTask {
         new AsyncPost(activityContext).execute(url, json);
     }
 
+    public void loadTeamMembers(String teamName) {
+
+        String script = "/loadTeamMembers.php";
+        String key = "teamName";
+
+        String url = urlBase + script;
+        Log.i(TAG, "loadTeamMembers url: " + url);
+
+        new AsyncGet(activityContext).execute(url, key, teamName);
+
+
+    }
     // json to Team object
     public Team getTeamObject(String json) {
 

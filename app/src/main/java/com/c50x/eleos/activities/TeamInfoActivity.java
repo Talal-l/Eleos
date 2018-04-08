@@ -31,6 +31,7 @@ import com.c50x.eleos.utilities.Utilities;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -50,6 +51,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
     private TextView tvRemovePlayers;
     private String playerToRemove;
 
+    private TeamTask teamTask;
     private RvPlayerAdapter mAdapter;
     private ArrayList<User> modelList = new ArrayList<>();
     private ArrayList<String> playersToAdd;
@@ -65,6 +67,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         // init variables
 
+        teamTask = new TeamTask(TeamInfoActivity.this);
         currentAuthUser = LoginTask.currentAuthUser;
         gson = new Gson();
         String TeamJson = getIntent().getStringExtra("selectedTeam");
@@ -108,8 +111,6 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
             spnSport.setSelection(spinnerPosition);
         }
 
-        // set player list
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -118,16 +119,10 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         // load players
 
-        modelList = new ArrayList<>();
-        String matchingUsers[] = selectedTeam.getTeamPlayers();
+        teamTask.loadTeamMembers(selectedTeam.getTeamName());
 
-        for (int i = 0; i < matchingUsers.length; i++) {
-            Log.i(TAG, "Match: " + matchingUsers[i]);
-            User tempUser = new User();
-            tempUser.setHandle(matchingUsers[i]);
-            modelList.add(tempUser);
-        }
-        mAdapter.updateList(modelList);
+        modelList = new ArrayList<>();
+
 
 
         tvRemovePlayers.setOnClickListener(new View.OnClickListener() {
@@ -285,6 +280,14 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         if (output.contains("newRequest")){
             //
+        }
+        else if (output.contains("teamState")){
+
+            // add members with their state
+            User members[] = gson.fromJson(output,User[].class);
+            modelList.addAll(Arrays.asList(members));
+
+            mAdapter.updateList(modelList);
         }
         else if (!output.contains("null") && !output.contains("error")) {
 

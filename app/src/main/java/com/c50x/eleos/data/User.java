@@ -1,5 +1,7 @@
 package com.c50x.eleos.data;
 
+import static com.c50x.eleos.data.Request.PENDING;
+
 public class User {
 
 
@@ -12,6 +14,7 @@ public class User {
     private String token;
     private boolean isSelected;
     private String team;
+    private int teamState;
     private int numGrounds;
 
     private boolean isManager;
@@ -31,6 +34,7 @@ public class User {
         gender = "";
         token = "";
         numGrounds = 1;
+        teamState = PENDING;
     }
 
 
@@ -144,5 +148,13 @@ public class User {
 
     public void setTeam(String team) {
         this.team = team;
+    }
+
+    public int getTeamState() {
+        return teamState;
+    }
+
+    public void setTeamState(int teamState) {
+        this.teamState = teamState;
     }
 }
