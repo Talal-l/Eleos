@@ -172,11 +172,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
                         modelList.add(request);
                         Log.i(TAG, "Adding to the list: " + request.getRequestId());
-
-                        if (request instanceof TeamRequest)
-                            Log.i(TAG,"IT is instance of teamRequest");
                     }
-                    modelList.add(request);
                 }
             }
 

@@ -118,15 +118,12 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         // load players
 
-        String matchingUsers[] = selectedTeam.getTeamPlayers();
-
-
-        User tempUser = new User();
         modelList = new ArrayList<>();
-
+        String matchingUsers[] = selectedTeam.getTeamPlayers();
 
         for (int i = 0; i < matchingUsers.length; i++) {
             Log.i(TAG, "Match: " + matchingUsers[i]);
+            User tempUser = new User();
             tempUser.setHandle(matchingUsers[i]);
             modelList.add(tempUser);
         }
