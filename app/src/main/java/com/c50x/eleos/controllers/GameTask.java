@@ -96,18 +96,14 @@ public class GameTask {
 
         Log.i(TAG, "game invite url: " + url);
 
-        String sender = game.getGameAdmin();
-        String teamName1 = game.getTeam1();
-        String teamName2 = game.getTeam2();
-        int gameId = game.getGameId();
         int state = Request.PENDING;
 
         // will be added in the server side
         String receiver = null;
 
-        Request gameInvite = new GameRequest(game,receiver,state);
+        GameRequest gameInvite = new GameRequest(game,receiver,state);
 
-        String json = gson.toJson(gameInvite, Request.class);
+        String json = gson.toJson(gameInvite, GameRequest.class);
 
         Log.i(TAG, "Game invite request to be sent : " + json);
 
@@ -116,22 +112,22 @@ public class GameTask {
 
     }
 
-    public void updateTeamInviteState(int id, int state) {
+    public void updateGameInviteState(int id, int state) {
 
         String script = "/updateRequest.php";
 
         String url = urlBase + script;
 
-        Log.i(TAG, "update team invite url: " + url);
+        Log.i(TAG, "update game invite url: " + url);
 
-        Request teamInviteResponse = new Request();
-        teamInviteResponse.setState(state);
-        teamInviteResponse.setRequestId(id);
+        Request gameInviteResponse = new Request();
+        gameInviteResponse.setState(state);
+        gameInviteResponse.setRequestId(id);
 
 
-        String json = gson.toJson(teamInviteResponse, Request.class);
+        String json = gson.toJson(gameInviteResponse, GameRequest.class);
 
-        Log.i(TAG, "Team invite update response json:  " + json);
+        Log.i(TAG, "Game invite update response json:  " + json);
 
         new AsyncPost(activityContext).execute(url, json);
     }

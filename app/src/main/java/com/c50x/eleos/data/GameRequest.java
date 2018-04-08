@@ -12,13 +12,14 @@ public class GameRequest extends Request {
 
 
     public GameRequest(Game game, String receiver, int state) {
-        this.gameId = gameId;
+        this.gameId = game.getGameId();
 
-        setSender(game.getGameAdmin());
-        setReceiver(receiver);
-        setState(state);
+        this.setSender(game.getGameAdmin());
+        this.setReceiver(receiver);
+        this.setState(state);
+        this.setType("GameRequest");
+        this.setTitle("Game Invitation");
 
-        setTitle("Game Invitation");
         this.teamName = game.getTeam1();
         this.challengedTeam = game.getTeam2();
         this.time = game.getStartTime();

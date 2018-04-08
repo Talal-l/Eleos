@@ -151,7 +151,7 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             this.tvRequestGameCardAdmin = itemView.findViewById(R.id.tv_request_game_card_admin);
             this.tvRequestGameCardTeam = itemView.findViewById(R.id.tv_request_game_card_team);
             this.tvRequestGameCardChallenged = itemView.findViewById(R.id.tv_request_game_card_challenged);
-            this.tvRequestGameCardDateTime = itemView.findViewById(R.id.tv_game_card_dateTime);
+            this.tvRequestGameCardDateTime = itemView.findViewById(R.id.tv_request_game_card_dateTime);
             this.tvRequestGameCardVenue = itemView.findViewById(R.id.tv_request_game_card_venue);
 
             // setup the listeners

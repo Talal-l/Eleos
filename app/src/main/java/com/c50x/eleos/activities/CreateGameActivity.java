@@ -298,6 +298,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     GameTask gameTask = new GameTask(CreateGameActivity.this);
 
                     if (selectedGameJson != null) {
+                        // edit existing game
                         gameTask.updateGame(newGame);
 
 
