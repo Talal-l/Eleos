@@ -214,6 +214,8 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         mAdapter = new RvPlayerAdapter(TeamInfoActivity.this, modelList);
 
+        // show player state in current team
+        mAdapter.checkState(true);
         recyclerView.setHasFixedSize(false);
 
         // use a linear layout manager
