@@ -34,6 +34,9 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
+import static com.c50x.eleos.data.Request.PENDING;
+import static com.c50x.eleos.data.Request.WAITING;
+
 public class CreateGameActivity extends AppCompatActivity implements AsyncResponse {
     private static final String TAG = "CreateGameActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -209,7 +212,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 mainTeamObject = gson.fromJson(mainTeamJson, Team.class);
                 mainTeam = mainTeamObject.getTeamName();
 
-                tvMainTeam.setText("Your Team: " + mainTeam);
+                tvMainTeam.setText(mainTeam);
 
             }
         } else if (requestCode == 2) {
@@ -218,7 +221,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 challengeTeamObject = gson.fromJson(challengeTeamJson, Team.class);
                 challengeTeam = challengeTeamObject.getTeamName();
 
-                tvGameChallengeTeam.setText("Challenged Team: " + challengeTeam + " - PENDING");
+                tvGameChallengeTeam.setText(challengeTeam);
 
             }
         }
@@ -250,11 +253,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 // save option
 
                 boolean allValid = true;
-                if (!(gameNameIaValid(etGameName.getText().toString()))) {
-                    etGameName.setError("Empty or Incorrect Length (Between 4 and 20 characters)");
-                    allValid = false;
-                }
-
 
                 if (mainTeam == null) {
 
@@ -285,12 +283,15 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     newGame.setStartTime(gameTime);
                     if (selectedGame != null) // id can't be set here if it is a new game
                         newGame.setGameId(selectedGame.getGameId());
+                    if (newGame.getTeam2() == null || newGame.getTeam2().isEmpty())
 
-                    Log.i(TAG, "mainTeam: " + mainTeam + "challengedTeam: " + challengeTeam);
+                        Log.i(TAG, "mainTeam: " + mainTeam + "challengedTeam: " + challengeTeam);
                     if (challengeTeam != null) {
                         newGame.setTeam2(challengeTeam);
+                        newGame.setState(PENDING);
                     } else {
                         // TODO: Show message telling the user that the game will be waiting for challenger
+                        newGame.setState(WAITING);
                     }
                     // TODO: Add venue
                     //newGame.setVenueAddress();

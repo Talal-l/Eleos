@@ -96,7 +96,7 @@ public class GameTask {
 
         Log.i(TAG, "game invite url: " + url);
 
-        int state = Request.PENDING;
+        int state = game.getState();
 
         // will be added in the server side
         String receiver = null;
@@ -114,7 +114,7 @@ public class GameTask {
 
     public void updateGameInviteState(int id, int state) {
 
-        String script = "/updateRequest.php";
+        String script = "/updateGameInvite.php";
 
         String url = urlBase + script;
 

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +15,9 @@ import com.c50x.eleos.data.Game;
 import java.util.ArrayList;
 
 import static com.c50x.eleos.data.Request.ACCEPTED;
+import static com.c50x.eleos.data.Request.CANCELED;
 import static com.c50x.eleos.data.Request.PENDING;
+import static com.c50x.eleos.data.Request.WAITING;
 
 
 /**
@@ -50,18 +53,29 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        //Here you can fill your row view
         if (holder instanceof ViewHolder) {
             final Game model = getItem(position);
             ViewHolder gameViewHolder = (ViewHolder) holder;
 
-            if (model.getState() == PENDING)
-                gameViewHolder.tv_game_card_state.setText("Pending");
-            else if (model.getState() == ACCEPTED)
-                gameViewHolder.tv_game_card_state.setText("ACCEPTED");
-            else
-                gameViewHolder.tv_game_card_state.setText("Canceled");
+            gameViewHolder.btn_game_card_join.setEnabled(false);
+            switch (model.getState()){
+                case PENDING:
+                    gameViewHolder.tv_game_card_state.setText("Pending");
+                    break;
+                case ACCEPTED:
+                    gameViewHolder.tv_game_card_state.setText("Accepted");
+                    break;
+                case WAITING:
+                    gameViewHolder.tv_game_card_state.setText("Waiting");
+                    gameViewHolder.btn_game_card_join.setEnabled(true);
 
+
+                    break;
+                case CANCELED:
+
+                    gameViewHolder.tv_game_card_state.setText("Canceled");
+                    break;
+            }
 
             gameViewHolder.tv_game_card_dateTime.setText(model.getDateTime());
             gameViewHolder.tv_game_card_venue.setText(model.getVenueAddress());
@@ -98,6 +112,7 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private TextView tv_game_card_team1;
         private TextView tv_game_card_team2;
         private TextView tv_game_card_state;
+        private Button btn_game_card_join;
 
 
         public ViewHolder(final View itemView) {
@@ -108,6 +123,7 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             this.tv_game_card_team1 = itemView.findViewById(R.id.tv_game_card_team1);
             this.tv_game_card_team2 = itemView.findViewById(R.id.tv_game_card_team2);
             this.tv_game_card_state = itemView.findViewById(R.id.tv_game_card_state);
+            this.btn_game_card_join = itemView.findViewById(R.id.btn_game_card_join);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

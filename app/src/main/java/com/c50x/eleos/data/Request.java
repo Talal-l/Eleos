@@ -6,6 +6,7 @@ public class Request {
     public static final int DECLINED = 2;
     public static final int CANCELED = 3;
     public static final int ADMIN = 4;
+    public static final int WAITING = 5;
 
     private int requestId;
     private String sender;
