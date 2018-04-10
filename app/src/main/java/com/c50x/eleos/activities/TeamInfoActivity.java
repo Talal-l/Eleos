@@ -37,11 +37,6 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
 
     private final static String TAG = "TeamInfoActivity";
-    private TextView tvTeamName;
-    private EditText etTeamName;
-    private Spinner spnSport;
-    private TextView tvSport;
-    private TextView tvRating;
     private Team selectedTeam;
     private MenuItem mnutDone;
     private Gson gson;
@@ -82,34 +77,13 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         // find views
 
-        tvTeamName = findViewById(R.id.tv_info_view_team_name);
-        etTeamName = findViewById(R.id.et_info_team_name);
-        spnSport = findViewById(R.id.spn_info_team_sport);
-        tvSport = findViewById(R.id.tv_info_view_team_sport);
-        tvRating = findViewById(R.id.tv_info_team_rating);
-        tvRemovePlayers = findViewById(R.id.tv_info_team_remove_players);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_team_info);
 
 
         // set to values
 
-        tvTeamName.setText(selectedTeam.getTeamName());
-        tvSport.setText(selectedTeam.getSport());
-//        tvRating.setText(selectedTeam.getTeamRating());
 
-
-        etTeamName.setText(selectedTeam.getTeamName());
-
-        // set spinner
-        String sport = selectedTeam.getSport();
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.sports, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnSport.setAdapter(adapter);
-        if (sport != null) {
-            int spinnerPosition = adapter.getPosition(sport);
-            spnSport.setSelection(spinnerPosition);
-        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -123,21 +97,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
         modelList = new ArrayList<>();
 
-
-
-        tvRemovePlayers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ArrayList<String> newPlayerList = new ArrayList<>();
-                for (String player : selectedTeam.getTeamPlayers()) {
-                    if (!playersToAdd.contains(player)) {
-                        newPlayerList.add(player);
-                    }
-                }
-                selectedTeam.setTeamPlayers(newPlayerList.toArray(new String[0]));
-            }
-        });
+        setTitle(selectedTeam.getTeamName());
     }
 
 
@@ -146,37 +106,12 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         switch (item.getItemId()) {
             case R.id.mnut_done: // button pressed
 
-                if (mnutDone.getTitle().equals("Edit")) {
+                if (mnutDone.getTitle().equals("Add players")) {
 
                     mnutDone.setTitle("Save");
-                    etTeamName.setVisibility(TextView.VISIBLE);
-                    tvTeamName.setVisibility(TextView.GONE);
-
-                    spnSport.setVisibility(View.VISIBLE);
-                    tvSport.setVisibility(View.GONE);
-                    tvRemovePlayers.setVisibility(View.VISIBLE);
-
-
-                } else {
-                    // validate new info
-                    if (!InputValidation.name(etTeamName.getText().toString())) {
-                        etTeamName.setError("Invalid venue Name");
-
-                    } else {
-                        selectedTeam.setTeamName(etTeamName.getText().toString());
-                        selectedTeam.setSport(spnSport.getSelectedItem().toString());
-
-
-                        TeamTask teamTask = new TeamTask(this);
-                        teamTask.updateTeam(selectedTeam, oldTeamName);
-
-                        mnutDone.setTitle("Edit");
-                        Toast.makeText(this, "Info updated", Toast.LENGTH_LONG).show();
-                        finish();
-
-                    }
 
                 }
+
                 break;
 
 
@@ -195,11 +130,7 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_actionbar, menu);
         mnutDone = menu.findItem(R.id.mnut_done);
-
         mnutDone.setTitle("Edit");
-        Utilities.disableViews(etTeamName);
-        spnSport.setClickable(false);
-
         return true;
     }
 
@@ -299,7 +230,6 @@ public class TeamInfoActivity extends AppCompatActivity implements AsyncResponse
 
             if (output.contains("name")) {
 
-                etTeamName.setError("invalid name");
             }
         } else {
             // something is wrong
