@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 
 import static com.c50x.eleos.data.Request.ACCEPTED;
 import static com.c50x.eleos.data.Request.CANCELED;
+import static com.c50x.eleos.data.Request.DECLINED;
 import static com.c50x.eleos.data.Request.PENDING;
 import static com.c50x.eleos.data.Request.WAITING;
 
@@ -58,7 +58,7 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ViewHolder gameViewHolder = (ViewHolder) holder;
 
             gameViewHolder.btn_game_card_join.setEnabled(false);
-            switch (model.getState()){
+            switch (model.getState()) {
                 case PENDING:
                     gameViewHolder.tv_game_card_state.setText("Pending");
                     break;
@@ -71,6 +71,11 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
                     break;
+                case DECLINED:
+                    gameViewHolder.tv_game_card_state.setText("Declined");
+                    gameViewHolder.btn_game_card_join.setEnabled(true);
+                    break;
+
                 case CANCELED:
 
                     gameViewHolder.tv_game_card_state.setText("Canceled");

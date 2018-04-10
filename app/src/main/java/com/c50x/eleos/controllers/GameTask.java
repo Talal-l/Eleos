@@ -125,7 +125,7 @@ public class GameTask {
         gameInviteResponse.setRequestId(id);
 
 
-        String json = gson.toJson(gameInviteResponse, GameRequest.class);
+        String json = gson.toJson(gameInviteResponse, Request.class);
 
         Log.i(TAG, "Game invite update response json:  " + json);
 

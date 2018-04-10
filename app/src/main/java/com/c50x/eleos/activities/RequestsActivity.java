@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvRequestAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.controllers.UserTask;
@@ -37,6 +38,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
     private RecyclerView recyclerView;
     private ArrayList<Request> modelList;
     private User currentUser = LoginTask.currentAuthUser;
+    private GameTask gameTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         setContentView(R.layout.activity_requests);
 
         modelList = new ArrayList<>();
+        gameTask = new GameTask(RequestsActivity.this);
 
         // show back button in action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -70,7 +73,10 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
                 // TODO: send response to sender
                 // TODO: Update request state in db
-                teamTask.updateTeamInviteState(model.getRequestId(), Request.ACCEPTED);
+                if (model instanceof TeamRequest)
+                    teamTask.updateTeamInviteState(model.getRequestId(), Request.ACCEPTED);
+                else
+                    gameTask.updateGameInviteState(model.getRequestId(),Request.ACCEPTED);
 
 
                 // remove model from list
@@ -83,7 +89,12 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
             @Override
             public void onRequestDeclineListener(View view, int position, Request model) {
 
-                teamTask.updateTeamInviteState(model.getRequestId(), Request.DECLINED);
+                if (model instanceof TeamRequest)
+                    teamTask.updateTeamInviteState(model.getRequestId(), Request.DECLINED);
+                else
+                    gameTask.updateGameInviteState(model.getRequestId(),Request.DECLINED);
+
+
 
 
                 // remove model from list
@@ -142,11 +153,6 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
     @Override
     public void taskFinished(String output) {
-
-
-        HashMap<String, String> jsonResponse;
-       // jsonResponse = gson.fromJson(output, new TypeToken<Map<String, String>>() {
-        //}.getType());
 
 
 

@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                 swipeRefreshRecyclerList.setRefreshing(false);
 
                             gameTask.loadGames();
+                            mAdapter.updateList(modelList);
 
                         }
                     }, 100);
@@ -238,6 +239,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         // TODO: Find a better solution
 
         gameTask.loadGames();
+
+        mAdapter.updateList(modelList);
 
     }
 
