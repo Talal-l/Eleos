@@ -10,22 +10,22 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.c50x.eleos.activities.ManagerRegistrationActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary" >
 
 
     <ScrollView
         android:id="@+id/registration_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
 
                 <EditText
                     android:id="@+id/name"
@@ -33,20 +33,27 @@
                     android:layout_height="wrap_content"
                     android:hint="Name"
                     android:inputType="textPersonName"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
 
                 <EditText
                     android:id="@+id/manager_venue_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Venue name"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
+
             </android.support.design.widget.TextInputLayout>
+
             <TextView
                 android:id="@+id/tv_manager_reg_venue_location"
                 android:layout_width="match_parent"
@@ -54,42 +61,52 @@
                 android:text="Pick a location"
                 android:layout_marginVertical="@dimen/activity_vertical_margin"
                 android:textSize="20dp"
-                />
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
 
                 <EditText
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
 
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
 
                 <EditText
                     android:id="@+id/confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
+
             </android.support.design.widget.TextInputLayout>
 
             <Spinner
@@ -98,7 +115,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:entries="@array/sex_list" />
+                android:entries="@array/sex_list"
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
             <Spinner
                 android:id="@+id/language"
@@ -106,13 +125,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:entries="@array/languages_list" />
+                android:entries="@array/languages_list"
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="bottom">
+                android:layout_gravity="bottom" >
 
                 <Button
                     android:id="@+id/button_confirm"
@@ -121,7 +142,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/colorButtonText"
-                    android:background="@color/colorButtons"/>
+                    android:background="@color/colorButtons"
+                    android:paddingLeft="@dimen/button_padding_text_left_right"
+                    android:paddingRight="@dimen/button_padding_text_left_right"
+                    android:height="@dimen/button_padding_height" />
 
                 <Button
                     android:id="@+id/button_cancel"
@@ -130,8 +154,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/colorButtonText"
-                    android:background="@color/colorButtons"/>
-                    />
+                    android:background="@color/colorButtons"
+                    android:paddingLeft="@dimen/button_padding_text_left_right"
+                    android:paddingRight="@dimen/button_padding_text_left_right"
+                    android:height="@dimen/button_padding_height" />
+
             </LinearLayout>
 
         </LinearLayout>
