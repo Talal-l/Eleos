@@ -20,15 +20,14 @@ import static com.c50x.eleos.data.Request.PENDING;
 import static com.c50x.eleos.data.Request.WAITING;
 
 
-/**
- * A custom adapter to use with the RecyclerView widget.
- */
 public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private ArrayList<Game> modelList;
 
     private OnItemClickListener mItemClickListener;
+    private OnLocationClickListener locationClickListener;
+    private OnJoinClickListener joinClickListener;
 
 
     public RvGameAdapter(Context context, ArrayList<Game> modelList) {
@@ -97,7 +96,7 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return modelList.size();
     }
 
-    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
 
@@ -105,9 +104,26 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return modelList.get(position);
     }
 
+    public void setOnLocationClickListener(final OnLocationClickListener locationClickListener) {
+        this.locationClickListener = locationClickListener;
+    }
+
+    public void setOnJoinClickListener(final OnJoinClickListener joinClickListener) {
+        this.joinClickListener = joinClickListener;
+    }
+
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position, Game model);
+    }
+
+
+    public interface OnLocationClickListener {
+        void onLocationClick(View view, int position, Game model);
+    }
+
+    public interface OnJoinClickListener {
+        void onJoinClick(View view, int position, Game model);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -140,6 +156,20 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
+
+            tv_game_card_venue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    locationClickListener.onLocationClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
+                }
+            });
+
+            btn_game_card_join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    joinClickListener.onJoinClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 

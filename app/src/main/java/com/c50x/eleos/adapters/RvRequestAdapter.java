@@ -87,6 +87,11 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 gameRequestVH.tvRequestGameCardDateTime.setText(gameModel.getDateTime());
                 gameRequestVH.tvRequestGameCardVenue.setText(gameModel.getVenue());
 
+                if (gameModel.getGameAdmin()!=null && gameModel.getGameAdmin().equals(gameModel.getReceiver())){
+                    // it is a join game request from another team
+                    gameRequestVH.tvRequestGameCardTitle.setText("Join Team Request");
+                }
+
                 break;
             case TEAM_REQUEST:
                 final TeamRequest teamModel = (TeamRequest) getItem(position);

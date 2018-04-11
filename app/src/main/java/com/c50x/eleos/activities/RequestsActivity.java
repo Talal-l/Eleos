@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.adapters.RuntimeTypeAdapterFactory;
 import com.c50x.eleos.adapters.RvRequestAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
@@ -23,11 +24,8 @@ import com.c50x.eleos.data.TeamRequest;
 import com.c50x.eleos.data.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.c50x.eleos.adapters.RuntimeTypeAdapterFactory;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RequestsActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -76,7 +74,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
                 if (model instanceof TeamRequest)
                     teamTask.updateTeamInviteState(model.getRequestId(), Request.ACCEPTED);
                 else
-                    gameTask.updateGameInviteState(model.getRequestId(),Request.ACCEPTED);
+                    gameTask.updateGameInviteState(model.getRequestId(), Request.ACCEPTED);
 
 
                 // remove model from list
@@ -92,9 +90,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
                 if (model instanceof TeamRequest)
                     teamTask.updateTeamInviteState(model.getRequestId(), Request.DECLINED);
                 else
-                    gameTask.updateGameInviteState(model.getRequestId(),Request.DECLINED);
-
-
+                    gameTask.updateGameInviteState(model.getRequestId(), Request.DECLINED);
 
 
                 // remove model from list
@@ -155,7 +151,6 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
     public void taskFinished(String output) {
 
 
-
         RuntimeTypeAdapterFactory<Request> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory
                 .of(Request.class)
                 .registerSubtype(GameRequest.class)
@@ -176,13 +171,13 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
             for (Request request : requests) {
                 if (request.getState() == Request.PENDING) { // still needs a response
 
-                        modelList.add(request);
-                        Log.i(TAG, "Adding to the list: " + request.getRequestId());
-                    }
+                    modelList.add(request);
+                    Log.i(TAG, "Adding to the list: " + request.getRequestId());
                 }
             }
+        }
 
-            mAdapter.updateList(modelList);
+        mAdapter.updateList(modelList);
 
     }
 }
