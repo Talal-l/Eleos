@@ -10,12 +10,12 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="381dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp"
-        tools:ignore="MissingConstraints" >
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="3dp">
 
         <android.support.v7.widget.CardView
             android:id="@+id/card_view_user_image_edit"
@@ -26,7 +26,7 @@
             android:elevation="12dp"
             android:innerRadius="0dp"
             android:shape="ring"
-            android:thicknessRatio="1.9" >
+            android:thicknessRatio="1.9">
 
             <ImageView
                 android:id="@+id/img_user_edit"
@@ -63,14 +63,18 @@
                     android:layout_margin="10dp"
                     android:text="Name "
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right"/>
 
                 <EditText
                     android:id="@+id/et_player_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
 
                 <TextView
                     android:id="@+id/tv_player_handle"
@@ -79,14 +83,18 @@
                     android:layout_margin="10dp"
                     android:text="Handle "
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
                 <EditText
                     android:id="@+id/et_player_handle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
 
                 <TextView
                     android:id="@+id/tv_player_email"
@@ -95,14 +103,18 @@
                     android:layout_margin="10dp"
                     android:text="Email "
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right"/>
 
                 <EditText
                     android:id="@+id/et_player_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
 
                 <TextView
                     android:id="@+id/tv_player_dob"
@@ -111,14 +123,18 @@
                     android:layout_margin="10dp"
                     android:text="Date of birth "
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
                 <EditText
                     android:id="@+id/et_player_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
 
                 <TextView
                     android:id="@+id/tv_player_gender"
@@ -127,14 +143,18 @@
                     android:layout_margin="10dp"
                     android:text="Gender "
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
                 <EditText
                     android:id="@+id/et_player_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:paddingTop="@dimen/input_text_padding_top"
+                    android:paddingBottom="@dimen/input_text_padding_bottom" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -149,7 +169,10 @@
                         android:text="Edit"
                         tools:ignore="MissingConstraints"
                         tools:layout_editor_absoluteX="16dp"
-                        tools:layout_editor_absoluteY="5dp" />
+                        tools:layout_editor_absoluteY="5dp"
+                        android:paddingLeft="@dimen/button_padding_text_left_right"
+                        android:paddingRight="@dimen/button_padding_text_left_right"
+                        android:height="@dimen/button_padding_height" />
 
                     <Button
                         android:id="@+id/btn_confirm_edit_info"
@@ -160,7 +183,10 @@
                         tools:layout_editor_absoluteX="132dp"
                         tools:layout_editor_absoluteY="5dp"
                         android:layout_marginStart="35dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="@dimen/button_padding_text_left_right"
+                        android:paddingRight="@dimen/button_padding_text_left_right"
+                        android:height="@dimen/button_padding_height" />
 
                     <Button
                         android:id="@+id/btn_cancel_edit_info"
@@ -171,7 +197,10 @@
                         android:text="cancel"
                         tools:ignore="MissingConstraints"
                         tools:layout_editor_absoluteX="256dp"
-                        tools:layout_editor_absoluteY="5dp" />
+                        tools:layout_editor_absoluteY="5dp"
+                        android:paddingLeft="@dimen/button_padding_text_left_right"
+                        android:paddingRight="@dimen/button_padding_text_left_right"
+                        android:height="@dimen/button_padding_height" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -29,7 +29,9 @@
         android:inputType="textPersonName"
         android:layout_marginStart="80dp"
         android:layout_marginBottom="20dp"
-        android:hint="Team Sport" />
+        android:hint="Team Sport"
+        android:paddingTop="@dimen/input_text_padding_top"
+        android:paddingBottom="@dimen/input_text_padding_bottom" />
 
 
     <TextView
