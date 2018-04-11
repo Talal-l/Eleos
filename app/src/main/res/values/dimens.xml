@@ -27,7 +27,6 @@
     <dimen name = "card_raised_elevation"> 2dp </dimen>
 
     <!-- All about the Buttons -->
-    <dimen name = "button_text"> 14pt Roboto medium </dimen>
     <dimen name = "button_padding_height"> 36dp </dimen>
     <dimen name = "button_padding_text_left_right"> 16dp </dimen>
     <dimen name = "button_padding_corner_radius"> 2dp </dimen>
