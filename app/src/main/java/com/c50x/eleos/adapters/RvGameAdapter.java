@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 
 import java.util.ArrayList;
@@ -80,6 +81,9 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     gameViewHolder.tv_game_card_state.setText("Canceled");
                     break;
             }
+
+            if (model.getGameAdmin().equals(LoginTask.currentAuthUser.getHandle()))
+                gameViewHolder.btn_game_card_join.setEnabled(false);
 
             gameViewHolder.tv_game_card_dateTime.setText(model.getDateTime());
             gameViewHolder.tv_game_card_venue.setText(model.getVenueAddress());
