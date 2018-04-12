@@ -10,6 +10,7 @@ public class GameRequest extends Request {
     private String time;
     private String date;
     private String venue;
+    private Game game;
 
 
     public GameRequest(Game game, String receiver, int state) {
@@ -28,6 +29,7 @@ public class GameRequest extends Request {
         this.venue = game.getVenueAddress();
         this.gameAdmin = game.getGameAdmin();
         this.gameAdmin = game.getGameAdmin();
+        this.game = game;
 
     }
     // for join game request
@@ -39,8 +41,9 @@ public class GameRequest extends Request {
         this.setState(state);
         this.setType("GameRequest");
         this.setTitle("Join Game Request");
-        this.gameAdmin = game.getGameAdmin();
 
+        this.gameAdmin = game.getGameAdmin();
+        this.game = game;
         this.teamName = game.getTeam1();
         this.challengedTeam = team.getTeamName();
         this.time = game.getStartTime();
@@ -94,5 +97,13 @@ public class GameRequest extends Request {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

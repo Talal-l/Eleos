@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.GameRequest;
 import com.c50x.eleos.data.Request;
 import com.c50x.eleos.data.TeamRequest;
@@ -77,17 +78,19 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         switch (holder.getItemViewType()) {
             case GAME_REQUEST:
-                final GameRequest gameModel = (GameRequest) getItem(position);
+                final GameRequest gameRequestModel = (GameRequest) getItem(position);
 
                 GameRequestVH gameRequestVH = (GameRequestVH) holder;
 
-                gameRequestVH.tvRequestGameCardTeam.setText(gameModel.getTeamName());
-                gameRequestVH.tvRequestGameCardAdmin.setText(gameModel.getSender());
-                gameRequestVH.tvRequestGameCardChallenged.setText(gameModel.getReceiver());
-                gameRequestVH.tvRequestGameCardDateTime.setText(gameModel.getDateTime());
-                gameRequestVH.tvRequestGameCardVenue.setText(gameModel.getVenue());
+                Game requestGame = gameRequestModel.getGame();
 
-                if (gameModel.getGameAdmin()!=null && gameModel.getGameAdmin().equals(gameModel.getReceiver())){
+                gameRequestVH.tvRequestGameCardTeam.setText(requestGame.getTeam1());
+                gameRequestVH.tvRequestGameCardAdmin.setText(gameRequestModel.getSender());
+                gameRequestVH.tvRequestGameCardChallenged.setText(gameRequestModel.getChallengedTeam());
+                gameRequestVH.tvRequestGameCardDateTime.setText(requestGame.getDateTime());
+                gameRequestVH.tvRequestGameCardVenue.setText(requestGame.getVenueAddress());
+
+                if (requestGame.getGameAdmin() !=null && (gameRequestModel.getReceiver()).equals(requestGame.getGameAdmin())){
                     // it is a join game request from another team
                     gameRequestVH.tvRequestGameCardTitle.setText("Join Team Request");
                 }

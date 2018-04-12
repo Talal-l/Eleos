@@ -289,6 +289,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
                 // change state to pending
                 gameToJoin.setState(PENDING);
+                gameToJoin.setTeam2(teamToAdd.getTeamName());
+                // add team2 to game
+                gameTask.updateGame(gameToJoin);
 
                 // send join request to game admin
                 gameTask.sendJoinRequest(teamToAdd, gameToJoin);
@@ -300,8 +303,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void taskFinished(String output) {
+
+        Log.i(TAG,"json response: " + output);
         // load games of player or games in venue
-        if (output.contains("game")) {
+        if (!output.contains("game updated") && !output.contains("newRequest")) {
 
             loadedGames = gson.fromJson(output, com.c50x.eleos.data.Game[].class);
 
