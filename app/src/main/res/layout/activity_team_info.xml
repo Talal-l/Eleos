@@ -31,7 +31,10 @@
         android:text="Important Team Action"
         android:padding="16dp"
         android:textAlignment="center"
-        android:gravity="bottom"/>
+        android:gravity="bottom"
+        android:paddingLeft="@dimen/button_padding_text_left_right"
+        android:paddingRight="@dimen/button_padding_text_left_right"
+        android:height="@dimen/button_padding_height"/>
 
 
 </LinearLayout>

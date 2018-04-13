@@ -34,8 +34,8 @@
                     android:paddingTop="8dp"
                     android:text="Game name: "
                     android:textColor="#000000"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
             </LinearLayout>
 
@@ -44,11 +44,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
                 android:text="GameName"
                 android:textColor="#000000"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:paddingTop="@dimen/input_text_padding_top"
+                android:paddingBottom="@dimen/input_text_padding_bottom" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -64,8 +64,8 @@
                     android:paddingTop="8dp"
                     android:text="Game admin: "
                     android:textColor="#000000"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
             </LinearLayout>
 
@@ -74,11 +74,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
                 android:text="GameAdmin"
                 android:textSize="14dp"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:paddingTop="@dimen/input_text_padding_top"
+                android:paddingBottom="@dimen/input_text_padding_bottom"/>
 
 
             <LinearLayout
@@ -95,8 +95,8 @@
                     android:paddingTop="8dp"
                     android:text="Team1: "
                     android:textColor="#000000"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right"  />
 
             </LinearLayout>
 
@@ -105,8 +105,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="@dimen/input_text_padding_top"
+                android:paddingBottom="@dimen/input_text_padding_bottom"
                 android:text="Team1"
                 android:textSize="14dp"
                 android:textColor="#000000" />
@@ -125,8 +125,8 @@
                     android:paddingTop="8dp"
                     android:text="Team2: "
                     android:textColor="#000000"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
             </LinearLayout>
 
@@ -135,8 +135,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="@dimen/input_text_padding_top"
+                android:paddingBottom="@dimen/input_text_padding_bottom"
                 android:text="Team2"
                 android:textSize="14dp"
                 android:textColor="#000000" />
@@ -155,8 +155,9 @@
                     android:paddingTop="8dp"
                     android:text="Sport: "
                     android:textColor="#000000"
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
-                    />
             </LinearLayout>
 
             <EditText
@@ -164,8 +165,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="@dimen/input_text_padding_top"
+                android:paddingBottom="@dimen/input_text_padding_bottom"
                 android:text="Sport"
                 android:textSize="14dp"
                 android:textColor="#000000" />
@@ -184,8 +185,8 @@
                     android:paddingTop="8dp"
                     android:text="Date: "
                     android:textColor="#000000"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right"  />
 
             </LinearLayout>
 
@@ -194,8 +195,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="@dimen/input_text_padding_top"
+                android:paddingBottom="@dimen/input_text_padding_bottom"
                 android:text="gameDate"
                 android:textSize="14dp"
                 android:textColor="#000000" />
@@ -214,8 +215,8 @@
                     android:paddingTop="8dp"
                     android:text="Time: "
                     android:textColor="#000000"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right"  />
 
             </LinearLayout>
 
@@ -224,8 +225,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="@dimen/input_text_padding_top"
+                android:paddingBottom="@dimen/input_text_padding_bottom"
                 android:text="gameTime"
                 android:textSize="14dp"
                 android:textColor="#000000" />
@@ -246,7 +247,9 @@
                     android:padding="8dp"
                     android:singleLine="true"
                     android:text="Venue: "
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
             </LinearLayout>
 
@@ -261,10 +264,12 @@
                 android:singleLine="true"
                 android:text="GameVenue "
                 android:textSize="14dp"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:paddingTop="@dimen/input_text_padding_top"
+                android:paddingBottom="@dimen/input_text_padding_bottom"/>
 
         </LinearLayout>
-    </ScrollView>
 
+    </ScrollView>
 
 </LinearLayout>

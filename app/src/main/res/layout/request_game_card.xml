@@ -10,7 +10,7 @@
     android:layout_marginRight="10dp"
     android:layout_marginTop="5dp"
     android:orientation="horizontal"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true" >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rl_request_card"
@@ -19,9 +19,7 @@
         android:background="@color/colorLightBackground"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="16dp"
-
-        >
+        android:padding="16dp" >
 
         <TextView
             android:id="@+id/tv_request_game_card_title"
@@ -30,12 +28,14 @@
             android:layout_marginTop="8dp"
             android:text="Game Invitation"
             android:textColor="@color/colorPrimary"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:paddingLeft="@dimen/text_view_padding_left"
+            android:paddingRight="@dimen/text_view_padding_right" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,7 +44,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Team:"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
             <TextView
                 android:id="@+id/tv_request_game_card_team"
@@ -54,13 +56,14 @@
                 android:text="TeamName"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
-                />
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,7 +72,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Team Captain:"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right"/>
 
             <TextView
                 android:id="@+id/tv_request_game_card_admin"
@@ -79,14 +84,15 @@
                 android:text="AdminHandle"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
-                />
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,7 +101,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Challenging:"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
             <TextView
                 android:id="@+id/tv_request_game_card_challenged"
@@ -105,13 +113,15 @@
                 android:text="challengedTeam"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
-                />
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -120,7 +130,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Time:"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
             <TextView
                 android:id="@+id/tv_request_game_card_dateTime"
@@ -130,13 +142,14 @@
                 android:text="DateTime"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
-                />
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -145,7 +158,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Place:"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
             <TextView
                 android:id="@+id/tv_request_game_card_venue"
@@ -155,7 +170,9 @@
                 android:text="VenueLocation"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
-                />
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
+
         </LinearLayout>
 
 
@@ -172,7 +189,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorLightBackground"
                 android:text="Decline"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="@dimen/button_padding_text_left_right"
+                android:paddingRight="@dimen/button_padding_text_left_right"
+                android:height="@dimen/button_padding_height" />
 
             <Button
 
@@ -181,7 +201,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorLightBackground"
                 android:text="Accept"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="@dimen/button_padding_text_left_right"
+                android:paddingRight="@dimen/button_padding_text_left_right"
+                android:height="@dimen/button_padding_height" />
 
         </LinearLayout>
 

@@ -18,7 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:hint="Enter Player Name for Search"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:paddingTop="@dimen/input_text_padding_top"
+            android:paddingBottom="@dimen/input_text_padding_bottom" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -34,7 +36,10 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:text="Confirm"
-            android:backgroundTint="@color/colorPrimaryDark"/>
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:paddingLeft="@dimen/button_padding_text_left_right"
+            android:paddingRight="@dimen/button_padding_text_left_right"
+            android:height="@dimen/button_padding_height" />
 
         <Button
             android:id="@+id/button_cancel"
@@ -44,7 +49,10 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:text="Cancel"
-            android:backgroundTint="@color/colorPrimaryDark"/>
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:paddingLeft="@dimen/button_padding_text_left_right"
+            android:paddingRight="@dimen/button_padding_text_left_right"
+            android:height="@dimen/button_padding_height" />
 
     </LinearLayout>
 
