@@ -3,6 +3,7 @@ package com.c50x.eleos.activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +29,10 @@ import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.Team;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
@@ -42,6 +46,7 @@ import static com.c50x.eleos.data.Request.WAITING;
 public class CreateGameActivity extends AppCompatActivity implements AsyncResponse {
     private static final String TAG = "CreateGameActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
+    private final int PLACE_PICKER_REQUEST = 3;
 
     // Views
     @BindView(R.id.tv_create_game_main_team)
@@ -208,8 +213,9 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         tvGameLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent  = new Intent(CreateGameActivity.this, MapActivity.class);
+                Intent intent = new Intent(CreateGameActivity.this,VenuesActivity.class);
                 startActivity(intent);
+
             }
         });
     }
@@ -237,6 +243,13 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
                 tvGameChallengeTeam.setText(challengeTeam);
 
+            }
+
+        } else if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
             }
         }
     }

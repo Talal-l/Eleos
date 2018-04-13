@@ -20,14 +20,14 @@
         android:theme="@style/Theme.AppCompat">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB0Qj6jA5t0RxDA4RWBWc_GWyesV1eNnLU" />
+            android:value="AIzaSyCKWHCxfYyQftfeVrn5xKP2lAuIZ6t8PRs" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity android:name=".activities.RegistrationActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity
@@ -68,8 +68,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MapActivity" />
-        <activity android:name=".activities.RequestsActivity"></activity>
-        <activity android:name=".activities.EditPlayerInfoActivity"></activity>
+        <activity android:name=".activities.RequestsActivity" />
+        <activity android:name=".activities.EditPlayerInfoActivity" />
+        <activity android:name=".activities.VenuesActivity"></activity>
     </application>
 
 </manifest>
