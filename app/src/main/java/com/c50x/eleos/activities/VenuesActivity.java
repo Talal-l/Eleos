@@ -6,15 +6,21 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.adapters.RvVenueAdapter;
+import com.c50x.eleos.data.Venue;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import okhttp3.Call;
@@ -33,11 +39,45 @@ public class VenuesActivity extends AppCompatActivity {
     private String radius;
     private String key;
     private String baseUrl;
+    private RvVenueAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private ArrayList<Venue> modelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venues);
+
+        modelList = new ArrayList<>();
+
+        mAdapter = new RvVenueAdapter(this, modelList);
+
+        recyclerView = (RecyclerView) findViewById(R.id.rv_venue_list);
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        recyclerView.setAdapter(mAdapter);
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
+
+
+        mAdapter.SetOnItemClickListener(new RvVenueAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, Venue model) {
+
+                //handle item click events here
+          }
+        });
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -66,6 +106,12 @@ public class VenuesActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onSupportNavigateUp(){
+        mAdapter.resetSelection();
+        finish();
+        return true;
+    }
 
     void getVenues(Location location) {
 
@@ -132,7 +178,14 @@ public class VenuesActivity extends AppCompatActivity {
         for (PlaceResult place : placesResponse.results) {
             Log.i(TAG, "place name: " + place.name + "Type: " + Arrays.toString(place.types));
 
+            Venue tmp = new Venue();
+            tmp.setVenueName(place.name);
+            tmp.setVenueAddress(place.vicinity);
+
+            modelList.add(tmp);
+
         }
+        mAdapter.updateList(modelList);
     }
 
 
