@@ -1,9 +1,47 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name = "activity_horizontal_margin"> 16dp </dimen>
+    <dimen name = "activity_vertical_margin"> 16dp </dimen>
 
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
-    <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name = "navigation_drawer_width"> 240dp </dimen>
+
+    <!-- Input Text (I think Edit Text) -->
+    <dimen name = "input_text_padding_top"> 8dp </dimen>
+    <dimen name = "input_text_padding_bottom"> 16dp </dimen>
+
+    <!-- Text View (I think) -->
+    <dimen name = "text_view_padding_height"> 56dp </dimen>
+    <dimen name = "text_view_padding_corner_radius"> 4dp </dimen>
+    <dimen name = "text_view_padding_left"> 16dp </dimen>
+    <dimen name = "text_view_padding_right"> 16dp </dimen>
+    <dimen name = "text_view_padding_above_label"> 8dp </dimen>
+
+    <!-- Placeholder Text (Hint Text) -->
+    <dimen name = "input_text_hint_padding_above_label"> 16dp </dimen>
+    <dimen name = "input_text_hint_padding_above_text"> 8dp </dimen>
+    <dimen name = "input_text_hint_padding_below_text"> 8dp </dimen>
+
+    <!-- Cards (elevation) -->
+    <dimen name = "card_raised_elevation"> 2dp </dimen>
+
+    <!-- All about the Buttons -->
+    <dimen name = "button_padding_height"> 36dp </dimen>
+    <dimen name = "button_padding_text_left_right"> 16dp </dimen>
+    <dimen name = "button_padding_corner_radius"> 2dp </dimen>
+
+    <!-- Fonts Sizes -->
+    <!-- App Bar -->
+    <dimen name = "font_size_app_bar"> 20sp </dimen>
+
+    <!-- Buttons -->
+    <dimen name = "font_size_button_english"> 14sp </dimen>
+
+    <!-- Subheading -->
+    <dimen name = "font_size_subheading_english"> 16sp </dimen>
+
+    <!-- Body -->
+    <dimen name = "font_size_body_english"> 14sp </dimen>
+
 </resources>

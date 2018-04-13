@@ -19,10 +19,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.c50x.eleos.data.Request.ACCEPTED;
+import static com.c50x.eleos.data.Request.ADMIN;
+import static com.c50x.eleos.data.Request.CANCELED;
+import static com.c50x.eleos.data.Request.DECLINED;
+import static com.c50x.eleos.data.Request.PENDING;
 
-/**
- * A custom adapter to use with the RecyclerView widget.
- */
+
 public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
@@ -36,7 +39,7 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean isChecked;
 
     private Set<Integer> checkSet = new HashSet<>();
-
+    private boolean checkTeamState;
 
     public RvPlayerAdapter(Context context, ArrayList<User> modelList) {
         this.mContext = context;
@@ -67,6 +70,7 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             playerViewHolder.tv_player_card_name.setText(model.getName());
             playerViewHolder.tv_player_card_handel.setText(model.getHandle());
             playerViewHolder.tv_player_card_team.setText(model.getTeam());
+            playerViewHolder.getTv_player_card_teamState.setText("");
 
             if (getItem(position).isSelected())
                 playerViewHolder.itemView.getBackground().setColorFilter(Color.parseColor("#00796B"), PorterDuff.Mode.DARKEN);
@@ -105,6 +109,29 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
 
 
+            if (checkTeamState){
+                String state = "";
+                switch (model.getTeamState()){
+                    case PENDING:
+                        state = "Pending";
+                        break;
+                    case ACCEPTED:
+                        state = "Accepted";
+                        break;
+                    case DECLINED:
+                        state = "Declined";
+                        break;
+                    case CANCELED:
+                        state = "Canceled";
+                        break;
+                    case ADMIN:
+                        state = "Admin";
+                        break;
+                }
+
+                playerViewHolder.getTv_player_card_teamState.setText(state);
+
+            }
         }
     }
 
@@ -117,6 +144,12 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
+    }
+    public void checkState(boolean check){
+
+        this.checkTeamState = check;
+
+
     }
 
     public void SetOnCheckedListener(final OnCheckedListener onCheckedListener) {
@@ -143,6 +176,7 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private TextView tv_player_card_name;
         private TextView tv_player_card_handel;
         private TextView tv_player_card_team;
+        private TextView getTv_player_card_teamState;
         private CheckBox chk_player_card_selection;
 
         public ViewHolder(final View itemView) {
@@ -153,6 +187,7 @@ public class RvPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.tv_player_card_name = itemView.findViewById(R.id.tv_player_card_name);
             this.tv_player_card_handel = itemView.findViewById(R.id.tv_player_card_handel);
             this.tv_player_card_team = itemView.findViewById(R.id.tv_player_card_team);
+            this.getTv_player_card_teamState = itemView.findViewById(R.id.tv_player_card_teamSate);
             this.chk_player_card_selection = (CheckBox) itemView.findViewById(R.id.chk_player_card_selection);
 
 

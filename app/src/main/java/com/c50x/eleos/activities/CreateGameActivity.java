@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -34,21 +33,33 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.c50x.eleos.data.Request.PENDING;
+import static com.c50x.eleos.data.Request.WAITING;
+
 public class CreateGameActivity extends AppCompatActivity implements AsyncResponse {
     private static final String TAG = "CreateGameActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private Spinner spnGameSport;
-    private EditText etGameName;
-    private TextView tvMainTeam;
-    private TextView tvGameChallengeTeam;
-    private TextView tvGameLocation;
-    private TextView tvGameDate;
-    private TextView tvGameTime;
-    private Button btnCancelCreateGame;
-    private Button btnConfirmCreateGame;
+
+    // Views
+    @BindView(R.id.tv_create_game_main_team)
+    TextView tvMainTeam;
+    @BindView(R.id.tv_create_game_challenged_team)
+    TextView tvGameChallengeTeam;
+    @BindView(R.id.tv_create_game_date)
+    TextView tvGameDate;
+    @BindView(R.id.tv_create_game_time)
+    TextView tvGameTime;
+    @BindView(R.id.spn_create_game_type)
+    Spinner spnGameType;
+    @BindView(R.id.tv_create_game_location)
+    TextView tvGameLocation;
+
+
     private Game newGame;
     private DatePickerDialog.OnDateSetListener dateSetListener;
-    private TimePickerDialog.OnTimeSetListener timeSetListener;
     private String mainTeam;
     private String mainTeamJson;
     private Team mainTeamObject;
@@ -73,22 +84,14 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         if (isServicesOK())
             init();
 
+
+        ButterKnife.bind(this);
         newGame = new Game();
         mainTeam = null;
         challengeTeam = null;
         gameDate = null;
         gameTime = null;
         gson = new Gson();
-
-
-        // initializing the views
-        etGameName = findViewById(R.id.et_game_name);
-        spnGameSport = findViewById(R.id.spn_game_sport);
-        tvGameDate = findViewById(R.id.tv_game_date);
-        tvGameTime = findViewById(R.id.tv_game_time);
-        tvMainTeam = findViewById(R.id.tv_main_team);
-        tvGameLocation = findViewById(R.id.tv_game_location);
-        tvGameChallengeTeam = findViewById(R.id.tv_game_challenged_team);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -108,7 +111,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
             // set text with info from game object
 
-            etGameName.setText(selectedGame.getGameName());
             tvGameDate.setText(selectedGame.getStartDate());
             gameDate = selectedGame.getStartDate();
             tvGameTime.setText(selectedGame.getStartTime());
@@ -124,6 +126,13 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
             setTitle("Edit Game");
         }
+
+
+        // handle date and time
+
+
+        // TODO: insert formatted current date as place holder
+
 
         // get the date from user
         tvGameDate.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +218,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 mainTeamObject = gson.fromJson(mainTeamJson, Team.class);
                 mainTeam = mainTeamObject.getTeamName();
 
-                tvMainTeam.setText("Your Team: " + mainTeam);
+                tvMainTeam.setText(mainTeam);
 
             }
         } else if (requestCode == 2) {
@@ -218,7 +227,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 challengeTeamObject = gson.fromJson(challengeTeamJson, Team.class);
                 challengeTeam = challengeTeamObject.getTeamName();
 
-                tvGameChallengeTeam.setText("Challenged Team: " + challengeTeam + " - PENDING");
+                tvGameChallengeTeam.setText(challengeTeam);
 
             }
         }
@@ -250,11 +259,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 // save option
 
                 boolean allValid = true;
-                if (!(gameNameIaValid(etGameName.getText().toString()))) {
-                    etGameName.setError("Empty or Incorrect Length (Between 4 and 20 characters)");
-                    allValid = false;
-                }
-
 
                 if (mainTeam == null) {
 
@@ -276,21 +280,23 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 else if (allValid) {
 
                     // everything is valid, start setting the game object
-                    newGame.setGameName(etGameName.getText().toString());
                     Log.i(TAG, "getting current user and setting them as admin");
                     newGame.setGameAdmin(LoginTask.currentAuthUser.getHandle());
-                    newGame.setSport(spnGameSport.getSelectedItem().toString());
+                    newGame.setSport(spnGameType.getSelectedItem().toString());
                     newGame.setTeam1(mainTeam);
                     newGame.setStartDate(gameDate);
                     newGame.setStartTime(gameTime);
                     if (selectedGame != null) // id can't be set here if it is a new game
                         newGame.setGameId(selectedGame.getGameId());
+                    if (newGame.getTeam2() == null || newGame.getTeam2().isEmpty())
 
-                    Log.i(TAG, "mainTeam: " + mainTeam + "challengedTeam: " + challengeTeam);
+                        Log.i(TAG, "mainTeam: " + mainTeam + "challengedTeam: " + challengeTeam);
                     if (challengeTeam != null) {
                         newGame.setTeam2(challengeTeam);
+                        newGame.setState(PENDING);
                     } else {
                         // TODO: Show message telling the user that the game will be waiting for challenger
+                        newGame.setState(WAITING);
                     }
                     // TODO: Add venue
                     //newGame.setVenueAddress();
@@ -298,6 +304,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     GameTask gameTask = new GameTask(CreateGameActivity.this);
 
                     if (selectedGameJson != null) {
+                        // edit existing game
                         gameTask.updateGame(newGame);
 
 
@@ -321,8 +328,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     }
 
     private void init() {
-        Button btnmap = (Button) findViewById(R.id.btn_game_location);
-        btnmap.setOnClickListener(new View.OnClickListener() {
+
+        tvGameLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateGameActivity.this, MapActivity.class);

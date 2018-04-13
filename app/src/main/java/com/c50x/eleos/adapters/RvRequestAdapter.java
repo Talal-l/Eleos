@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.GameRequest;
 import com.c50x.eleos.data.Request;
 import com.c50x.eleos.data.TeamRequest;
@@ -77,16 +78,22 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         switch (holder.getItemViewType()) {
             case GAME_REQUEST:
-                final GameRequest gameModel = (GameRequest) getItem(position);
+                final GameRequest gameRequestModel = (GameRequest) getItem(position);
 
                 GameRequestVH gameRequestVH = (GameRequestVH) holder;
 
-                gameRequestVH.tvRequestGameCardTitle.setText(gameModel.getTitle());
-                gameRequestVH.tvRequestGameCardTeam.setText(gameModel.getTeamName());
-                gameRequestVH.tvRequestGameCardAdmin.setText(gameModel.getSender());
-                gameRequestVH.tvRequestGameCardChallenged.setText(gameModel.getReceiver());
-                gameRequestVH.tvRequestGameCardDateTime.setText(gameModel.getDateTime());
-                gameRequestVH.tvRequestGameCardVenue.setText(gameModel.getVenue());
+                Game requestGame = gameRequestModel.getGame();
+
+                gameRequestVH.tvRequestGameCardTeam.setText(requestGame.getTeam1());
+                gameRequestVH.tvRequestGameCardAdmin.setText(gameRequestModel.getSender());
+                gameRequestVH.tvRequestGameCardChallenged.setText(gameRequestModel.getChallengedTeam());
+                gameRequestVH.tvRequestGameCardDateTime.setText(requestGame.getDateTime());
+                gameRequestVH.tvRequestGameCardVenue.setText(requestGame.getVenueAddress());
+
+                if (requestGame.getGameAdmin() !=null && (gameRequestModel.getReceiver()).equals(requestGame.getGameAdmin())){
+                    // it is a join game request from another team
+                    gameRequestVH.tvRequestGameCardTitle.setText("Join Team Request");
+                }
 
                 break;
             case TEAM_REQUEST:
@@ -94,7 +101,6 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 TeamRequestVH teamRequestVH = (TeamRequestVH) holder;
 
-                teamRequestVH.tvRequestTeamCardTitle.setText(teamModel.getTitle());
                 teamRequestVH.tvRequestTeamCardTeam.setText(teamModel.getTeamName());
                 teamRequestVH.tvRequestTeamCardAdmin.setText(teamModel.getTeamAdmin());
 
@@ -153,7 +159,7 @@ public class RvRequestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             this.tvRequestGameCardAdmin = itemView.findViewById(R.id.tv_request_game_card_admin);
             this.tvRequestGameCardTeam = itemView.findViewById(R.id.tv_request_game_card_team);
             this.tvRequestGameCardChallenged = itemView.findViewById(R.id.tv_request_game_card_challenged);
-            this.tvRequestGameCardDateTime = itemView.findViewById(R.id.tv_game_card_dateTime);
+            this.tvRequestGameCardDateTime = itemView.findViewById(R.id.tv_request_game_card_dateTime);
             this.tvRequestGameCardVenue = itemView.findViewById(R.id.tv_request_game_card_venue);
 
             // setup the listeners

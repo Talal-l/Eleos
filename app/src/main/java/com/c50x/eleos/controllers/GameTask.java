@@ -7,6 +7,7 @@ import com.c50x.eleos.R;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.GameRequest;
 import com.c50x.eleos.data.Request;
+import com.c50x.eleos.data.Team;
 import com.google.gson.Gson;
 
 public class GameTask {
@@ -96,18 +97,14 @@ public class GameTask {
 
         Log.i(TAG, "game invite url: " + url);
 
-        String sender = game.getGameAdmin();
-        String teamName1 = game.getTeam1();
-        String teamName2 = game.getTeam2();
-        int gameId = game.getGameId();
-        int state = Request.PENDING;
+        int state = game.getState();
 
         // will be added in the server side
         String receiver = null;
 
-        Request gameInvite = new GameRequest(game,receiver,state);
+        GameRequest gameInvite = new GameRequest(game, receiver, state);
 
-        String json = gson.toJson(gameInvite, Request.class);
+        String json = gson.toJson(gameInvite, GameRequest.class);
 
         Log.i(TAG, "Game invite request to be sent : " + json);
 
@@ -116,25 +113,46 @@ public class GameTask {
 
     }
 
-    public void updateTeamInviteState(int id, int state) {
+    public void updateGameInviteState(int id, int state) {
 
-        String script = "/updateRequest.php";
+        String script = "/updateGameInvite.php";
 
         String url = urlBase + script;
 
-        Log.i(TAG, "update team invite url: " + url);
+        Log.i(TAG, "update game invite url: " + url);
 
-        Request teamInviteResponse = new Request();
-        teamInviteResponse.setState(state);
-        teamInviteResponse.setRequestId(id);
+        Request gameInviteResponse = new Request();
+        gameInviteResponse.setState(state);
+        gameInviteResponse.setRequestId(id);
 
 
-        String json = gson.toJson(teamInviteResponse, Request.class);
+        String json = gson.toJson(gameInviteResponse, Request.class);
 
-        Log.i(TAG, "Team invite update response json:  " + json);
+        Log.i(TAG, "Game invite update response json:  " + json);
 
         new AsyncPost(activityContext).execute(url, json);
     }
+
+    public void sendJoinRequest(Team teamToAdd, Game gameToJoin) {
+
+        String script = "/newGameRequest.php";
+
+        String url = urlBase + script;
+
+        Log.i(TAG, "join game request url: " + url);
+
+        int state = gameToJoin.getState();
+
+        GameRequest gameInvite = new GameRequest(gameToJoin, teamToAdd, state);
+
+        String json = gson.toJson(gameInvite, GameRequest.class);
+
+        Log.i(TAG, "Join game request to be sent : " + json);
+
+        new AsyncPost(activityContext).execute(url, json);
+
+    }
+
     public class Par {
         public String team2;
         public int gameId;

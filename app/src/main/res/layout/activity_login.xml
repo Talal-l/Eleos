@@ -26,7 +26,9 @@
             android:maxLines="1"
             android:singleLine="true"
             android:theme="@style/Autocomplete"
-            android:textColorHighlight="@color/colorAccent" />
+            android:textColorHighlight="@color/colorAccent"
+            android:paddingLeft="@dimen/text_view_padding_left"
+            android:paddingRight="@dimen/text_view_padding_right" />
 
 
     </android.support.design.widget.TextInputLayout>
@@ -48,7 +50,9 @@
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:paddingTop="@dimen/input_text_padding_top"
+            android:paddingBottom="@dimen/input_text_padding_bottom" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -60,7 +64,10 @@
         android:layout_marginTop="16dp"
         android:background="@color/colorButtons"
         android:text="@string/action_sign_in"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/button_padding_text_left_right"
+        android:paddingRight="@dimen/button_padding_text_left_right"
+        android:height="@dimen/button_padding_height" />
 
     <Button
         android:id="@+id/Register_button"
@@ -70,7 +77,10 @@
         android:layout_marginTop="16dp"
         android:background="@color/colorButtons"
         android:text="@string/action_register"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/button_padding_text_left_right"
+        android:paddingRight="@dimen/button_padding_text_left_right"
+        android:height="@dimen/button_padding_height" />
 
 
     <Button
@@ -81,6 +91,9 @@
         android:layout_marginTop="16dp"
         android:background="@color/colorButtons"
         android:text="Register as manager"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/button_padding_text_left_right"
+        android:paddingRight="@dimen/button_padding_text_left_right"
+        android:height="@dimen/button_padding_height" />
 
 </LinearLayout>

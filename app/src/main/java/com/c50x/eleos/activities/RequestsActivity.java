@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.adapters.RuntimeTypeAdapterFactory;
 import com.c50x.eleos.adapters.RvRequestAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
+import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.controllers.UserTask;
@@ -22,11 +24,8 @@ import com.c50x.eleos.data.TeamRequest;
 import com.c50x.eleos.data.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.c50x.eleos.adapters.RuntimeTypeAdapterFactory;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RequestsActivity extends AppCompatActivity implements AsyncResponse {
 
@@ -37,6 +36,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
     private RecyclerView recyclerView;
     private ArrayList<Request> modelList;
     private User currentUser = LoginTask.currentAuthUser;
+    private GameTask gameTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
         setContentView(R.layout.activity_requests);
 
         modelList = new ArrayList<>();
+        gameTask = new GameTask(RequestsActivity.this);
 
         // show back button in action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -70,7 +71,10 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
 
                 // TODO: send response to sender
                 // TODO: Update request state in db
-                teamTask.updateTeamInviteState(model.getRequestId(), Request.ACCEPTED);
+                if (model instanceof TeamRequest)
+                    teamTask.updateTeamInviteState(model.getRequestId(), Request.ACCEPTED);
+                else
+                    gameTask.updateGameInviteState(model.getRequestId(), Request.ACCEPTED);
 
 
                 // remove model from list
@@ -83,7 +87,10 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
             @Override
             public void onRequestDeclineListener(View view, int position, Request model) {
 
-                teamTask.updateTeamInviteState(model.getRequestId(), Request.DECLINED);
+                if (model instanceof TeamRequest)
+                    teamTask.updateTeamInviteState(model.getRequestId(), Request.DECLINED);
+                else
+                    gameTask.updateGameInviteState(model.getRequestId(), Request.DECLINED);
 
 
                 // remove model from list
@@ -144,12 +151,6 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
     public void taskFinished(String output) {
 
 
-        HashMap<String, String> jsonResponse;
-       // jsonResponse = gson.fromJson(output, new TypeToken<Map<String, String>>() {
-        //}.getType());
-
-
-
         RuntimeTypeAdapterFactory<Request> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory
                 .of(Request.class)
                 .registerSubtype(GameRequest.class)
@@ -170,17 +171,13 @@ public class RequestsActivity extends AppCompatActivity implements AsyncResponse
             for (Request request : requests) {
                 if (request.getState() == Request.PENDING) { // still needs a response
 
-                        modelList.add(request);
-                        Log.i(TAG, "Adding to the list: " + request.getRequestId());
-
-                        if (request instanceof TeamRequest)
-                            Log.i(TAG,"IT is instance of teamRequest");
-                    }
                     modelList.add(request);
+                    Log.i(TAG, "Adding to the list: " + request.getRequestId());
                 }
             }
+        }
 
-            mAdapter.updateList(modelList);
+        mAdapter.updateList(modelList);
 
     }
 }

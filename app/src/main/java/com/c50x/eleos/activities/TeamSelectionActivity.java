@@ -58,7 +58,7 @@ public class TeamSelectionActivity extends AppCompatActivity implements AsyncRes
         setAdapter();
         teamTask = new TeamTask(TeamSelectionActivity.this);
 
-        // were did search request come from
+        // is it a search for the admin teams or other teams?
         sourceOfRequest = getIntent().getIntExtra("source", 0);
 
         // load current players teams

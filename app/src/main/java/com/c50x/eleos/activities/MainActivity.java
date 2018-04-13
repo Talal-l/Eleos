@@ -26,13 +26,18 @@ import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
+import com.c50x.eleos.data.Team;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import static com.c50x.eleos.data.Request.PENDING;
+
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     private static final String TAG = "MainActivity";
+    private static final int PICK_IMAGE = 100;
+    Uri imageUri;
     private GameTask gameTask;
     private View menuHeader;
     private DrawerLayout mDrawerLayout;
@@ -49,9 +54,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private ArrayList<Game> modelList = new ArrayList<>();
     private CardView user_card_img;
     private ImageView user_img;
-    private static final int PICK_IMAGE = 100;
-    Uri imageUri;
-
+    private Team teamToAdd;
+    private Game gameToJoin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             recyclerView.setAdapter(mAdapter);
 
 
-            mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
+            mAdapter.setOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position, Game model) {
 
@@ -113,6 +117,29 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 }
             });
 
+            // handle join button click
+            mAdapter.setOnJoinClickListener(new RvGameAdapter.OnJoinClickListener() {
+                @Override
+                public void onJoinClick(View view, int position, Game model) {
+
+                    // go to team selection for admin to select one of their teams
+                    Intent intent = new Intent(MainActivity.this, TeamSelectionActivity.class);
+                    startActivityForResult(intent, 1);
+
+                    gameToJoin = model;
+
+
+                }
+            });
+
+            // handle location textView click
+            mAdapter.setOnLocationClickListener(new RvGameAdapter.OnLocationClickListener() {
+                @Override
+                public void onLocationClick(View view, int position, Game model) {
+
+                }
+            });
+
             swipeRefreshRecyclerList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -125,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                 swipeRefreshRecyclerList.setRefreshing(false);
 
                             gameTask.loadGames();
+                            mAdapter.updateList(modelList);
 
                         }
                     }, 100);
@@ -149,11 +177,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
             tvUserName = menuHeader.findViewById(R.id.tv_nav_header_name);
 
-            user_card_img.setOnClickListener(new View.OnClickListener()
-            {
+            user_card_img.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     startActivity(new Intent(MainActivity.this, EditPlayerInfoActivity.class));
                 }
             });
@@ -239,6 +265,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         gameTask.loadGames();
 
+        mAdapter.updateList(modelList);
+
     }
 
     @Override
@@ -249,10 +277,36 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) { // coming from team selection activity
+            if (resultCode == RESULT_OK) {
+                String dataJson;
+                dataJson = data.getStringExtra("mainTeam");
+                teamToAdd = gson.fromJson(dataJson, Team.class);
+
+                // change state to pending
+                gameToJoin.setState(PENDING);
+                gameToJoin.setTeam2(teamToAdd.getTeamName());
+                // add team2 to game
+                gameTask.updateGame(gameToJoin);
+
+                // send join request to game admin
+                gameTask.sendJoinRequest(teamToAdd, gameToJoin);
+
+
+            }
+        }
+    }
+
     @Override
     public void taskFinished(String output) {
+
+        Log.i(TAG,"json response: " + output);
         // load games of player or games in venue
-        if (output.contains("game")) {
+        if (!output.contains("game updated") && !output.contains("newRequest")) {
 
             loadedGames = gson.fromJson(output, com.c50x.eleos.data.Game[].class);
 

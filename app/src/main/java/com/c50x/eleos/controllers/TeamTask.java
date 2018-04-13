@@ -9,6 +9,7 @@ import com.c50x.eleos.data.Team;
 import com.c50x.eleos.data.TeamRequest;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TeamTask {
@@ -122,6 +123,27 @@ public class TeamTask {
 
     }
 
+    public void addPlayersToTeam(ArrayList<String> players, String team) {
+
+        String script = "/addPlayerToTeam.php";
+
+        String url = urlBase + script;
+
+        Log.i(TAG, "addPlayerToTeam url: " + url);
+
+        Payload payload = new Payload();
+        payload.playersToAddHandles = players;
+        payload.teamToAddTo = team;
+
+
+        String json = gson.toJson(payload, Payload.class);
+
+        Log.i(TAG, "add player to team json request: " + json);
+
+        new AsyncPost(activityContext).execute(url, json);
+
+    }
+
     public void sendTeamInvite(Team team, String receiver) {
 
         String script = "/newRequest.php";
@@ -134,7 +156,7 @@ public class TeamTask {
         String teamName = team.getTeamName();
         int state = Request.PENDING;
 
-        TeamRequest teamInvite = new TeamRequest(team,receiver,state);
+        TeamRequest teamInvite = new TeamRequest(team, receiver, state);
 
         String json = gson.toJson(teamInvite, TeamRequest.class);
 
@@ -165,9 +187,29 @@ public class TeamTask {
         new AsyncPost(activityContext).execute(url, json);
     }
 
+    public void loadTeamMembers(String teamName) {
+
+        String script = "/loadTeamMembers.php";
+        String key = "teamName";
+
+        String url = urlBase + script;
+        Log.i(TAG, "loadTeamMembers url: " + url);
+
+        new AsyncGet(activityContext).execute(url, key, teamName);
+
+
+    }
+
     // json to Team object
     public Team getTeamObject(String json) {
 
         return gson.fromJson(json, Team.class);
+    }
+
+
+    public class Payload {
+        public ArrayList<String> playersToAddHandles;
+        public String teamToAddTo;
+
     }
 }

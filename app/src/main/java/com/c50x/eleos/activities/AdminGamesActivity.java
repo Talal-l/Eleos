@@ -79,7 +79,7 @@ public class AdminGamesActivity extends AppCompatActivity implements AsyncRespon
         recyclerView.setAdapter(mAdapter);
 
 
-        mAdapter.SetOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new RvGameAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, Game model) {
 
