@@ -204,6 +204,14 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                 startActivityForResult(intent, 2);
             }
         });
+
+        tvGameLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent  = new Intent(CreateGameActivity.this, MapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
