@@ -130,15 +130,16 @@
 
                 <Button
                     android:id="@+id/button_confirm"
-                    android:text="Confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="Confirm"
                     android:textColor="@color/colorButtonText"
                     android:background="@color/colorButtons"
                     android:paddingLeft="@dimen/button_padding_text_left_right"
                     android:paddingRight="@dimen/button_padding_text_left_right"
                     android:height="@dimen/button_padding_height"  />
+
 
                 <Button
                     android:id="@+id/button_cancel"
@@ -151,6 +152,7 @@
                     android:paddingLeft="@dimen/button_padding_text_left_right"
                     android:paddingRight="@dimen/button_padding_text_left_right"
                     android:height="@dimen/button_padding_height" />
+
 
             </LinearLayout>
 
