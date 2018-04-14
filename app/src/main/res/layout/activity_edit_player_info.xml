@@ -1,195 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-  <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:layout_width="match_parent">
+    android:background="@color/colorPrimary">
 
-
-
-<LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-       >
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/img_user_edit"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:src="@drawable/noodles"
-        app:civ_border_width="1dp"
-        app:civ_border_color="#FF000000"/>
-
-    </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="390dp"
-        android:layout_height="717dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="vertical">
 
-        <ScrollView
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="150dp"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img_user_edit"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginVertical="@dimen/activity_vertical_margin"
+                android:src="@drawable/noodles"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="1dp" />
 
-                <TextView
-                    android:id="@+id/tv_player_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="@dimen/text_view_padding_right"
-                    android:text="Name "
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
+        </LinearLayout>
 
-                <EditText
-                    android:id="@+id/et_player_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingBottom="@dimen/input_text_padding_bottom"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="@dimen/input_text_padding_top"
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
 
-                <TextView
-                    android:id="@+id/tv_player_handle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingLeft="@dimen/text_view_padding_left"
-                    android:paddingRight="@dimen/text_view_padding_right"
-                    android:text="Handle "
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
+        <TextView
+            android:id="@+id/tv_player_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/input_text_hint_padding_above_label"
+            android:text="Name "
+            android:textColor="@color/textLight"
+            android:textSize="@dimen/font_size_app_bar" />
 
-                <EditText
-                    android:id="@+id/et_player_handle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingBottom="@dimen/input_text_padding_bottom"
-                    android:paddingTop="@dimen/input_text_padding_top"
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
+        <EditText
+            android:id="@+id/et_player_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/input_text_hint_padding_below_text"
+            android:layout_marginTop="@dimen/input_text_padding_top"
+            android:textColor="@color/textLight"
+            android:textSize="@dimen/font_size_app_bar" />
 
-                <TextView
-                    android:id="@+id/tv_player_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingLeft="@dimen/text_view_padding_left"
-                    android:paddingRight="@dimen/text_view_padding_right"
-                    android:text="Email "
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
+        <TextView
+            android:id="@+id/tv_player_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email "
+            android:textColor="@color/textLight"
+            android:textSize="@dimen/font_size_app_bar" />
 
-                <EditText
-                    android:id="@+id/et_player_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingBottom="@dimen/input_text_padding_bottom"
-                    android:paddingTop="@dimen/input_text_padding_top"
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
+        <EditText
+            android:id="@+id/et_player_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/input_text_hint_padding_below_text"
+            android:layout_marginTop="@dimen/input_text_padding_top"
+            android:textColor="@color/textLight"
+            android:textSize="@dimen/font_size_app_bar" />
 
-                <TextView
-                    android:id="@+id/tv_player_dob"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingLeft="@dimen/text_view_padding_left"
-                    android:paddingRight="@dimen/text_view_padding_right"
-                    android:text="Date of birth "
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
+        <TextView
+            android:id="@+id/tv_player_dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date of birth "
+            android:textColor="@color/textLight"
+            android:textSize="@dimen/font_size_app_bar" />
 
-                <EditText
-                    android:id="@+id/et_player_dob"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingBottom="@dimen/input_text_padding_bottom"
-                    android:paddingTop="@dimen/input_text_padding_top"
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
+        <EditText
+            android:id="@+id/et_player_dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/input_text_hint_padding_below_text"
+            android:layout_marginTop="@dimen/input_text_padding_top"
+            android:textColor="@color/textLight"
+            android:textSize="@dimen/font_size_app_bar" />
 
-                <TextView
-                    android:id="@+id/tv_player_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingLeft="@dimen/text_view_padding_left"
-                    android:paddingRight="@dimen/text_view_padding_right"
-                    android:text="Gender "
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
+        <TextView
+            android:id="@+id/tv_player_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gender "
+            android:textColor="@color/textLight"
+            android:textSize="@dimen/font_size_app_bar" />
 
-                <EditText
-                    android:id="@+id/et_player_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingBottom="@dimen/input_text_padding_bottom"
-                    android:paddingTop="@dimen/input_text_padding_top"
-                    android:textColor="@color/textLight"
-                    android:textSize="@dimen/font_size_app_bar" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btn_edit_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:height="@dimen/button_padding_height"
-                        android:paddingLeft="@dimen/button_padding_text_left_right"
-                        android:paddingRight="@dimen/button_padding_text_left_right"
-                        android:text="Edit" />
-
-                    <Button
-                        android:id="@+id/btn_confirm_edit_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="35dp"
-                        android:layout_marginTop="5dp"
-                        android:height="@dimen/button_padding_height"
-                        android:paddingLeft="@dimen/button_padding_text_left_right"
-                        android:paddingRight="@dimen/button_padding_text_left_right"
-                        android:text="confirm" />
-
-                    <Button
-                        android:id="@+id/btn_cancel_edit_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="5dp"
-                        android:height="@dimen/button_padding_height"
-                        android:paddingLeft="@dimen/button_padding_text_left_right"
-                        android:paddingRight="@dimen/button_padding_text_left_right"
-                        android:text="cancel" />
-                </LinearLayout>
-
-            </LinearLayout>
-        </ScrollView>
+        <EditText
+            android:id="@+id/et_player_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/input_text_hint_padding_below_text"
+            android:layout_marginTop="@dimen/input_text_padding_top"
+            android:textColor="@color/textLight"
+            android:textSize="@dimen/font_size_app_bar" />
 
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
+
+
+
