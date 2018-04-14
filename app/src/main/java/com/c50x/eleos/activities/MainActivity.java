@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             modelList = new ArrayList<>();
             if (LoginTask.currentAuthUser.isManager()) {
                 for (int i = 0; i < loadedGames.length; i++) {
-                    if (loadedGames[i].getVenueAddress().equals(LoginTask.currentAuthUser.getVenueLocation()))
+                    if (loadedGames[i].getVenue().getVenueName().equals(LoginTask.currentAuthUser.getVenueLocation()))
                         modelList.add(loadedGames[i]);
                 }
             }

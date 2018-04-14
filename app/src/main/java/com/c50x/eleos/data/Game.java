@@ -22,7 +22,7 @@ public class Game {
     private String[] gamePlayers;
 
     // Foreign keys
-    private String venueAddress;
+    private Venue venue;
 
     private String team1;
     private String team2;
@@ -36,7 +36,7 @@ public class Game {
         team2Score = 0;
         ratting = 0;
         sport = "";
-        venueAddress = "";
+        venue = new Venue();
         startDate = "";
         startTime = "";
         state = PENDING;
@@ -110,12 +110,12 @@ public class Game {
         this.sport = sport;
     }
 
-    public String getVenueAddress() {
-        return venueAddress;
+    public Venue getVenue() {
+        return venue;
     }
 
-    public void setVenueAddress(String venueAddress) {
-        this.venueAddress = venueAddress;
+    public void setVenue(Venue venue) {
+        this.venue = venue;
     }
 
     public String getTeam1() {
@@ -181,7 +181,8 @@ public class Game {
     public void setType(int type) {
         this.type = type;
     }
-    public String getDateTime(){
+
+    public String getDateTime() {
         // TODO: parse into a better format
         String formatedDateTime = startDate + " " + startTime;
         return formatedDateTime;

@@ -1,6 +1,7 @@
 package com.c50x.eleos.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvVenueAdapter;
+import com.c50x.eleos.data.Team;
 import com.c50x.eleos.data.Venue;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -42,6 +44,7 @@ public class VenuesActivity extends AppCompatActivity {
     private RvVenueAdapter mAdapter;
     private RecyclerView recyclerView;
     private ArrayList<Venue> modelList;
+    private Venue selectedVenue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,16 @@ public class VenuesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position, Venue model) {
 
-                //handle item click events here
+                selectedVenue = model;
+
+                Gson gson = new Gson();
+
+                String selectedVenueJson = gson.toJson(selectedVenue, Venue.class);
+
+                Intent intent = new Intent();
+                intent.putExtra("selectedVenue",selectedVenueJson);
+                setResult(RESULT_OK,intent);
+                finish();
           }
         });
 
@@ -176,11 +188,12 @@ public class VenuesActivity extends AppCompatActivity {
     void displayVenues(PlaceResponse placesResponse) {
 
         for (PlaceResult place : placesResponse.results) {
-            Log.i(TAG, "place name: " + place.name + "Type: " + Arrays.toString(place.types));
+            Log.i(TAG, "place name: " + place.name + " placeId: " + place.id  + "Type: " + Arrays.toString(place.types));
 
             Venue tmp = new Venue();
             tmp.setVenueName(place.name);
             tmp.setVenueAddress(place.vicinity);
+            tmp.setVenueId(place.place_id);
 
             modelList.add(tmp);
 

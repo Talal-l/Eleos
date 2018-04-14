@@ -1,15 +1,12 @@
 package com.c50x.eleos.data;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 @Entity
 public class Venue {
-    @NonNull
-    @PrimaryKey
-    private String venueAddress;
 
+    private String venueAddress;
+    private String venueId;
     private String venueName;
     private String venueType;
     private String venueManager;
@@ -74,4 +71,11 @@ public class Venue {
         this.numOfGrounds = numOfGrounds;
     }
 
+    public String getVenueId() {
+        return venueId;
+    }
+
+    public void setVenueId(String venueId) {
+        this.venueId = venueId;
+    }
 }
