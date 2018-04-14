@@ -36,14 +36,14 @@ public class EditPlayerInfoActivity extends AppCompatActivity
         setContentView(R.layout.activity_edit_player_info);
 
         Button edit = (Button) findViewById(R.id.btn_edit_info);
-
+        user_img = (ImageView) findViewById(R.id.img_user_edit);
 
         pn = findViewById(R.id.et_player_name);
         ph = findViewById(R.id.et_player_handle);
         pe = findViewById(R.id.et_player_email);
         pdob = findViewById(R.id.et_player_dob);
         pg = findViewById(R.id.et_player_gender);
-
+        cancel = findViewById(R.id.btn_cancel_edit_info);
 
         pn.setEnabled(false);
         ph.setEnabled(false);

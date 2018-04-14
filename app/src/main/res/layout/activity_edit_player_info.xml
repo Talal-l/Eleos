@@ -60,11 +60,11 @@
                     android:id="@+id/tv_player_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="16dp"
                     android:text="Name "
-                    android:textColor="#000000"
-                    android:textSize="18dp"
-                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:textColor="@color/textLight"
+                    android:textSize="@dimen/font_size_app_bar"
+                    android:paddingLeft="16dp"
                     android:paddingRight="@dimen/text_view_padding_right"/>
 
                 <EditText
@@ -80,10 +80,10 @@
                     android:id="@+id/tv_player_handle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="16dp"
                     android:text="Handle "
-                    android:textColor="#000000"
-                    android:textSize="18dp"
+                    android:textColor="@color/textLight"
+                    android:textSize="@dimen/font_size_app_bar"
                     android:paddingLeft="@dimen/text_view_padding_left"
                     android:paddingRight="@dimen/text_view_padding_right" />
 
@@ -100,10 +100,10 @@
                     android:id="@+id/tv_player_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="16dp"
                     android:text="Email "
-                    android:textColor="#000000"
-                    android:textSize="18dp"
+                    android:textColor="@color/textLight"
+                    android:textSize="@dimen/font_size_app_bar"
                     android:paddingLeft="@dimen/text_view_padding_left"
                     android:paddingRight="@dimen/text_view_padding_right"/>
 
@@ -120,10 +120,10 @@
                     android:id="@+id/tv_player_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="16dp"
                     android:text="Date of birth "
-                    android:textColor="#000000"
-                    android:textSize="18dp"
+                    android:textColor="@color/textLight"
+                    android:textSize="@dimen/font_size_app_bar"
                     android:paddingLeft="@dimen/text_view_padding_left"
                     android:paddingRight="@dimen/text_view_padding_right" />
 
@@ -140,10 +140,10 @@
                     android:id="@+id/tv_player_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="16dp"
                     android:text="Gender "
-                    android:textColor="#000000"
-                    android:textSize="18dp"
+                    android:textColor="@color/textLight"
+                    android:textSize="@dimen/font_size_app_bar"
                     android:paddingLeft="@dimen/text_view_padding_left"
                     android:paddingRight="@dimen/text_view_padding_right" />
 
