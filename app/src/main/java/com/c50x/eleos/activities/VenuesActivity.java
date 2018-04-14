@@ -14,7 +14,6 @@ import android.view.View;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.adapters.RvVenueAdapter;
-import com.c50x.eleos.data.Team;
 import com.c50x.eleos.data.Venue;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -188,11 +187,12 @@ public class VenuesActivity extends AppCompatActivity {
     void displayVenues(PlaceResponse placesResponse) {
 
         for (PlaceResult place : placesResponse.results) {
-            Log.i(TAG, "place name: " + place.name + " placeId: " + place.id  + "Type: " + Arrays.toString(place.types));
+            Log.i(TAG, "place name: " + place.name + " placeId: " + place.id + " coordinate: " + place.geometry.location.toString() + " Type: " + Arrays.toString(place.types));
 
             Venue tmp = new Venue();
             tmp.setVenueName(place.name);
             tmp.setVenueAddress(place.vicinity);
+            tmp.setVenueCoordinate(place.geometry.location.toString());
             tmp.setVenueId(place.place_id);
 
             modelList.add(tmp);
@@ -201,9 +201,24 @@ public class VenuesActivity extends AppCompatActivity {
         mAdapter.updateList(modelList);
     }
 
+    public class PlaceLocation{
+        double lat;
+        double lng;
+
+        @Override
+        public String toString(){
+            return lat + ","+lng;
+        }
+    }
+
+
+    public class Geometry{
+        PlaceLocation location;
+    }
+
 
     public class PlaceResult {
-        // geometry;
+        Geometry geometry;
         String icon;
         String id;
         String name;

@@ -27,6 +27,7 @@ import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.Venue;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -136,6 +137,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             mAdapter.setOnLocationClickListener(new RvGameAdapter.OnLocationClickListener() {
                 @Override
                 public void onLocationClick(View view, int position, Game model) {
+                    Log.i(TAG,"venue Coordinate: " + model.getVenue().getVenueCoordinate());
+
+                    if (model.getVenue().getVenueCoordinate() != null){
+
+                        String gameVenueJson = gson.toJson(model.getVenue(), Venue.class);
+
+                        Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                        intent.putExtra("gameVenue",gameVenueJson);
+                        startActivity(intent);
+                    }
 
                 }
             });

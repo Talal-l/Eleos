@@ -13,9 +13,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.c50x.eleos.R;
+import com.c50x.eleos.data.Venue;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.gson.Gson;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 {
@@ -25,6 +27,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Boolean mLocationPermissionGranted = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private GoogleMap mMap;
+    private Venue gameVenue;
+    private Gson gson;
 
     @Override
     public void onMapReady(GoogleMap googleMap)
@@ -41,6 +45,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_google_maps);
 
         getLocationPermission();
+
+        gson = new Gson();
+
+        // get selected venue object
+        String gameVenueJson = getIntent().getStringExtra("gameVenue");
+        Log.i(TAG, "onCreate gameVenueJson: " + gameVenueJson);
+        gameVenue = gson.fromJson(gameVenueJson,Venue.class);
     }
 
     private void initMap()

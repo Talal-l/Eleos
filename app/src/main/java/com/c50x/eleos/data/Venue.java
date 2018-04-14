@@ -7,6 +7,7 @@ public class Venue {
 
     private String venueAddress;
     private String venueId;
+    private String venueCoordinate;
     private String venueName;
     private String venueType;
     private String venueManager;
@@ -77,5 +78,13 @@ public class Venue {
 
     public void setVenueId(String venueId) {
         this.venueId = venueId;
+    }
+
+    public String getVenueCoordinate() {
+        return venueCoordinate;
+    }
+
+    public void setVenueCoordinate(String venueCoordinate) {
+        this.venueCoordinate = venueCoordinate;
     }
 }
