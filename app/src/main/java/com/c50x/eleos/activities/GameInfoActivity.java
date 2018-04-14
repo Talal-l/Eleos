@@ -80,7 +80,7 @@ public class GameInfoActivity extends AppCompatActivity implements AsyncResponse
         tvGameDate.setText(selectedGame.getStartDate());
         tvGameTime.setText(selectedGame.getStartTime());
         tvGameSport.setText(selectedGame.getSport());
-        tvGameVenue.setText(selectedGame.getVenueAddress());
+        tvGameVenue.setText(selectedGame.getVenue().getVenueName());
 
 
         // display back button in action bar

@@ -26,7 +26,7 @@ public class GameRequest extends Request {
         this.challengedTeam = game.getTeam2();
         this.time = game.getStartTime();
         this.date = game.getStartDate();
-        this.venue = game.getVenueAddress();
+        this.venue = game.getVenue().getVenueName();
         this.gameAdmin = game.getGameAdmin();
         this.gameAdmin = game.getGameAdmin();
         this.game = game;
@@ -48,7 +48,7 @@ public class GameRequest extends Request {
         this.challengedTeam = team.getTeamName();
         this.time = game.getStartTime();
         this.date = game.getStartDate();
-        this.venue = game.getVenueAddress();
+        this.venue = game.getVenue().getVenueName();
 
     }
     public String getTeamName() {

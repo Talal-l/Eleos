@@ -27,6 +27,7 @@ import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.Venue;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -214,7 +215,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CreateGameActivity.this,VenuesActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,PLACE_PICKER_REQUEST);
 
             }
         });
@@ -247,9 +248,15 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
         } else if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
+                Venue selectedVenue =
+                        gson.fromJson(data.getStringExtra("selectedVenue"), Venue.class);
+
+                Log.i(TAG,"Selected venue name: "+ selectedVenue.getVenueName());
+                Log.i(TAG,"Selected venue id: "+ selectedVenue.getVenueId());
+                newGame.setVenue(selectedVenue);
+
+                tvGameLocation.setText(selectedVenue.getVenueName());
             }
         }
     }

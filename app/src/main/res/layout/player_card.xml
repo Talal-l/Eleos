@@ -6,7 +6,9 @@
     android:background="@color/colorLightBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+
     android:padding="16dp">
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -32,7 +34,9 @@
             android:layout_height="wrap_content"
             android:text="The name of the player"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:paddingLeft="@dimen/text_view_padding_left"
+            android:paddingRight="@dimen/text_view_padding_right" />
 
         <TextView
             android:id="@+id/tv_player_card_handel"
@@ -41,7 +45,9 @@
             android:layout_marginTop="8dp"
             android:text="@handel"
             android:textColor="@color/colorPrimary"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:paddingLeft="@dimen/text_view_padding_left"
+            android:paddingRight="@dimen/text_view_padding_right" />
 
         <TextView
             android:id="@+id/tv_player_card_team"
@@ -50,7 +56,9 @@
             android:layout_marginTop="8dp"
             android:text="Team"
             android:textColor="@color/colorPrimary"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:paddingLeft="@dimen/text_view_padding_left"
+            android:paddingRight="@dimen/text_view_padding_right" />
 
     </LinearLayout>
 
@@ -65,7 +73,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
         android:layout_gravity="top"
-        android:text="Pending"/>
+        android:text="Pending"
+        android:paddingLeft="@dimen/text_view_padding_left"
+        android:paddingRight="@dimen/text_view_padding_right" />
 
         <CheckBox
             android:id="@+id/chk_player_card_selection"
@@ -74,8 +84,7 @@
             android:clickable="false"
             android:buttonTint="@color/colorPrimary"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="8dp"
-            />
+            android:layout_marginStart="8dp" />
 
 
 

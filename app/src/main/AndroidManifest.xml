@@ -70,7 +70,8 @@
         <activity android:name=".activities.MapActivity" />
         <activity android:name=".activities.RequestsActivity" />
         <activity android:name=".activities.EditPlayerInfoActivity" />
-        <activity android:name=".activities.VenuesActivity"></activity>
+        <activity android:name=".activities.VenuesActivity"
+                    android:label="Select a venue"/>
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ public class EditPlayerInfoActivity extends AppCompatActivity
     private ImageView user_img;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
+    private Button cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,15 +36,14 @@ public class EditPlayerInfoActivity extends AppCompatActivity
         setContentView(R.layout.activity_edit_player_info);
 
         Button edit = (Button) findViewById(R.id.btn_edit_info);
-        FloatingActionButton fabCancel= (FloatingActionButton) findViewById(R.id.fab_cancel);
-        FloatingActionButton fabConfirm= (FloatingActionButton) findViewById(R.id.fab_confirm);
+
 
         pn = findViewById(R.id.et_player_name);
         ph = findViewById(R.id.et_player_handle);
         pe = findViewById(R.id.et_player_email);
         pdob = findViewById(R.id.et_player_dob);
         pg = findViewById(R.id.et_player_gender);
-        user_img = findViewById(R.id.img_player_card_profile_image_edit);
+
 
         pn.setEnabled(false);
         ph.setEnabled(false);
@@ -51,7 +51,7 @@ public class EditPlayerInfoActivity extends AppCompatActivity
         pdob.setEnabled(false);
         pg.setEnabled(false);
 
-        fabCancel.setOnClickListener(new View.OnClickListener()
+        cancel.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)

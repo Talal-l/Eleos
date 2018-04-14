@@ -86,7 +86,7 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 gameViewHolder.btn_game_card_join.setEnabled(false);
 
             gameViewHolder.tv_game_card_dateTime.setText(model.getDateTime());
-            gameViewHolder.tv_game_card_venue.setText(model.getVenueAddress());
+            gameViewHolder.tv_game_card_venue.setText(model.getVenue().getVenueName());
             gameViewHolder.tv_game_card_team1.setText(model.getTeam1());
             gameViewHolder.tv_game_card_team2.setText(model.getTeam2());
 

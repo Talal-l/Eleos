@@ -36,8 +36,8 @@
                 android:text="Approved"
                 android:textColor="#212121"
                 android:textSize="14sp"
-
-                />
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
             <TextView
                 android:id="@+id/tv_game_card_venue"
@@ -50,8 +50,8 @@
                 android:text="Long venue name will go here and might n...."
                 android:textColor="#727272"
                 android:textSize="14sp"
-
-                />
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
 
             <TextView
@@ -63,7 +63,9 @@
                 android:gravity="center_horizontal"
                 android:text="dateTime"
                 android:textColor="#212121"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:paddingLeft="@dimen/text_view_padding_left"
+                android:paddingRight="@dimen/text_view_padding_right" />
 
 
             <LinearLayout
@@ -81,8 +83,8 @@
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="24sp"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,8 +95,8 @@
                     android:text="VS"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="24sp"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
                 <TextView
                     android:id="@+id/tv_game_card_team2"
@@ -106,8 +108,8 @@
                     android:layout_marginBottom="4dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="24sp"
-
-                    />
+                    android:paddingLeft="@dimen/text_view_padding_left"
+                    android:paddingRight="@dimen/text_view_padding_right" />
 
 
             </LinearLayout>
@@ -117,7 +119,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Join"
-                />
+                android:paddingLeft="@dimen/button_padding_text_left_right"
+                android:paddingRight="@dimen/button_padding_text_left_right"
+                android:height="@dimen/button_padding_height" />
 
         </LinearLayout>
     </LinearLayout>
