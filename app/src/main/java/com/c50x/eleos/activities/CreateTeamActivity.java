@@ -3,18 +3,25 @@ package com.c50x.eleos.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
+import com.c50x.eleos.adapters.RvPlayerAdapter;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.controllers.TeamTask;
 import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.User;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,13 +29,16 @@ import java.util.Arrays;
 public class CreateTeamActivity extends AppCompatActivity implements AsyncResponse {
 
     private static final String TAG = "CreateTeamActivity";
-    private Button btnConfirmCreateTeam;
-    private Button btnCancelCreateTeam;
     private EditText etTeamSport;
     private EditText etTeamName;
     private TextView tvPlayers;
     private Team newTeam;
     private ArrayList<String> playersToAdd;
+    private MenuItem mnutDone;
+    private Gson gson;
+    private ArrayList<User> modelList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private RvPlayerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +50,33 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
         newTeam = new Team();
 
+        modelList = new ArrayList<>();
+
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_create_team);
+        mAdapter = new RvPlayerAdapter(CreateTeamActivity.this, modelList);
+
+        // show player state in current team
+        mAdapter.checkState(true);
+        recyclerView.setHasFixedSize(false);
+
+        // use a linear layout manager
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        recyclerView.setAdapter(mAdapter);
+
+
+
         // initializing the views
         etTeamName = findViewById(R.id.et_team_name);
-        etTeamSport = findViewById(R.id.et_team_sport);
         tvPlayers = findViewById(R.id.tv_game_players);
-        btnConfirmCreateTeam = findViewById(R.id.btn_confirm_create_team);
-        btnCancelCreateTeam = findViewById(R.id.btn_cancel_create_team);
 
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Create Team");
         // go to player search
         tvPlayers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,11 +86,13 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
             }
         });
+    }
 
 
-        btnConfirmCreateTeam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mnut_done: // button pressed
 
                 String[] playerList = new String[tvPlayers.getLineCount()];
 
@@ -69,10 +100,7 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
 
                 if (!teamAdminValid(etTeamName.getText().toString())) {
                     etTeamName.setError("Team name is INVALID!");
-                } else if (!teamSportValid(etTeamSport.getText().toString())) {
-                    etTeamSport.setError("Team sport is INVALID!");
                 } else {
-                    newTeam.setSport(etTeamSport.getText().toString());
                     newTeam.setTeamAdmin(LoginTask.currentAuthUser.getHandle());
                     newTeam.setTeamName(etTeamName.getText().toString());
 
@@ -84,26 +112,41 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
                 TeamTask task = new TeamTask(CreateTeamActivity.this);
                 // call async task that will send info to server
                 task.addTeam(newTeam);
-            }
 
-        });
 
-        // Cancel button takes you back to Login Page
+                break;
 
-        btnCancelCreateTeam.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View view) {
-
-                Intent intent = new Intent(CreateTeamActivity.this, MainActivity.class);
-
-                // prevent back button from coming back to this screen
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                finish();
-            }
-        });
-
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
+
+    // add menu actions to toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_actionbar, menu);
+        mnutDone = menu.findItem(R.id.mnut_done);
+        mnutDone.setTitle("Save");
+
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+
+        Intent intent = new Intent(CreateTeamActivity.this, MainActivity.class);
+
+        // prevent back button from coming back to this screen
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        finish();
+        return true;
+    }
 
     public boolean teamNameValid(String name) {
         if (name.length() > 0 && name.length() <= 20)
@@ -134,11 +177,17 @@ public class CreateTeamActivity extends AppCompatActivity implements AsyncRespon
             if (resultCode == RESULT_OK) {
                 playersToAdd = data.getStringArrayListExtra("players");
                 Log.i(TAG, "players from search: " + Arrays.toString(playersToAdd.toArray()));
-                tvPlayers.setText(Arrays.toString(playersToAdd.toArray()));
+
+                for (String playerHandle: playersToAdd){
+                    User tmp = new User();
+                    tmp.setHandle(playerHandle);
+                    modelList.add(tmp);
+                }
+
+                mAdapter.updateList(modelList);
 
             }
         }
-
     }
 
     // code to handle received response from server
