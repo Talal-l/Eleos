@@ -335,18 +335,20 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             loadedGames = gson.fromJson(output, com.c50x.eleos.data.Game[].class);
 
 
-            for (Game game : loadedGames) {
-                if (game.getVenue().getVenueName() != null) {
-                    if (game.getVenue().getVenueName().equals(currentUser.getVenueName())) {
+            if (currentUser.isManager()) {
+                for (Game game : loadedGames) {
+                    if (game.getVenue().getVenueName() != null) {
+                        if (game.getVenue().getVenueName().equals(currentUser.getVenueName())) {
 
-                        modelList.add(game);
+                            modelList.add(game);
+                        }
                     }
                 }
+            } else {
+                for (int i = 0; i < loadedGames.length; i++)
+                    modelList.add(loadedGames[i]);
             }
-        }else {
-            for (int i = 0; i < loadedGames.length; i++) {
-                modelList.add(loadedGames[i]);
-            }
+
             mAdapter.updateList(modelList);
         }
     }

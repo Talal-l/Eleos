@@ -91,30 +91,8 @@ public class VenuesActivity extends AppCompatActivity {
         });
 
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        getVenues();
 
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    getVenues(location);
-                }
-            }
-        });
     }
 
     @Override
@@ -124,20 +102,18 @@ public class VenuesActivity extends AppCompatActivity {
         return true;
     }
 
-    void getVenues(Location location) {
+    void getVenues() {
 
         baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
 
 
         type = "stadium";
-        radius = "90000";
+        radius = "999999";
         key = "AIzaSyAMje2_XXUxPOYCzgtUSKemL3hUEIPEvPM";
 
+        lat = 29.301449;
+        lng = 47.832176;
 
-
-
-        lat = location.getLatitude();
-        lng = location.getLongitude();
 
         String url = baseUrl + "location=" + lat + "," + lng + "&" + "radius=" + radius + "&" +
                 "type=" + type + "&" + "key=" + key;
