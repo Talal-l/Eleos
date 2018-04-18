@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                 swipeRefreshRecyclerList.setRefreshing(false);
 
                             gameTask.loadGames();
-                            mAdapter.updateList(modelList);
 
                         }
                     }, 100);
@@ -289,7 +288,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         gameTask.loadGames();
 
-        mAdapter.updateList(modelList);
 
     }
 
@@ -345,8 +343,19 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                     }
                 }
             } else {
-                for (int i = 0; i < loadedGames.length; i++)
-                    modelList.add(loadedGames[i]);
+                boolean notIn;
+                for (Game game : loadedGames) {
+                    notIn = true;
+                    for (Game gameIn : modelList) {
+                        if (game.getGameId() == gameIn.getGameId()) {
+                            notIn = false;
+                            break;
+                        }
+                    }
+                    if (notIn)
+                        modelList.add(game);
+
+                }
             }
 
             mAdapter.updateList(modelList);

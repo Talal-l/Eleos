@@ -254,6 +254,7 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
 
                 Log.i(TAG,"Selected venue name: "+ selectedVenue.getVenueName());
                 Log.i(TAG,"Selected venue id: "+ selectedVenue.getVenueId());
+                Log.i(TAG,"Selected venue coordinate: "+ selectedVenue.getVenueCoordinate());
                 newGame.setVenue(selectedVenue);
 
                 tvGameLocation.setText(selectedVenue.getVenueName());
