@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.c50x.eleos.R;
 import com.c50x.eleos.controllers.AsyncResponse;
 import com.c50x.eleos.controllers.LoginTask;
+import com.c50x.eleos.OnAppCrash;
 import com.c50x.eleos.data.User;
 import com.google.gson.Gson;
 
@@ -18,6 +20,7 @@ public class LoadingActivity extends AppCompatActivity implements AsyncResponse 
     private static final String TAG = "LoadingActivity";
     private Gson gson;
     private LoginTask loginTask;
+    protected OnAppCrash onAppCrash;
 
 
     @Override
@@ -28,11 +31,16 @@ public class LoadingActivity extends AppCompatActivity implements AsyncResponse 
         // init variables
         gson = new Gson();
         loginTask = new LoginTask(this);
+        Thread.setDefaultUncaughtExceptionHandler(new OnAppCrash(this));
+        if (getIntent().getBooleanExtra("crash", false)) {
+            Toast.makeText(this, "App restarted after crash", Toast.LENGTH_SHORT).show();
+
+        }
 
         // load token from shared preferences
         SharedPreferences pref = getSharedPreferences("token_file", Context.MODE_PRIVATE);
         String token = pref.getString("token", "null");
-        Log.i(TAG, "Token from shared preferences: " + token);
+        Log.e(TAG, "Token from shared preferences: " + token);
 
         // check if token exist
         if (token.contains("null")) { // user not logged in

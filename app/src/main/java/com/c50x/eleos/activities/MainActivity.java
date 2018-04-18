@@ -261,6 +261,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                         }
                     }
             );
+        }else {
+            Intent intent = new Intent(this,LoadingActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
