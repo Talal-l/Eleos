@@ -14,6 +14,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,6 +28,7 @@ import com.c50x.eleos.controllers.GameTask;
 import com.c50x.eleos.controllers.LoginTask;
 import com.c50x.eleos.data.Game;
 import com.c50x.eleos.data.Team;
+import com.c50x.eleos.data.User;
 import com.c50x.eleos.data.Venue;
 import com.google.gson.Gson;
 
@@ -57,14 +59,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private ImageView user_img;
     private Team teamToAdd;
     private Game gameToJoin;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+        currentUser = LoginTask.currentAuthUser;
 
-        if (LoginTask.currentAuthUser != null) { // we have a valid current user
+        if (currentUser != null) { // we have a valid current user
 
             setContentView(R.layout.activity_main);
 
@@ -77,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             gson = new Gson();
             gameTask = new GameTask(MainActivity.this);
             mAdapter = new RvGameAdapter(MainActivity.this, modelList);
+            modelList = new ArrayList<>();
+
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
 
@@ -137,14 +143,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             mAdapter.setOnLocationClickListener(new RvGameAdapter.OnLocationClickListener() {
                 @Override
                 public void onLocationClick(View view, int position, Game model) {
-                    Log.i(TAG,"venue Coordinate: " + model.getVenue().getVenueCoordinate());
+                    Log.i(TAG, "venue Coordinate: " + model.getVenue().getVenueCoordinate());
 
-                    if (model.getVenue().getVenueCoordinate() != null){
+                    if (model.getVenue().getVenueCoordinate() != null) {
 
                         String gameVenueJson = gson.toJson(model.getVenue(), Venue.class);
 
                         Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                        intent.putExtra("gameVenue",gameVenueJson);
+                        intent.putExtra("gameVenue", gameVenueJson);
                         startActivity(intent);
                     }
 
@@ -196,17 +202,20 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             });
 
             // display info in nav header for manager
-            if (LoginTask.currentAuthUser.isManager()) {
+            if (currentUser.isManager()) {
 
-                navigationView.getMenu().findItem(R.id.nav_menu_venue_info).setVisible(true);
-                navigationView.getMenu().findItem(R.id.nav_menu_gameCreation).setVisible(false);
-                navigationView.getMenu().findItem(R.id.nav_menu_teamCreation).setVisible(false);
-                tvUserName.setText(LoginTask.currentAuthUser.getName());
+                Menu navMenu = navigationView.getMenu();
+                navMenu.findItem(R.id.nav_menu_venue_info).setVisible(true);
+                navMenu.findItem(R.id.nav_menu_gameCreation).setVisible(false);
+                navMenu.findItem(R.id.nav_menu_my_games).setVisible(false);
+                navMenu.findItem(R.id.nav_menu_teamCreation).setVisible(false);
+                navMenu.findItem(R.id.nav_menu_my_teams).setVisible(false);
+                tvUserName.setText(currentUser.getName());
 
             } else {
 
-                tvPlayerHandle.setText(LoginTask.currentAuthUser.getHandle());
-                tvUserName.setText(LoginTask.currentAuthUser.getName());
+                tvPlayerHandle.setText(currentUser.getHandle());
+                tvUserName.setText(currentUser.getName());
             }
 
 
@@ -261,8 +270,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                         }
                     }
             );
-        }else {
-            Intent intent = new Intent(this,LoadingActivity.class);
+        } else {
+            Intent intent = new Intent(this, LoadingActivity.class);
             startActivity(intent);
             finish();
         }
@@ -319,19 +328,22 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public void taskFinished(String output) {
 
-        Log.i(TAG,"json response: " + output);
+        Log.i(TAG, "json response: " + output);
         // load games of player or games in venue
         if (!output.contains("game updated") && !output.contains("newRequest")) {
 
             loadedGames = gson.fromJson(output, com.c50x.eleos.data.Game[].class);
 
-            modelList = new ArrayList<>();
-            if (LoginTask.currentAuthUser.isManager()) {
-                for (int i = 0; i < loadedGames.length; i++) {
-                    if (loadedGames[i].getVenue().getVenueName().equals(LoginTask.currentAuthUser.getVenueLocation()))
-                        modelList.add(loadedGames[i]);
+
+            for (Game game : loadedGames) {
+                if (game.getVenue().getVenueName() != null) {
+                    if (game.getVenue().getVenueName().equals(currentUser.getVenueName())) {
+
+                        modelList.add(game);
+                    }
                 }
             }
+        }else {
             for (int i = 0; i < loadedGames.length; i++) {
                 modelList.add(loadedGames[i]);
             }

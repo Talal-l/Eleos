@@ -50,6 +50,7 @@ public class VenuesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venues);
 
+        modelList = new ArrayList<>();
 
         mAdapter = new RvVenueAdapter(this, modelList);
 

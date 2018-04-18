@@ -17,7 +17,11 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 public class OnAppCrash implements UncaughtExceptionHandler {
     private Activity activity;
+    private UncaughtExceptionHandler defaultHandler;
+
     public OnAppCrash(Activity a) {
+        this.defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+
         activity = a;
     }
     @Override
@@ -29,8 +33,20 @@ public class OnAppCrash implements UncaughtExceptionHandler {
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(MyApplication.getInstance().getBaseContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager mgr = (AlarmManager) MyApplication.getInstance().getBaseContext().getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
+        //mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 2000, pendingIntent);
+
+        final Writer stringWriter = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(stringWriter);
+        ex.printStackTrace(printWriter);
+        String stacktrace = stringWriter.toString();
+        printWriter.close();
+
+        Log.e("CRASH", stacktrace);
+        Log.e("CRASH", ex.toString());
+
         activity.finish();
         System.exit(2);
+        defaultHandler.uncaughtException(thread, ex);
+
     }
 }
