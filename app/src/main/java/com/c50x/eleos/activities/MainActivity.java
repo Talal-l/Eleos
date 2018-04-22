@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private Team teamToAdd;
     private Game gameToJoin;
     private User currentUser;
+    private Button btnEditProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,8 +180,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             user_img = menuHeader.findViewById(R.id.img_user);
             tvPlayerHandle = menuHeader.findViewById(R.id.tv_nav_header_player_handle);
             tvUserName = menuHeader.findViewById(R.id.tv_nav_header_name);
+            btnEditProfile = menuHeader.findViewById(R.id.btn_nav_header_edit_profile);
 
-            user_card_img.setOnClickListener(new View.OnClickListener() {
+            btnEditProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(MainActivity.this, EditPlayerInfoActivity.class));
