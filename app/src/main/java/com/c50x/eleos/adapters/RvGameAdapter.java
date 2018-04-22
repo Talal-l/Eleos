@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.c50x.eleos.R;
@@ -57,7 +56,6 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final Game model = getItem(position);
             ViewHolder gameViewHolder = (ViewHolder) holder;
 
-            gameViewHolder.btn_game_card_join.setEnabled(false);
             switch (model.getState()) {
                 case PENDING:
                     gameViewHolder.tv_game_card_state.setText("Pending");
@@ -67,13 +65,11 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     break;
                 case WAITING:
                     gameViewHolder.tv_game_card_state.setText("Waiting");
-                    gameViewHolder.btn_game_card_join.setEnabled(true);
 
 
                     break;
                 case DECLINED:
                     gameViewHolder.tv_game_card_state.setText("Declined");
-                    gameViewHolder.btn_game_card_join.setEnabled(true);
                     break;
 
                 case CANCELED:
@@ -83,7 +79,6 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
 
             if (model.getGameAdmin().equals(LoginTask.currentAuthUser.getHandle()))
-                gameViewHolder.btn_game_card_join.setEnabled(false);
 
             gameViewHolder.tv_game_card_dateTime.setText(model.getDateTime());
             gameViewHolder.tv_game_card_venue.setText(model.getVenue().getVenueName());
@@ -137,7 +132,6 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private TextView tv_game_card_team1;
         private TextView tv_game_card_team2;
         private TextView tv_game_card_state;
-        private Button btn_game_card_join;
 
 
         public ViewHolder(final View itemView) {
@@ -148,7 +142,6 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             this.tv_game_card_team1 = itemView.findViewById(R.id.tv_game_card_team1);
             this.tv_game_card_team2 = itemView.findViewById(R.id.tv_game_card_team2);
             this.tv_game_card_state = itemView.findViewById(R.id.tv_game_card_state);
-            this.btn_game_card_join = itemView.findViewById(R.id.btn_game_card_join);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -168,12 +161,6 @@ public class RvGameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
-            btn_game_card_join.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    joinClickListener.onJoinClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
-                }
-            });
         }
     }
 

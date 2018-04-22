@@ -114,14 +114,6 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_game_card_join"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Join"
-                android:paddingLeft="@dimen/button_padding_text_left_right"
-                android:paddingRight="@dimen/button_padding_text_left_right"
-                android:height="@dimen/button_padding_height" />
 
         </LinearLayout>
     </LinearLayout>

@@ -20,15 +20,17 @@
             android:layout_width="match_parent"
             android:layout_height="59dp"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:theme="@style/StyledTilEditTextTheme"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:singleLine="true"
-            android:theme="@style/Autocomplete"
+            android:textColor="@color/textLight"
             android:textColorHighlight="@color/colorAccent"
-            android:paddingLeft="@dimen/text_view_padding_left"
-            android:paddingRight="@dimen/text_view_padding_right" />
+            android:paddingTop="@dimen/input_text_padding_top"
+            android:paddingBottom="@dimen/input_text_padding_bottom"
+
+            />
 
 
     </android.support.design.widget.TextInputLayout>
@@ -42,17 +44,19 @@
             android:layout_width="match_parent"
             android:layout_height="63dp"
             android:layout_weight="1"
-            android:background="#009688"
             android:hint="Password"
             android:imeActionId="6"
-            android:theme="@style/Autocomplete"
             android:imeActionLabel="@string/action_sign_in_short"
+            android:theme="@style/StyledTilEditTextTheme"
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
+            android:textColor="@color/textLight"
             android:maxLines="1"
             android:singleLine="true"
             android:paddingTop="@dimen/input_text_padding_top"
-            android:paddingBottom="@dimen/input_text_padding_bottom" />
+            android:paddingBottom="@dimen/input_text_padding_bottom"
+
+            />
 
     </android.support.design.widget.TextInputLayout>
 

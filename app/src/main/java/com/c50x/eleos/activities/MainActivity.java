@@ -124,20 +124,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 }
             });
 
-            // handle join button click
-            mAdapter.setOnJoinClickListener(new RvGameAdapter.OnJoinClickListener() {
-                @Override
-                public void onJoinClick(View view, int position, Game model) {
-
-                    // go to team selection for admin to select one of their teams
-                    Intent intent = new Intent(MainActivity.this, TeamSelectionActivity.class);
-                    startActivityForResult(intent, 1);
-
-                    gameToJoin = model;
-
-
-                }
-            });
 
             // handle location textView click
             mAdapter.setOnLocationClickListener(new RvGameAdapter.OnLocationClickListener() {
