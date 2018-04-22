@@ -58,8 +58,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     TextView tvGameDate;
     @BindView(R.id.tv_create_game_time)
     TextView tvGameTime;
-    @BindView(R.id.spn_create_game_type)
-    Spinner spnGameType;
     @BindView(R.id.tv_create_game_location)
     TextView tvGameLocation;
 
@@ -311,7 +309,6 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
                     // everything is valid, start setting the game object
                     Log.i(TAG, "getting current user and setting them as admin");
                     newGame.setGameAdmin(LoginTask.currentAuthUser.getHandle());
-                    newGame.setSport(spnGameType.getSelectedItem().toString());
                     newGame.setTeam1(mainTeam);
                     newGame.setStartDate(gameDate);
                     newGame.setStartTime(gameTime);
